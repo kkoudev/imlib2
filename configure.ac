@@ -24,7 +24,6 @@ AC_ARG_ENABLE([visibility-hiding],
   [enable_visibility_hiding=no]
 )
 
-AM_PROG_CC_STDC
 AC_HEADER_STDC
 AC_C_CONST
 
