@@ -1,7 +1,7 @@
 MAINTAINERCLEANFILES = Makefile.in
 AUTOMAKE_OPTIONS     = 1.4 foreign
 
-INCLUDES             = -I. \
+AM_CPPFLAGS          = -I. \
                        -I$(top_srcdir) \
                        -I$(top_srcdir)/src/lib \
                        -I$(top_srcdir)/src/modules/loaders \
@@ -54,7 +54,7 @@ jpeg_la_LIBADD       = @JPEGLIBS@ $(top_builddir)/src/lib/libImlib2.la
 jpeg_la_LIBTOOLFLAGS = --tag=disable-static
 
 png_la_SOURCES       = loader_png.c
-png_la_CPPFLAGS      = @PNG_CFLAGS@
+png_la_CPPFLAGS      = @PNG_CFLAGS@ $(AM_CPPFLAGS)
 png_la_LDFLAGS       = -module -avoid-version
 png_la_LIBADD        = @PNG_LIBS@ $(top_builddir)/src/lib/libImlib2.la
 png_la_LIBTOOLFLAGS = --tag=disable-static
