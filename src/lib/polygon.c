@@ -299,7 +299,7 @@ do {									\
     for (m = 0; (m < nactive_edges) && (edge[m].index != i); m++);	\
 									\
     if ((m == nactive_edges) && (i < nvertices) &&			\
-	(nactive_edges < (nvertices - 1)))				\
+	(nactive_edges < nvertices))					\
       {									\
 	ImlibPoint *v0, *v1, *w;					\
 	PolyEdge *ne;							\
