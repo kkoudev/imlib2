@@ -333,7 +333,7 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
 #ifdef PNG_TEXT_SUPPORTED
         png_text            text;
 
-        text.key = "Imlib2-Comment";
+        text.key = (char *)"Imlib2-Comment";
         text.text = tag->data;
         text.compression = PNG_TEXT_COMPRESSION_zTXt;
         png_set_text(png_ptr, info_ptr, &(text), 1);
@@ -415,18 +415,12 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
 void
 formats(ImlibLoader * l)
 {
-   /* this is the only bit you have to change... */
-   char               *list_formats[] = { "png" };
+   static const char  *const list_formats[] = { "png" };
+   int                 i;
 
-   /* don't bother changing any of this - it just reads this in and sets */
-   /* the struct values and makes copies */
-   {
-      int                 i;
+   l->num_formats = sizeof(list_formats) / sizeof(char *);
+   l->formats = malloc(sizeof(char *) * l->num_formats);
 
-      l->num_formats = (sizeof(list_formats) / sizeof(char *));
-      l->formats = malloc(sizeof(char *) * l->num_formats);
-
-      for (i = 0; i < l->num_formats; i++)
-         l->formats[i] = strdup(list_formats[i]);
-   }
+   for (i = 0; i < l->num_formats; i++)
+      l->formats[i] = strdup(list_formats[i]);
 }

@@ -213,7 +213,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
         return 0;
      }
 
-   if (ss.st_size < sizeof(tga_header) + sizeof(tga_footer))
+   if (ss.st_size < (long)(sizeof(tga_header) + sizeof(tga_footer)))
      {
         close(fd);
         return 0;
@@ -329,7 +329,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
 
         /* bufptr is the next byte to be read from the buffer */
         bufptr = filedata;
-        bufend = filedata + datasize;
+        bufend = bufptr + datasize;
 
         /* dataptr is the next 32-bit pixel to be filled in */
         dataptr = im->data;
@@ -516,16 +516,14 @@ load(ImlibImage * im, ImlibProgressFunction progress,
 void
 formats(ImlibLoader * l)
 {
-   char               *list_formats[] = { "tga" };
+   static const char  *const list_formats[] = { "tga" };
+   int                 i;
 
-   {
-      int                 i;
+   l->num_formats = sizeof(list_formats) / sizeof(char *);
+   l->formats = malloc(sizeof(char *) * l->num_formats);
 
-      l->num_formats = (sizeof(list_formats) / sizeof(char *));
-      l->formats = malloc(sizeof(char *) * l->num_formats);
-      for (i = 0; i < l->num_formats; i++)
-         l->formats[i] = strdup(list_formats[i]);
-   }
+   for (i = 0; i < l->num_formats; i++)
+      l->formats[i] = strdup(list_formats[i]);
 }
 
 /**********************/

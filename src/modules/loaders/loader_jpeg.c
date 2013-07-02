@@ -16,30 +16,30 @@ _JPEGFatalErrorHandler(j_common_ptr cinfo)
    errmgr = (emptr) cinfo->err;
 /*   cinfo->err->output_message(cinfo);*/
    siglongjmp(errmgr->setjmp_buffer, 1);
-   return;
 }
 
 static void
 _JPEGErrorHandler(j_common_ptr cinfo)
 {
+#if 0
    emptr               errmgr;
 
    errmgr = (emptr) cinfo->err;
 /*   cinfo->err->output_message(cinfo);*/
 /*   siglongjmp(errmgr->setjmp_buffer, 1);*/
-   return;
+#endif
 }
 
 static void
 _JPEGErrorHandler2(j_common_ptr cinfo, int msg_level)
 {
+#if 0
    emptr               errmgr;
 
    errmgr = (emptr) cinfo->err;
 /*   cinfo->err->output_message(cinfo);*/
 /*   siglongjmp(errmgr->setjmp_buffer, 1);*/
-   return;
-   msg_level = 0;
+#endif
 }
 
 char
@@ -347,15 +347,12 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
 void
 formats(ImlibLoader * l)
 {
-   char               *list_formats[] = { "jpg", "jpeg", "jfif", "jfi" };
+   static const char  *const list_formats[] = { "jpg", "jpeg", "jfif", "jfi" };
+   int                 i;
 
-   {
-      int                 i;
+   l->num_formats = sizeof(list_formats) / sizeof(char *);
+   l->formats = malloc(sizeof(char *) * l->num_formats);
 
-      l->num_formats = (sizeof(list_formats) / sizeof(char *));
-      l->formats = malloc(sizeof(char *) * l->num_formats);
-
-      for (i = 0; i < l->num_formats; i++)
-         l->formats[i] = strdup(list_formats[i]);
-   }
+   for (i = 0; i < l->num_formats; i++)
+      l->formats[i] = strdup(list_formats[i]);
 }

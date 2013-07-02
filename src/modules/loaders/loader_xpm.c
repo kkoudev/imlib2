@@ -102,7 +102,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
    char               *line, s[256], tok[256], col[256];
    int                 lsz = 256;
    struct _cmap {
-      unsigned char       str[6];
+      char                str[6];
       unsigned char       transp;
       short               r, g, b;
    }                  *cmap;
@@ -649,7 +649,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
              lsz += 256;
              line = realloc(line, lsz);
           }
-        if (((ptr) && ((ptr - im->data) >= (w * h * sizeof(DATA32)))) ||
+        if (((ptr) && ((ptr - im->data) >= (w * h * (int)sizeof(DATA32)))) ||
             ((context > 1) && (count >= pixels)))
            done = 1;
      }
@@ -668,27 +668,15 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
    return 1;
 }
 
-/* fills the ImlibLoader struct with a strign array of format file */
-/* extensions this loader can load. eg: */
-/* loader->formats = { "jpeg", "jpg"}; */
-/* giving permutations is a good idea. case sensitivity is irrelevant */
-/* your laoder CAN load more than one format if it likes - like: */
-/* loader->formats = { "gif", "png", "jpeg", "jpg"} */
-/* if it can load those formats. */
 void
 formats(ImlibLoader * l)
 {
-   /* this is the only bit you have to change... */
-   char               *list_formats[] = { "xpm" };
+   static const char  *const list_formats[] = { "xpm" };
+   int                 i;
 
-   /* don't bother changing any of this - it just reads this in and sets */
-   /* the struct values and makes copies */
-   {
-      int                 i;
+   l->num_formats = sizeof(list_formats) / sizeof(char *);
+   l->formats = malloc(sizeof(char *) * l->num_formats);
 
-      l->num_formats = (sizeof(list_formats) / sizeof(char *));
-      l->formats = malloc(sizeof(char *) * l->num_formats);
-      for (i = 0; i < l->num_formats; i++)
-         l->formats[i] = strdup(list_formats[i]);
-   }
+   for (i = 0; i < l->num_formats; i++)
+      l->formats[i] = strdup(list_formats[i]);
 }

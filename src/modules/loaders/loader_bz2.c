@@ -119,13 +119,9 @@ load(ImlibImage * im, ImlibProgressFunction progress,
 void
 formats(ImlibLoader * l)
 {
-   /* this is the only bit you have to change... */
-   char               *list_formats[] = { "bz2" };
+   static const char  *const list_formats[] = { "bz2" };
    int                 i;
 
-   /* don't bother changing any of this - it just reads this in
-    * and sets the struct values and makes copies
-    */
    l->num_formats = sizeof(list_formats) / sizeof(char *);
    l->formats = malloc(sizeof(char *) * l->num_formats);
 

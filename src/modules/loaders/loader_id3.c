@@ -257,7 +257,7 @@ get_options(lopt * opt, ImlibImage * im)
              if (!value)
                {
                   value = tok;
-                  tok = "index";
+                  tok = (char *)"index";
                }
              else
                {
@@ -297,7 +297,7 @@ get_options(lopt * opt, ImlibImage * im)
         if (htag && htag->val)
            index = htag->val;
      }
-   if (index < 0 || index > id3_tag_get_numframes(ctx->tag) ||
+   if (index > id3_tag_get_numframes(ctx->tag) ||
        (index == 0 && id3_tag_get_numframes(ctx->tag) < 1))
      {
         if (index)
@@ -386,7 +386,7 @@ get_loader(lopt * opt, ImlibLoader ** loader)
    return 1;
 }
 
-static char        *id3_pic_types[] = {
+static const char  *const id3_pic_types[] = {
    /* $00 */ "Other",
    /* $01 */ "32x32 pixels file icon",
    /* $02 */ "Other file icon",
@@ -413,7 +413,7 @@ static char        *id3_pic_types[] = {
 #define NUM_OF_ID3_PIC_TYPES \
     (sizeof(id3_pic_types) / sizeof(id3_pic_types[0]))
 
-static char        *id3_text_encodings[] = {
+static const char  *const id3_text_encodings[] = {
    /* $00 */ "ISO-8859-1",
    /* $01 */ "UTF-16 encoded Unicode with BOM",
    /* $02 */ "UTF-16BE encoded Unicode without BOM",
@@ -428,7 +428,7 @@ write_tags(ImlibImage * im, lopt * opt)
 {
    struct id3_frame   *frame = id3_tag_get_frame(opt->ctx->tag, opt->index - 1);
    union id3_field    *field;
-   int                 num_data;
+   unsigned int        num_data;
    char               *data;
 
    if ((field = id3_frame_field(frame, 1)) &&
@@ -448,16 +448,20 @@ write_tags(ImlibImage * im, lopt * opt)
         memcpy(dup, data, length);
         __imlib_AttachTag(im, "id3-description", 0, dup, destructor_data);
      }
-   if (field = id3_frame_field(frame, 0))
-      __imlib_AttachTag(im, "id3-description-text-encoding",
-                        (num_data = (int)id3_field_gettextencoding(field)),
-                        num_data < NUM_OF_ID3_TEXT_ENCODINGS ?
-                        id3_text_encodings[num_data] : NULL, NULL);
-   if (field = id3_frame_field(frame, 2))
-      __imlib_AttachTag(im, "id3-picture-type",
-                        (num_data = id3_field_getint(field)),
-                        num_data < NUM_OF_ID3_PIC_TYPES ?
-                        id3_pic_types[num_data] : NULL, NULL);
+   if ((field = id3_frame_field(frame, 0)))
+     {
+        num_data = id3_field_gettextencoding(field);
+        __imlib_AttachTag(im, "id3-description-text-encoding", num_data,
+                          num_data < NUM_OF_ID3_TEXT_ENCODINGS ?
+                          (char *)id3_text_encodings[num_data] : NULL, NULL);
+     }
+   if ((field = id3_frame_field(frame, 2)))
+     {
+        num_data = id3_field_getint(field);
+        __imlib_AttachTag(im, "id3-picture-type", num_data,
+                          num_data < NUM_OF_ID3_PIC_TYPES ?
+                          (char *)id3_pic_types[num_data] : NULL, NULL);
+     }
    __imlib_AttachTag(im, "count", id3_tag_get_numframes(opt->ctx->tag),
                      NULL, NULL);
    if (opt->cache_level)
@@ -596,15 +600,11 @@ load(ImlibImage * im, ImlibProgressFunction progress,
 void
 formats(ImlibLoader * l)
 {
-   /* this is the only bit you have to change... */
-   char               *list_formats[] = { "mp3" };
+   static const char  *const list_formats[] = { "mp3" };
    int                 i;
 
-   /* don't bother changing any of this - it just reads this in
-    * and sets the struct values and makes copies
-    */
    l->num_formats = sizeof(list_formats) / sizeof(char *);
-   l->formats = (char **)malloc(sizeof(char *) * l->num_formats);
+   l->formats = malloc(sizeof(char *) * l->num_formats);
 
    for (i = 0; i < l->num_formats; i++)
       l->formats[i] = strdup(list_formats[i]);

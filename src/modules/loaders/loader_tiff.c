@@ -54,9 +54,9 @@ static void
 raster(TIFFRGBAImage_Extra * img, uint32 * rast,
        uint32 x, uint32 y, uint32 w, uint32 h)
 {
-   int                 image_width, image_height;
+   uint32              image_width, image_height;
    uint32             *pixel, pixel_value;
-   int                 i, j, k;
+   uint32              i, j, k;
    DATA32             *buffer_pixel, *buffer = img->image->data;
    int                 alpha_premult;
    int                 a, r, g, b;
@@ -408,7 +408,7 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
    uint8              *buf = NULL;
    DATA32              pixel, *data = im->data;
    double              alpha_factor;
-   uint32              x, y;
+   int                 x, y;
    uint8               r, g, b, a = 0;
    int                 has_alpha = IMAGE_HAS_ALPHA(im);
    int                 i = 0, pl = 0;
@@ -579,27 +579,15 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
    return 1;
 }
 
-/* fills the ImlibLoader struct with a strign array of format file */
-/* extensions this loader can load. eg: */
-/* loader->formats = { "jpeg", "jpg"}; */
-/* giving permutations is a good idea. case sensitivity is irrelevant */
-/* your laoder CAN load more than one format if it likes - like: */
-/* loader->formats = { "gif", "png", "jpeg", "jpg"} */
-/* if it can load those formats. */
 void
 formats(ImlibLoader * l)
 {
-   /* this is the only bit you have to change... */
-   char               *list_formats[] = { "tiff", "tif" };
+   static const char  *const list_formats[] = { "tiff", "tif" };
+   int                 i;
 
-   /* don't bother changing any of this - it just reads this in and sets */
-   /* the struct values and makes copies */
-   {
-      int                 i;
+   l->num_formats = sizeof(list_formats) / sizeof(char *);
+   l->formats = malloc(sizeof(char *) * l->num_formats);
 
-      l->num_formats = (sizeof(list_formats) / sizeof(char *));
-      l->formats = malloc(sizeof(char *) * l->num_formats);
-      for (i = 0; i < l->num_formats; i++)
-         l->formats[i] = strdup(list_formats[i]);
-   }
+   for (i = 0; i < l->num_formats; i++)
+      l->formats[i] = strdup(list_formats[i]);
 }

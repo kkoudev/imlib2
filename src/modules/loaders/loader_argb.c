@@ -176,14 +176,12 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
 void
 formats(ImlibLoader * l)
 {
-   char               *list_formats[] = { "argb", "arg" };
+   static const char  *const list_formats[] = { "argb", "arg" };
+   int                 i;
 
-   {
-      int                 i;
+   l->num_formats = sizeof(list_formats) / sizeof(char *);
+   l->formats = malloc(sizeof(char *) * l->num_formats);
 
-      l->num_formats = (sizeof(list_formats) / sizeof(char *));
-      l->formats = malloc(sizeof(char *) * l->num_formats);
-      for (i = 0; i < l->num_formats; i++)
-         l->formats[i] = strdup(list_formats[i]);
-   }
+   for (i = 0; i < l->num_formats; i++)
+      l->formats[i] = strdup(list_formats[i]);
 }

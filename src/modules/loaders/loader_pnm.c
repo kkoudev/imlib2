@@ -1,7 +1,7 @@
 #include "loader_common.h"
 #include <ctype.h>
 
-int
+static int
 do_progress(ImlibImage * im, ImlibProgressFunction progress,
             char progress_granularity, char *pper, int *py, int y)
 {
@@ -632,15 +632,13 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
 void
 formats(ImlibLoader * l)
 {
-   char               *list_formats[] = { "pnm", "ppm", "pgm", "pbm", "pam" };
+   static const char  *const list_formats[] =
+      { "pnm", "ppm", "pgm", "pbm", "pam" };
+   int                 i;
 
-   {
-      int                 i;
+   l->num_formats = sizeof(list_formats) / sizeof(char *);
+   l->formats = malloc(sizeof(char *) * l->num_formats);
 
-      l->num_formats = (sizeof(list_formats) / sizeof(char *));
-      l->formats = malloc(sizeof(char *) * l->num_formats);
-
-      for (i = 0; i < l->num_formats; i++)
-         l->formats[i] = strdup(list_formats[i]);
-   }
+   for (i = 0; i < l->num_formats; i++)
+      l->formats[i] = strdup(list_formats[i]);
 }

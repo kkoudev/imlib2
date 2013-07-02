@@ -115,7 +115,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
    unsigned char       byte = 0, g, b, r;
    unsigned long       i, w, h;
    unsigned short      x, y;
-   DATA32             *ptr, *data_end;
+   DATA32             *ptr;
    unsigned char      *buffer_ptr, *buffer, *buffer_end;
    RGBQUAD             rgbQuads[256];
    unsigned long       rmask = 0xff, gmask = 0xff, bmask = 0xff;
@@ -303,7 +303,6 @@ load(ImlibImage * im, ImlibProgressFunction progress,
         buffer_ptr = buffer;
         buffer_end = buffer + imgsize;
 
-        data_end = im->data + w * h;
         ptr = im->data + ((h - 1) * w);
 
         if (bitcount == 1)
@@ -329,16 +328,16 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                        if (progress)
                          {
                             char                per;
-                            int                 l;
+                            int                 ll;
 
                             per = (char)((100 * y) / im->h);
                             if (((per - pper) >= progress_granularity) ||
                                 (y == (im->h - 1)))
                               {
-                                 l = y - pl;
+                                 ll = y - pl;
                                  if (!progress
                                      (im, per, 0, im->h - y - 1, im->w,
-                                      im->h - y + l))
+                                      im->h - y + ll))
                                    {
                                       free(buffer);
                                       return 2;
@@ -490,16 +489,16 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                        if (progress)
                          {
                             char                per;
-                            int                 l;
+                            int                 ll;
 
                             per = (char)((100 * y) / im->h);
                             if (((per - pper) >= progress_granularity) ||
                                 (y == (im->h - 1)))
                               {
-                                 l = y - pl;
+                                 ll = y - pl;
                                  if (!progress
                                      (im, per, 0, im->h - y - 1, im->w,
-                                      im->h - y + l))
+                                      im->h - y + ll))
                                    {
                                       free(buffer);
                                       return 2;
@@ -532,16 +531,16 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                        if (progress)
                          {
                             char                per;
-                            int                 l;
+                            int                 ll;
 
                             per = (char)((100 * y) / im->h);
                             if (((per - pper) >= progress_granularity) ||
                                 (y == (im->h - 1)))
                               {
-                                 l = y - pl;
+                                 ll = y - pl;
                                  if (!progress
                                      (im, per, 0, im->h - y - 1, im->w,
-                                      im->h - y + l))
+                                      im->h - y + ll))
                                    {
                                       free(buffer);
                                       return 2;
@@ -634,16 +633,16 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                   if (progress)
                     {
                        char                per;
-                       int                 l;
+                       int                 ll;
 
                        per = (char)((100 * y) / im->h);
                        if (((per - pper) >= progress_granularity) ||
                            (y == (im->h - 1)))
                          {
-                            l = y - pl;
+                            ll = y - pl;
                             if (!progress
                                 (im, per, 0, im->h - y - 1, im->w,
-                                 im->h - y + l))
+                                 im->h - y + ll))
                               {
                                  free(buffer);
                                  return 2;
@@ -671,16 +670,16 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                        if (progress)
                          {
                             char                per;
-                            int                 l;
+                            int                 ll;
 
                             per = (char)((100 * y) / im->h);
                             if (((per - pper) >= progress_granularity) ||
                                 (y == (im->h - 1)))
                               {
-                                 l = y - pl;
+                                 ll = y - pl;
                                  if (!progress
                                      (im, per, 0, im->h - y - 1, im->w,
-                                      im->h - y + l))
+                                      im->h - y + ll))
                                    {
                                       free(buffer);
                                       return 2;
@@ -726,16 +725,16 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                   if (progress)
                     {
                        char                per;
-                       int                 l;
+                       int                 ll;
 
                        per = (char)((100 * y) / im->h);
                        if (((per - pper) >= progress_granularity) ||
                            (y == (im->h - 1)))
                          {
-                            l = y - pl;
+                            ll = y - pl;
                             if (!progress
                                 (im, per, 0, im->h - y - 1, im->w,
-                                 im->h - y + l))
+                                 im->h - y + ll))
                               {
                                  free(buffer);
                                  return 2;
@@ -766,16 +765,16 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                   if (progress)
                     {
                        char                per;
-                       int                 l;
+                       int                 ll;
 
                        per = (char)((100 * y) / im->h);
                        if (((per - pper) >= progress_granularity) ||
                            (y == (im->h - 1)))
                          {
-                            l = y - pl;
+                            ll = y - pl;
                             if (!progress
                                 (im, per, 0, im->h - y - 1, im->w,
-                                 im->h - y + l))
+                                 im->h - y + ll))
                               {
                                  free(buffer);
                                  return 2;
@@ -820,16 +819,16 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                   if (progress)
                     {
                        char                per;
-                       int                 l;
+                       int                 ll;
 
                        per = (char)((100 * y) / im->h);
                        if (((per - pper) >= progress_granularity) ||
                            (y == (im->h - 1)))
                          {
-                            l = y - pl;
+                            ll = y - pl;
                             if (!progress
                                 (im, per, 0, im->h - y - 1, im->w,
-                                 im->h - y + l))
+                                 im->h - y + ll))
                               {
                                  free(buffer);
                                  return 2;
@@ -851,7 +850,7 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
 {
    FILE               *f;
    Imlib_Color         pixel_color;
-   unsigned long       i, j, pad;
+   int                 i, j, pad;
 
    if (!im->data)
       return 0;
@@ -902,14 +901,12 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
 void
 formats(ImlibLoader * l)
 {
-   char               *list_formats[] = { "bmp" };
+   static const char  *const list_formats[] = { "bmp" };
+   int                 i;
 
-   {
-      int                 i;
+   l->num_formats = sizeof(list_formats) / sizeof(char *);
+   l->formats = malloc(sizeof(char *) * l->num_formats);
 
-      l->num_formats = (sizeof(list_formats) / sizeof(char *));
-      l->formats = malloc(sizeof(char *) * l->num_formats);
-      for (i = 0; i < l->num_formats; i++)
-         l->formats[i] = strdup(list_formats[i]);
-   }
+   for (i = 0; i < l->num_formats; i++)
+      l->formats[i] = strdup(list_formats[i]);
 }

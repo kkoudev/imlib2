@@ -129,7 +129,7 @@ loadchunks(char *name, ILBM * ilbm, int full)
                           break;        /* Out of memory. */
 
                        s = fread(c->data, 1, c->size, f);
-                       if (s != c->size)
+                       if (s != (size_t) c->size)
                           break;        /* Error or short file. */
 
                        seek = 0;
@@ -549,6 +549,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
    ok = 0;
    cancel = 0;
    plane[0] = NULL;
+   gran = nexty = 0;
 
    im->data = malloc(im->w * im->h * sizeof(DATA32));
    n = ilbm.depth;
@@ -637,11 +638,12 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
 void
 formats(ImlibLoader * l)
 {
-   char               *list_formats[] = { "iff", "ilbm", "lbm" };
+   static const char  *const list_formats[] = { "iff", "ilbm", "lbm" };
    int                 i;
 
-   l->num_formats = sizeof(list_formats) / sizeof(list_formats[0]);
-   l->formats = malloc(l->num_formats * sizeof(list_formats[0]));
+   l->num_formats = sizeof(list_formats) / sizeof(char *);
+   l->formats = malloc(sizeof(char *) * l->num_formats);
+
    for (i = 0; i < l->num_formats; i++)
       l->formats[i] = strdup(list_formats[i]);
 }
