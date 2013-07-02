@@ -36,16 +36,20 @@ ImlibFont          *
 imlib_font_load_joined(const char *fontname)
 {
    int                 j, k, size, faceidx;
-   char               *name = NULL, *file = NULL, *tmp = NULL;
+   char               *name, *file = NULL, *tmp;
    ImlibFont          *fn;
 
    /* split font name (in format name[:faceidx]/size) */
-   for (j = strlen(fontname) - 1; (j >= 0) && (fontname[j] != '/'); j--);
+   for (j = strlen(fontname) - 1; (j >= 0) && (fontname[j] != '/'); j--)
+      ;
+
    /* no "/" in font after the first char */
    if (j <= 0)
       return NULL;
+
    /* get size */
    size = atoi(&(fontname[j + 1]));
+
    /* split font faceidx index (in format name[:faceidx]/size) */
    faceidx = 0;
    for (k = j - 1; k > 0; k--)
@@ -60,17 +64,17 @@ imlib_font_load_joined(const char *fontname)
         j = k;
         break;
      }
+
    /* split name in front off */
-   name = malloc((j + 1) * sizeof(char));
+   name = malloc(j + 1);
    memcpy(name, fontname, j);
    name[j] = 0;
+
    /* find file if it exists */
    tmp = malloc(strlen(name) + 4 + 1);
    if (!tmp)
-     {
-        free(name);
-        return NULL;
-     }
+      goto done;
+
    sprintf(tmp, "%s.ttf", name);
    if (__imlib_FileIsFile(tmp))
       file = strdup(tmp);
@@ -87,41 +91,41 @@ imlib_font_load_joined(const char *fontname)
           }
      }
    free(tmp);
+
    if (!file)
      {
         for (j = 0; (j < fpath_num) && (!file); j++)
           {
              tmp = malloc(strlen(fpath[j]) + 1 + strlen(name) + 4 + 1);
              if (!tmp)
-               {
-                  free(name);
-                  return NULL;
-               }
+                goto done;
+
+             sprintf(tmp, "%s/%s.ttf", fpath[j], name);
+             if (__imlib_FileIsFile(tmp))
+                file = strdup(tmp);
              else
                {
-                  sprintf(tmp, "%s/%s.ttf", fpath[j], name);
+                  sprintf(tmp, "%s/%s.TTF", fpath[j], name);
                   if (__imlib_FileIsFile(tmp))
                      file = strdup(tmp);
                   else
                     {
-                       sprintf(tmp, "%s/%s.TTF", fpath[j], name);
+                       sprintf(tmp, "%s/%s", fpath[j], name);
                        if (__imlib_FileIsFile(tmp))
                           file = strdup(tmp);
-                       else
-                         {
-                            sprintf(tmp, "%s/%s", fpath[j], name);
-                            if (__imlib_FileIsFile(tmp))
-                               file = strdup(tmp);
-                         }
                     }
                }
              free(tmp);
           }
      }
+
+ done:
    free(name);
+
    /* didn't find a file? abort */
    if (!file)
       return NULL;
+
    fn = imlib_font_load(file, faceidx, size);
    free(file);
    return fn;
