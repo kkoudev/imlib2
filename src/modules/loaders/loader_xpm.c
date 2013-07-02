@@ -173,174 +173,129 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                 comment = 0;
           }
 
-        if (!comment)
+        if (comment)
+           continue;
+
+        if ((!quote) && (c == '"'))
           {
-             if ((!quote) && (c == '"'))
+             quote = 1;
+             i = 0;
+          }
+        else if ((quote) && (c == '"'))
+          {
+             line[i] = 0;
+             quote = 0;
+             if (context == 0)
                {
-                  quote = 1;
-                  i = 0;
-               }
-             else if ((quote) && (c == '"'))
-               {
-                  line[i] = 0;
-                  quote = 0;
-                  if (context == 0)
+                  /* Header */
+                  sscanf(line, "%i %i %i %i", &w, &h, &ncolors, &cpp);
+                  if ((ncolors > 32766) || (ncolors < 1))
                     {
-                       /* Header */
-                       sscanf(line, "%i %i %i %i", &w, &h, &ncolors, &cpp);
-                       if ((ncolors > 32766) || (ncolors < 1))
-                         {
-                            fprintf(stderr,
-                                    "IMLIB ERROR: XPM files with colors > 32766 or < 1 not supported\n");
-                            free(line);
-                            fclose(f);
-                            xpm_parse_done();
-                            return 0;
-                         }
-                       if ((cpp > 5) || (cpp < 1))
-                         {
-                            fprintf(stderr,
-                                    "IMLIB ERROR: XPM files with characters per pixel > 5 or < 1not supported\n");
-                            free(line);
-                            fclose(f);
-                            xpm_parse_done();
-                            return 0;
-                         }
-                       if (!IMAGE_DIMENSIONS_OK(w, h))
-                         {
-                            fprintf(stderr,
-                                    "IMLIB ERROR: Invalid image dimension: %dx%d\n",
-                                    w, h);
-                            free(line);
-                            fclose(f);
-                            xpm_parse_done();
-                            return 0;
-                         }
-                       im->w = w;
-                       im->h = h;
-                       if (!im->format)
-                          im->format = strdup("xpm");
+                       fprintf(stderr,
+                               "IMLIB ERROR: XPM files with colors > 32766 or < 1 not supported\n");
+                       free(line);
+                       fclose(f);
+                       xpm_parse_done();
+                       return 0;
+                    }
+                  if ((cpp > 5) || (cpp < 1))
+                    {
+                       fprintf(stderr,
+                               "IMLIB ERROR: XPM files with characters per pixel > 5 or < 1not supported\n");
+                       free(line);
+                       fclose(f);
+                       xpm_parse_done();
+                       return 0;
+                    }
+                  if (!IMAGE_DIMENSIONS_OK(w, h))
+                    {
+                       fprintf(stderr,
+                               "IMLIB ERROR: Invalid image dimension: %dx%d\n",
+                               w, h);
+                       free(line);
+                       fclose(f);
+                       xpm_parse_done();
+                       return 0;
+                    }
+                  im->w = w;
+                  im->h = h;
+                  if (!im->format)
+                     im->format = strdup("xpm");
 
-                       cmap = malloc(sizeof(struct _cmap) * ncolors);
+                  cmap = malloc(sizeof(struct _cmap) * ncolors);
 
-                       if (!cmap)
-                         {
-                            free(line);
-                            fclose(f);
-                            xpm_parse_done();
-                            return 0;
-                         }
+                  if (!cmap)
+                    {
+                       free(line);
+                       fclose(f);
+                       xpm_parse_done();
+                       return 0;
+                    }
 
-                       per_inc = 100.0 / (((float)w) * h);
+                  per_inc = 100.0 / (((float)w) * h);
 
-                       if (im->loader || immediate_load || progress)
-                         {
-                            im->data =
-                               (DATA32 *) malloc(sizeof(DATA32) * im->w *
-                                                 im->h);
-                            if (!im->data)
-                              {
-                                 free(cmap);
-                                 free(line);
-                                 fclose(f);
-                                 xpm_parse_done();
-                                 return 0;
-                              }
-                            ptr = im->data;
-                            pixels = w * h;
-                            end = ptr + (pixels);
-                         }
-                       else
+                  if (im->loader || immediate_load || progress)
+                    {
+                       im->data =
+                          (DATA32 *) malloc(sizeof(DATA32) * im->w * im->h);
+                       if (!im->data)
                          {
                             free(cmap);
                             free(line);
                             fclose(f);
                             xpm_parse_done();
-                            return 1;
+                            return 0;
                          }
-
-                       j = 0;
-                       context++;
+                       ptr = im->data;
+                       pixels = w * h;
+                       end = ptr + (pixels);
                     }
-                  else if (context == 1)
+                  else
                     {
-                       /* Color Table */
-                       if (j < ncolors)
-                         {
-                            int                 slen;
-                            int                 hascolor, iscolor;
+                       free(cmap);
+                       free(line);
+                       fclose(f);
+                       xpm_parse_done();
+                       return 1;
+                    }
 
-                            iscolor = 0;
-                            hascolor = 0;
-                            tok[0] = 0;
-                            col[0] = 0;
-                            s[0] = 0;
-                            len = strlen(line);
-                            strncpy(cmap[j].str, line, cpp);
-                            cmap[j].str[cpp] = 0;
-                            cmap[j].r = -1;
-                            cmap[j].transp = 0;
-                            for (k = cpp; k < len; k++)
+                  j = 0;
+                  context++;
+               }
+             else if (context == 1)
+               {
+                  /* Color Table */
+                  if (j < ncolors)
+                    {
+                       int                 slen;
+                       int                 hascolor, iscolor;
+
+                       iscolor = 0;
+                       hascolor = 0;
+                       tok[0] = 0;
+                       col[0] = 0;
+                       s[0] = 0;
+                       len = strlen(line);
+                       strncpy(cmap[j].str, line, cpp);
+                       cmap[j].str[cpp] = 0;
+                       cmap[j].r = -1;
+                       cmap[j].transp = 0;
+                       for (k = cpp; k < len; k++)
+                         {
+                            if (line[k] != ' ')
                               {
-                                 if (line[k] != ' ')
+                                 s[0] = 0;
+                                 sscanf(&line[k], "%255s", s);
+                                 slen = strlen(s);
+                                 k += slen;
+                                 if (!strcmp(s, "c"))
+                                    iscolor = 1;
+                                 if ((!strcmp(s, "m")) || (!strcmp(s, "s"))
+                                     || (!strcmp(s, "g4"))
+                                     || (!strcmp(s, "g"))
+                                     || (!strcmp(s, "c")) || (k >= len))
                                    {
-                                      s[0] = 0;
-                                      sscanf(&line[k], "%255s", s);
-                                      slen = strlen(s);
-                                      k += slen;
-                                      if (!strcmp(s, "c"))
-                                         iscolor = 1;
-                                      if ((!strcmp(s, "m")) || (!strcmp(s, "s"))
-                                          || (!strcmp(s, "g4"))
-                                          || (!strcmp(s, "g"))
-                                          || (!strcmp(s, "c")) || (k >= len))
-                                        {
-                                           if (k >= len)
-                                             {
-                                                if (col[0])
-                                                  {
-                                                     if (strlen(col) <
-                                                         (sizeof(col) - 2))
-                                                        strcat(col, " ");
-                                                     else
-                                                        done = 1;
-                                                  }
-                                                if (strlen(col) + strlen(s) <
-                                                    (sizeof(col) - 1))
-                                                   strcat(col, s);
-                                             }
-                                           if (col[0])
-                                             {
-                                                if (!strcasecmp(col, "none"))
-                                                  {
-                                                     transp = 1;
-                                                     cmap[j].transp = 1;
-                                                  }
-                                                else
-                                                  {
-                                                     if ((((cmap[j].r < 0) ||
-                                                           (!strcmp(tok, "c")))
-                                                          && (!hascolor)))
-                                                       {
-                                                          r = 0;
-                                                          g = 0;
-                                                          b = 0;
-                                                          xpm_parse_color(col,
-                                                                          &r,
-                                                                          &g,
-                                                                          &b);
-                                                          cmap[j].r = r;
-                                                          cmap[j].g = g;
-                                                          cmap[j].b = b;
-                                                          if (iscolor)
-                                                             hascolor = 1;
-                                                       }
-                                                  }
-                                             }
-                                           strcpy(tok, s);
-                                           col[0] = 0;
-                                        }
-                                      else
+                                      if (k >= len)
                                         {
                                            if (col[0])
                                              {
@@ -354,41 +309,83 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                                                (sizeof(col) - 1))
                                               strcat(col, s);
                                         }
+                                      if (col[0])
+                                        {
+                                           if (!strcasecmp(col, "none"))
+                                             {
+                                                transp = 1;
+                                                cmap[j].transp = 1;
+                                             }
+                                           else
+                                             {
+                                                if ((((cmap[j].r < 0) ||
+                                                      (!strcmp(tok, "c")))
+                                                     && (!hascolor)))
+                                                  {
+                                                     r = 0;
+                                                     g = 0;
+                                                     b = 0;
+                                                     xpm_parse_color(col, &r,
+                                                                     &g, &b);
+                                                     cmap[j].r = r;
+                                                     cmap[j].g = g;
+                                                     cmap[j].b = b;
+                                                     if (iscolor)
+                                                        hascolor = 1;
+                                                  }
+                                             }
+                                        }
+                                      strcpy(tok, s);
+                                      col[0] = 0;
+                                   }
+                                 else
+                                   {
+                                      if (col[0])
+                                        {
+                                           if (strlen(col) < (sizeof(col) - 2))
+                                              strcat(col, " ");
+                                           else
+                                              done = 1;
+                                        }
+                                      if (strlen(col) + strlen(s) <
+                                          (sizeof(col) - 1))
+                                         strcat(col, s);
                                    }
                               }
                          }
-                       j++;
-                       if (j >= ncolors)
-                         {
-                            if (cpp == 1)
-                               for (i = 0; i < ncolors; i++)
-                                  lookup[(int)cmap[i].str[0] - 32][0] = i;
-                            if (cpp == 2)
-                               for (i = 0; i < ncolors; i++)
-                                  lookup[(int)cmap[i].str[0] -
-                                         32][(int)cmap[i].str[1] - 32] = i;
-                            context++;
-                         }
+                    }
+                  j++;
+                  if (j >= ncolors)
+                    {
+                       if (cpp == 1)
+                          for (i = 0; i < ncolors; i++)
+                             lookup[(int)cmap[i].str[0] - 32][0] = i;
+                       if (cpp == 2)
+                          for (i = 0; i < ncolors; i++)
+                             lookup[(int)cmap[i].str[0] -
+                                    32][(int)cmap[i].str[1] - 32] = i;
+                       context++;
+                    }
 
-                       if (transp >= 0)
-                         {
-                            SET_FLAG(im->flags, F_HAS_ALPHA);
-                         }
-                       else
-                         {
-                            UNSET_FLAG(im->flags, F_HAS_ALPHA);
-                         }
+                  if (transp >= 0)
+                    {
+                       SET_FLAG(im->flags, F_HAS_ALPHA);
                     }
                   else
                     {
-                       /* Image Data */
-                       i = 0;
-                       if (cpp == 0)
-                         {
-                            /* Chars per pixel = 0? well u never know */
-                         }
-                       if (cpp == 1)
-                         {
+                       UNSET_FLAG(im->flags, F_HAS_ALPHA);
+                    }
+               }
+             else
+               {
+                  /* Image Data */
+                  i = 0;
+                  if (cpp == 0)
+                    {
+                       /* Chars per pixel = 0? well u never know */
+                    }
+                  if (cpp == 1)
+                    {
 #define PIX_RGB(_r, _g, _b) (((_r) << 16) | ((_g) << 8) | (_b))
 #define PIX_ARGB(_r, _g, _b) ((0xff << 24) | PIX_RGB(_r, _g, _b))
 
@@ -396,38 +393,22 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
 #define CM1_R()     (unsigned char)cmap[lookup[col[0] - ' '][0]].r
 #define CM1_G()     (unsigned char)cmap[lookup[col[0] - ' '][0]].g
 #define CM1_B()     (unsigned char)cmap[lookup[col[0] - ' '][0]].b
-                            if (transp)
+                       if (transp)
+                         {
+                            for (i = 0;
+                                 ((i < 65536) && (ptr < end) && (line[i])); i++)
                               {
-                                 for (i = 0;
-                                      ((i < 65536) && (ptr < end) && (line[i]));
-                                      i++)
+                                 col[0] = line[i];
+                                 if (CM1_TRANS())
                                    {
-                                      col[0] = line[i];
-                                      if (CM1_TRANS())
-                                        {
-                                           r = CM1_R();
-                                           g = CM1_G();
-                                           b = CM1_B();
-                                           *ptr++ = PIX_RGB(r, g, b);
-                                           count++;
-                                        }
-                                      else
-                                        {
-                                           r = CM1_R();
-                                           g = CM1_G();
-                                           b = CM1_B();
-                                           *ptr++ = PIX_ARGB(r, g, b);
-                                           count++;
-                                        }
+                                      r = CM1_R();
+                                      g = CM1_G();
+                                      b = CM1_B();
+                                      *ptr++ = PIX_RGB(r, g, b);
+                                      count++;
                                    }
-                              }
-                            else
-                              {
-                                 for (i = 0;
-                                      ((i < 65536) && (ptr < end) && (line[i]));
-                                      i++)
+                                 else
                                    {
-                                      col[0] = line[i];
                                       r = CM1_R();
                                       g = CM1_G();
                                       b = CM1_B();
@@ -436,46 +417,43 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                                    }
                               }
                          }
-                       else if (cpp == 2)
+                       else
                          {
+                            for (i = 0;
+                                 ((i < 65536) && (ptr < end) && (line[i])); i++)
+                              {
+                                 col[0] = line[i];
+                                 r = CM1_R();
+                                 g = CM1_G();
+                                 b = CM1_B();
+                                 *ptr++ = PIX_ARGB(r, g, b);
+                                 count++;
+                              }
+                         }
+                    }
+                  else if (cpp == 2)
+                    {
 #define CM2_TRANS() cmap[lookup[col[0] - ' '][col[1] - ' ']].transp
 #define CM2_R()     (unsigned char)cmap[lookup[col[0] - ' '][col[1] - ' ']].r
 #define CM2_G()     (unsigned char)cmap[lookup[col[0] - ' '][col[1] - ' ']].g
 #define CM2_B()     (unsigned char)cmap[lookup[col[0] - ' '][col[1] - ' ']].b
-                            if (transp)
+                       if (transp)
+                         {
+                            for (i = 0;
+                                 ((i < 65536) && (ptr < end) && (line[i])); i++)
                               {
-                                 for (i = 0;
-                                      ((i < 65536) && (ptr < end) && (line[i]));
-                                      i++)
+                                 col[0] = line[i++];
+                                 col[1] = line[i];
+                                 if (CM2_TRANS())
                                    {
-                                      col[0] = line[i++];
-                                      col[1] = line[i];
-                                      if (CM2_TRANS())
-                                        {
-                                           r = CM2_R();
-                                           g = CM2_G();
-                                           b = CM2_B();
-                                           *ptr++ = PIX_RGB(r, g, b);
-                                           count++;
-                                        }
-                                      else
-                                        {
-                                           r = CM2_R();
-                                           g = CM2_G();
-                                           b = CM2_B();
-                                           *ptr++ = PIX_ARGB(r, g, b);
-                                           count++;
-                                        }
+                                      r = CM2_R();
+                                      g = CM2_G();
+                                      b = CM2_B();
+                                      *ptr++ = PIX_RGB(r, g, b);
+                                      count++;
                                    }
-                              }
-                            else
-                              {
-                                 for (i = 0;
-                                      ((i < 65536) && (ptr < end) && (line[i]));
-                                      i++)
+                                 else
                                    {
-                                      col[0] = line[i++];
-                                      col[1] = line[i];
                                       r = CM2_R();
                                       g = CM2_G();
                                       b = CM2_B();
@@ -486,95 +464,107 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                          }
                        else
                          {
+                            for (i = 0;
+                                 ((i < 65536) && (ptr < end) && (line[i])); i++)
+                              {
+                                 col[0] = line[i++];
+                                 col[1] = line[i];
+                                 r = CM2_R();
+                                 g = CM2_G();
+                                 b = CM2_B();
+                                 *ptr++ = PIX_ARGB(r, g, b);
+                                 count++;
+                              }
+                         }
+                    }
+                  else
+                    {
 #define CM0_TRANS(_j) cmap[_j].transp
 #define CM0_R(_j)     (unsigned char)cmap[_j].r
 #define CM0_G(_j)     (unsigned char)cmap[_j].g
 #define CM0_B(_j)     (unsigned char)cmap[_j].b
-                            if (transp)
+                       if (transp)
+                         {
+                            for (i = 0;
+                                 ((i < 65536) && (ptr < end) && (line[i])); i++)
                               {
-                                 for (i = 0;
-                                      ((i < 65536) && (ptr < end) && (line[i]));
-                                      i++)
+                                 for (j = 0; j < cpp; j++, i++)
                                    {
-                                      for (j = 0; j < cpp; j++, i++)
-                                        {
-                                           col[j] = line[i];
-                                        }
-                                      col[j] = 0;
-                                      i--;
-                                      for (j = 0; j < ncolors; j++)
-                                        {
-                                           if (!strcmp(col, cmap[j].str))
-                                             {
-                                                if (CM0_TRANS(j))
-                                                  {
-                                                     r = CM1_R();
-                                                     g = CM1_G();
-                                                     b = CM1_B();
-                                                     *ptr++ = PIX_RGB(r, g, b);
-                                                     count++;
-                                                  }
-                                                else
-                                                  {
-                                                     r = CM0_R(j);
-                                                     g = CM0_G(j);
-                                                     b = CM0_B(j);
-                                                     *ptr++ = PIX_ARGB(r, g, b);
-                                                     count++;
-                                                  }
-                                                j = ncolors;
-                                             }
-                                        }
+                                      col[j] = line[i];
                                    }
-                              }
-                            else
-                              {
-                                 for (i = 0;
-                                      ((i < 65536) && (ptr < end) && (line[i]));
-                                      i++)
+                                 col[j] = 0;
+                                 i--;
+                                 for (j = 0; j < ncolors; j++)
                                    {
-                                      for (j = 0; j < cpp; j++, i++)
+                                      if (!strcmp(col, cmap[j].str))
                                         {
-                                           col[j] = line[i];
-                                        }
-                                      col[j] = 0;
-                                      i--;
-                                      for (j = 0; j < ncolors; j++)
-                                        {
-                                           if (!strcmp(col, cmap[j].str))
+                                           if (CM0_TRANS(j))
+                                             {
+                                                r = CM1_R();
+                                                g = CM1_G();
+                                                b = CM1_B();
+                                                *ptr++ = PIX_RGB(r, g, b);
+                                                count++;
+                                             }
+                                           else
                                              {
                                                 r = CM0_R(j);
                                                 g = CM0_G(j);
                                                 b = CM0_B(j);
                                                 *ptr++ = PIX_ARGB(r, g, b);
                                                 count++;
-                                                j = ncolors;
                                              }
+                                           j = ncolors;
                                         }
                                    }
                               }
                          }
-                       per += per_inc;
-                       if (progress && (((int)per) != last_per)
-                           && (((int)per) % progress_granularity == 0))
+                       else
                          {
-                            last_per = (int)per;
-                            if (!(progress(im, (int)per, 0, last_y, w, i)))
+                            for (i = 0;
+                                 ((i < 65536) && (ptr < end) && (line[i])); i++)
                               {
-                                 fclose(f);
-                                 free(cmap);
-                                 free(line);
-                                 xpm_parse_done();
-                                 return 2;
+                                 for (j = 0; j < cpp; j++, i++)
+                                   {
+                                      col[j] = line[i];
+                                   }
+                                 col[j] = 0;
+                                 i--;
+                                 for (j = 0; j < ncolors; j++)
+                                   {
+                                      if (!strcmp(col, cmap[j].str))
+                                        {
+                                           r = CM0_R(j);
+                                           g = CM0_G(j);
+                                           b = CM0_B(j);
+                                           *ptr++ = PIX_ARGB(r, g, b);
+                                           count++;
+                                           j = ncolors;
+                                        }
+                                   }
                               }
-                            last_y = i;
                          }
+                    }
+                  per += per_inc;
+                  if (progress && (((int)per) != last_per)
+                      && (((int)per) % progress_granularity == 0))
+                    {
+                       last_per = (int)per;
+                       if (!(progress(im, (int)per, 0, last_y, w, i)))
+                         {
+                            fclose(f);
+                            free(cmap);
+                            free(line);
+                            xpm_parse_done();
+                            return 2;
+                         }
+                       last_y = i;
                     }
                }
           }
 
         /* Scan in line from XPM file */
-        if ((!comment) && (quote) && (c != '"'))
+        if ((quote) && (c != '"'))
           {
              if (c < 32)
                 c = 32;
