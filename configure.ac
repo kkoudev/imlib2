@@ -3,7 +3,7 @@ rm -f config.cache
 
 AC_INIT([imlib2], [1.4.5], [enlightenment-devel@lists.sourceforge.net])
 AC_CONFIG_SRCDIR(configure.ac)
-dnl#AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIR([m4])
 AC_CANONICAL_BUILD
 AC_CANONICAL_HOST
 
@@ -500,6 +500,8 @@ else
 fi
 AM_CONDITIONAL(BUILD_ID3_LOADER, test "$id3_ok" = yes)
 AC_SUBST(ID3LIBS)
+
+AC_C_WARNFLAGS()
 
 if test "x$enable_visibility_hiding" = xyes ; then
   CPPFLAGS="$CPPFLAGS -fvisibility=hidden"

@@ -1,6 +1,7 @@
 MAINTAINERCLEANFILES = Makefile.in
 AUTOMAKE_OPTIONS     = 1.4 foreign
 
+AM_CFLAGS            = $(CWARNFLAGS)
 AM_CPPFLAGS          = -I. \
                        -I$(top_srcdir) \
                        -I$(top_srcdir)/src/lib \
