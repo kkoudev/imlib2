@@ -4,7 +4,7 @@
 void
 init(struct imlib_filter_info *info)
 {
-   char               *filters[] = { "tint", "cool_text", "gradient" };
+   static const char  *const filters[] = { "tint", "cool_text", "gradient" };
    int                 i = 0;
 
    info->name = strdup("Test Filter");
@@ -16,7 +16,6 @@ init(struct imlib_filter_info *info)
    info->filters = malloc(sizeof(char *) * 3);
    for (i = 0; i < info->num_filters; i++)
       info->filters[i] = strdup(filters[i]);
-
 }
 
 void
@@ -86,10 +85,12 @@ exec(char *filter, void *im, pIFunctionParam params)
         return imge;
      }
 
+#if 0                           /* Nothing useful here */
    if (strcmp(filter, "cool_text") == 0)
      {
         return imge;
      }
+
    if (strcmp(filter, "gradient") == 0)
      {
         int                 angle = 0;
@@ -100,5 +101,7 @@ exec(char *filter, void *im, pIFunctionParam params)
           }
         return imge;
      }
+#endif
+
    return imge;
 }

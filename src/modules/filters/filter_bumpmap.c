@@ -18,7 +18,7 @@ bump_map(Imlib_Image im, pIFunctionParam par)
    int                 free_map = 0;
    DATA32             *src;
    DATA32             *mp, *mpy, *mpp;
-   double              z, z_2, x2, y2;
+   double              z, x2, y2;
    int                 w, h, i, j, w2, h2, wh2, mx, my;
 
    for (ptr = par; ptr; ptr = ptr->next)
@@ -60,7 +60,6 @@ bump_map(Imlib_Image im, pIFunctionParam par)
    z = sin(el);
 
    d /= (255 * (255 + 255 + 255));
-   z_2 = z * z;
 
    my = h2;
    for (j = h; --j >= 0;)
@@ -246,7 +245,7 @@ bump_map_point(Imlib_Image im, pIFunctionParam par)
 void
 init(struct imlib_filter_info *info)
 {
-   char               *filters[] = { "bump_map_point", "bump_map" };
+   static const char  *const filters[] = { "bump_map_point", "bump_map" };
    int                 i = (sizeof(filters) / sizeof(*filters));
 
    info->name = strdup("Bump Mapping");
@@ -258,7 +257,6 @@ init(struct imlib_filter_info *info)
    info->filters = malloc(sizeof(char *) * i);
    while (--i >= 0)
       info->filters[i] = strdup(filters[i]);
-
 }
 
 void

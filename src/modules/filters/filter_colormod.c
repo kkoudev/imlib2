@@ -226,7 +226,7 @@ colormod(Imlib_Image im, pIFunctionParam par)
 void
 init(struct imlib_filter_info *info)
 {
-   char               *filters[] = { "colormod" };
+   static const char  *const filters[] = { "colormod" };
    int                 i = (sizeof(filters) / sizeof(*filters));
 
    info->name = strdup("Tinting");
@@ -237,7 +237,6 @@ init(struct imlib_filter_info *info)
    info->filters = malloc(sizeof(char *) * i);
    while (--i >= 0)
       info->filters[i] = strdup(filters[i]);
-
 }
 
 void
