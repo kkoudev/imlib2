@@ -164,6 +164,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
         c = fgetc(f);
         if (c == EOF)
            break;
+
         if (!quote)
           {
              if ((pc == '/') && (c == '*'))
@@ -171,6 +172,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
              else if ((pc == '*') && (c == '/') && (comment))
                 comment = 0;
           }
+
         if (!comment)
           {
              if ((!quote) && (c == '"'))
@@ -387,6 +389,13 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                          }
                        if (cpp == 1)
                          {
+#define PIX_RGB(_r, _g, _b) (((_r) << 16) | ((_g) << 8) | (_b))
+#define PIX_ARGB(_r, _g, _b) ((0xff << 24) | PIX_RGB(_r, _g, _b))
+
+#define CM1_TRANS() cmap[lookup[col[0] - ' '][0]].transp
+#define CM1_R()     (unsigned char)cmap[lookup[col[0] - ' '][0]].r
+#define CM1_G()     (unsigned char)cmap[lookup[col[0] - ' '][0]].g
+#define CM1_B()     (unsigned char)cmap[lookup[col[0] - ' '][0]].b
                             if (transp)
                               {
                                  for (i = 0;
@@ -394,38 +403,20 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                                       i++)
                                    {
                                       col[0] = line[i];
-                                      if (cmap
-                                          [lookup[(int)col[0] - 32][0]].transp)
+                                      if (CM1_TRANS())
                                         {
-                                           r = (unsigned
-                                                char)cmap[lookup[(int)col[0] -
-                                                                 32][0]].r;
-                                           g = (unsigned
-                                                char)cmap[lookup[(int)col[0] -
-                                                                 32][0]].g;
-                                           b = (unsigned
-                                                char)cmap[lookup[(int)col[0] -
-                                                                 32][0]].b;
-                                           *ptr++ =
-                                              0x00ffffff & ((r << 16) | (g << 8)
-                                                            | b);
+                                           r = CM1_R();
+                                           g = CM1_G();
+                                           b = CM1_B();
+                                           *ptr++ = PIX_RGB(r, g, b);
                                            count++;
                                         }
                                       else
                                         {
-                                           r = (unsigned
-                                                char)cmap[lookup[(int)col[0] -
-                                                                 32][0]].r;
-                                           g = (unsigned
-                                                char)cmap[lookup[(int)col[0] -
-                                                                 32][0]].g;
-                                           b = (unsigned
-                                                char)cmap[lookup[(int)col[0] -
-                                                                 32][0]].b;
-                                           *ptr++ =
-                                              (0xff << 24) | (r << 16) | (g <<
-                                                                          8) |
-                                              b;
+                                           r = CM1_R();
+                                           g = CM1_G();
+                                           b = CM1_B();
+                                           *ptr++ = PIX_ARGB(r, g, b);
                                            count++;
                                         }
                                    }
@@ -437,24 +428,20 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                                       i++)
                                    {
                                       col[0] = line[i];
-                                      r = (unsigned
-                                           char)cmap[lookup[(int)col[0] -
-                                                            32][0]].r;
-                                      g = (unsigned
-                                           char)cmap[lookup[(int)col[0] -
-                                                            32][0]].g;
-                                      b = (unsigned
-                                           char)cmap[lookup[(int)col[0] -
-                                                            32][0]].b;
-                                      *ptr++ =
-                                         (0xff << 24) | (r << 16) | (g << 8) |
-                                         b;
+                                      r = CM1_R();
+                                      g = CM1_G();
+                                      b = CM1_B();
+                                      *ptr++ = PIX_ARGB(r, g, b);
                                       count++;
                                    }
                               }
                          }
                        else if (cpp == 2)
                          {
+#define CM2_TRANS() cmap[lookup[col[0] - ' '][col[1] - ' ']].transp
+#define CM2_R()     (unsigned char)cmap[lookup[col[0] - ' '][col[1] - ' ']].r
+#define CM2_G()     (unsigned char)cmap[lookup[col[0] - ' '][col[1] - ' ']].g
+#define CM2_B()     (unsigned char)cmap[lookup[col[0] - ' '][col[1] - ' ']].b
                             if (transp)
                               {
                                  for (i = 0;
@@ -463,45 +450,20 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                                    {
                                       col[0] = line[i++];
                                       col[1] = line[i];
-                                      if (cmap
-                                          [lookup[(int)col[0] - 32]
-                                           [(int)col[1] - 32]].transp)
+                                      if (CM2_TRANS())
                                         {
-                                           r = (unsigned
-                                                char)cmap[lookup[(int)col[0] -
-                                                                 32][(int)col[1]
-                                                                     - 32]].r;
-                                           g = (unsigned
-                                                char)cmap[lookup[(int)col[0] -
-                                                                 32][(int)col[1]
-                                                                     - 32]].g;
-                                           b = (unsigned
-                                                char)cmap[lookup[(int)col[0] -
-                                                                 32][(int)col[1]
-                                                                     - 32]].b;
-                                           *ptr++ =
-                                              0x00ffffff & ((r << 16) | (g << 8)
-                                                            | b);
+                                           r = CM2_R();
+                                           g = CM2_G();
+                                           b = CM2_B();
+                                           *ptr++ = PIX_RGB(r, g, b);
                                            count++;
                                         }
                                       else
                                         {
-                                           r = (unsigned
-                                                char)cmap[lookup[(int)col[0] -
-                                                                 32][(int)col[1]
-                                                                     - 32]].r;
-                                           g = (unsigned
-                                                char)cmap[lookup[(int)col[0] -
-                                                                 32][(int)col[1]
-                                                                     - 32]].g;
-                                           b = (unsigned
-                                                char)cmap[lookup[(int)col[0] -
-                                                                 32][(int)col[1]
-                                                                     - 32]].b;
-                                           *ptr++ =
-                                              (0xff << 24) | (r << 16) | (g <<
-                                                                          8) |
-                                              b;
+                                           r = CM2_R();
+                                           g = CM2_G();
+                                           b = CM2_B();
+                                           *ptr++ = PIX_ARGB(r, g, b);
                                            count++;
                                         }
                                    }
@@ -514,27 +476,20 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                                    {
                                       col[0] = line[i++];
                                       col[1] = line[i];
-                                      r = (unsigned
-                                           char)cmap[lookup[(int)col[0] -
-                                                            32][(int)col[1] -
-                                                                32]].r;
-                                      g = (unsigned
-                                           char)cmap[lookup[(int)col[0] -
-                                                            32][(int)col[1] -
-                                                                32]].g;
-                                      b = (unsigned
-                                           char)cmap[lookup[(int)col[0] -
-                                                            32][(int)col[1] -
-                                                                32]].b;
-                                      *ptr++ =
-                                         (0xff << 24) | (r << 16) | (g << 8) |
-                                         b;
+                                      r = CM2_R();
+                                      g = CM2_G();
+                                      b = CM2_B();
+                                      *ptr++ = PIX_ARGB(r, g, b);
                                       count++;
                                    }
                               }
                          }
                        else
                          {
+#define CM0_TRANS(_j) cmap[_j].transp
+#define CM0_R(_j)     (unsigned char)cmap[_j].r
+#define CM0_G(_j)     (unsigned char)cmap[_j].g
+#define CM0_B(_j)     (unsigned char)cmap[_j].b
                             if (transp)
                               {
                                  for (i = 0;
@@ -551,43 +506,20 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                                         {
                                            if (!strcmp(col, cmap[j].str))
                                              {
-                                                if (cmap[j].transp)
+                                                if (CM0_TRANS(j))
                                                   {
-                                                     r = (unsigned
-                                                          char)cmap[lookup[(int)
-                                                                           col
-                                                                           [0] -
-                                                                           32]
-                                                                    [0]].r;
-                                                     g = (unsigned
-                                                          char)cmap[lookup[(int)
-                                                                           col
-                                                                           [0] -
-                                                                           32]
-                                                                    [0]].g;
-                                                     b = (unsigned
-                                                          char)cmap[lookup[(int)
-                                                                           col
-                                                                           [0] -
-                                                                           32]
-                                                                    [0]].b;
-                                                     *ptr++ =
-                                                        0x00ffffff & ((r << 16)
-                                                                      | (g << 8)
-                                                                      | b);
+                                                     r = CM1_R();
+                                                     g = CM1_G();
+                                                     b = CM1_B();
+                                                     *ptr++ = PIX_RGB(r, g, b);
                                                      count++;
                                                   }
                                                 else
                                                   {
-                                                     r = (unsigned char)
-                                                        cmap[j].r;
-                                                     g = (unsigned char)
-                                                        cmap[j].g;
-                                                     b = (unsigned char)
-                                                        cmap[j].b;
-                                                     *ptr++ =
-                                                        (0xff << 24) | (r << 16)
-                                                        | (g << 8) | b;
+                                                     r = CM0_R(j);
+                                                     g = CM0_G(j);
+                                                     b = CM0_B(j);
+                                                     *ptr++ = PIX_ARGB(r, g, b);
                                                      count++;
                                                   }
                                                 j = ncolors;
@@ -611,12 +543,10 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                                         {
                                            if (!strcmp(col, cmap[j].str))
                                              {
-                                                r = (unsigned char)cmap[j].r;
-                                                g = (unsigned char)cmap[j].g;
-                                                b = (unsigned char)cmap[j].b;
-                                                *ptr++ =
-                                                   (0xff << 24) | (r << 16) |
-                                                   (g << 8) | b;
+                                                r = CM0_R(j);
+                                                g = CM0_G(j);
+                                                b = CM0_B(j);
+                                                *ptr++ = PIX_ARGB(r, g, b);
                                                 count++;
                                                 j = ncolors;
                                              }
@@ -642,6 +572,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                     }
                }
           }
+
         /* Scan in line from XPM file */
         if ((!comment) && (quote) && (c != '"'))
           {
@@ -666,11 +597,13 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                   line[i++] = c;
                }
           }
+
         if (i >= lsz)
           {
              lsz += 256;
              line = realloc(line, lsz);
           }
+
         if (((ptr) && ((ptr - im->data) >= (w * h * (int)sizeof(DATA32)))) ||
             ((context > 1) && (count >= pixels)))
            done = 1;
