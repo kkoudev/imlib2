@@ -35,7 +35,7 @@ static int          font_flush_free_glyph_cb(Imlib_Hash * hash, const char *key,
 ImlibFont          *
 imlib_font_load_joined(const char *fontname)
 {
-   int                 j, k, size, faceidx;
+   int                 j, k, size, faceidx, namelen;
    char               *name, *file = NULL, *tmp;
    ImlibFont          *fn;
 
@@ -65,13 +65,14 @@ imlib_font_load_joined(const char *fontname)
         break;
      }
 
+   namelen = j;
    /* split name in front off */
-   name = malloc(j + 1);
-   memcpy(name, fontname, j);
-   name[j] = 0;
+   name = malloc(namelen + 1);
+   memcpy(name, fontname, namelen);
+   name[namelen] = 0;
 
    /* find file if it exists */
-   tmp = malloc(strlen(name) + 4 + 1);
+   tmp = malloc(namelen + 4 + 1);
    if (!tmp)
       goto done;
 
@@ -96,7 +97,7 @@ imlib_font_load_joined(const char *fontname)
      {
         for (j = 0; (j < fpath_num) && (!file); j++)
           {
-             tmp = malloc(strlen(fpath[j]) + 1 + strlen(name) + 4 + 1);
+             tmp = malloc(strlen(fpath[j]) + 1 + namelen + 4 + 1);
              if (!tmp)
                 goto done;
 
