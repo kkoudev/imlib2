@@ -1,16 +1,13 @@
 # get rid of that stupid cache mechanism
 rm -f config.cache
 
-AC_INIT(imlib2, 1.4.5, enlightenment-devel@lists.sourceforge.net)
-AC_PREREQ(2.52)
+AC_INIT([imlib2], [1.4.5], [enlightenment-devel@lists.sourceforge.net])
 AC_CONFIG_SRCDIR(configure.ac)
 dnl#AC_CONFIG_MACRO_DIR([m4])
 AC_CANONICAL_BUILD
 AC_CANONICAL_HOST
-AC_ISC_POSIX
 
 AM_INIT_AUTOMAKE(1.6 dist-bzip2)
-AC_CONFIG_HEADERS(config.h)
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 AC_C_BIGENDIAN
@@ -19,7 +16,7 @@ AM_PROG_AS
 
 dnl Set default visibility to hidden?
 AC_ARG_ENABLE([visibility-hiding],
-  [AC_HELP_STRING([--enable-visibility-hiding], [enable visibility hiding @<:@default=no@:>@])],
+  [AS_HELP_STRING([--enable-visibility-hiding], [enable visibility hiding @<:@default=no@:>@])],
   [enable_visibility_hiding=yes],
   [enable_visibility_hiding=no]
 )
@@ -62,7 +59,7 @@ case $host_os in
 esac
 
 AC_ARG_ENABLE([mmx],
-  [AC_HELP_STRING([--enable-mmx], [attempt compiling using x86 mmx assembly @<:@default=auto@:>@])],
+  [AS_HELP_STRING([--enable-mmx], [attempt compiling using x86 mmx assembly @<:@default=auto@:>@])],
   [
    if test x$enableval = xyes; then
      mmx=yes
@@ -75,7 +72,7 @@ AC_ARG_ENABLE([mmx],
 )
 
 AC_ARG_ENABLE([amd64],
-  [AC_HELP_STRING([--enable-amd64], [attempt compiling using amd64 assembly @<:@default=auto@:>@])],
+  [AS_HELP_STRING([--enable-amd64], [attempt compiling using amd64 assembly @<:@default=auto@:>@])],
   [
    if test x$enableval = xyes; then
      amd64=yes
@@ -102,7 +99,7 @@ AM_CONDITIONAL(BUILD_AMD64, test x$amd64 = xyes)
 
 # check for freetype
 AC_ARG_WITH(freetype-config,
-  [AC_HELP_STRING([--with-freetype-config], [use freetype-config specified])],
+  [AS_HELP_STRING([--with-freetype-config], [use freetype-config specified])],
   [ FREETYPE_CONFIG=$withval;
     echo "using "$FREETYPE_CONFIG" for freetype-config"; ],
   [ if test -z "$FREETYPE_CONFIG"; then
@@ -147,7 +144,7 @@ AC_SUBST(my_libs)
 
 AC_MSG_CHECKING(whether to enable jpeg support)
 AC_ARG_WITH([jpeg],
-  [AC_HELP_STRING([--without-jpeg], [Disable JPEG image loader])],
+  [AS_HELP_STRING([--without-jpeg], [Disable JPEG image loader])],
   [
    if test "$withval" = no ; then
      jpeg_loader=no
@@ -195,7 +192,7 @@ AC_SUBST(JPEGLIBS)
 
 AC_MSG_CHECKING(whether to enable png support)
 AC_ARG_WITH([png],
-  [AC_HELP_STRING([--without-png], [Disable PNG image loader])],
+  [AS_HELP_STRING([--without-png], [Disable PNG image loader])],
   [
    if test "$withval" = no ; then
      png_loader=no
@@ -222,7 +219,7 @@ AM_CONDITIONAL(BUILD_PNG_LOADER, test "$png_ok" = yes)
 
 AC_MSG_CHECKING(whether to enable tiff support)
 AC_ARG_WITH([tiff],
-  [AC_HELP_STRING([--without-tiff], [Disable TIFF image loader])],
+  [AS_HELP_STRING([--without-tiff], [Disable TIFF image loader])],
   [
    if test "$withval" = no ; then
      tiff_loader=no
@@ -280,7 +277,7 @@ AC_SUBST(TIFFLIBS)
 AC_MSG_CHECKING(whether to enable gif support)
 gif_lib=any
 AC_ARG_WITH([gif],
-  [AC_HELP_STRING([--without-gif], [Disable GIF image loader])],
+  [AS_HELP_STRING([--without-gif], [Disable GIF image loader])],
   [
    if test "$withval" = no ; then
      gif_loader=no
@@ -363,7 +360,7 @@ AC_SUBST(GIFLIBS)
 
 AC_MSG_CHECKING(whether to enable zlib support)
 AC_ARG_WITH([zlib],
-  [AC_HELP_STRING([--without-zlib], [Disable ZLIB loader])],
+  [AS_HELP_STRING([--without-zlib], [Disable ZLIB loader])],
   [
    if test "$withval" = no ; then
      zlib_loader=no
@@ -411,7 +408,7 @@ AC_SUBST(ZLIBLIBS)
 
 AC_MSG_CHECKING(whether to enable bzip2 support)
 AC_ARG_WITH([bzip2],
-  [AC_HELP_STRING([--without-bzip2], [Disable BZIP2 loader])],
+  [AS_HELP_STRING([--without-bzip2], [Disable BZIP2 loader])],
   [
    if test "$withval" = no ; then
      bz2_loader=no
@@ -459,7 +456,7 @@ AC_SUBST(BZ2LIBS)
 
 AC_MSG_CHECKING(whether to enable id3 support)
 AC_ARG_WITH([id3],
-  [AC_HELP_STRING([--without-id3], [Disable ID3 loader])],
+  [AS_HELP_STRING([--without-id3], [Disable ID3 loader])],
   [
    if test "$withval" = no ; then
      id3_loader=no
@@ -508,7 +505,8 @@ if test "x$enable_visibility_hiding" = xyes ; then
   CPPFLAGS="$CPPFLAGS -fvisibility=hidden"
 fi
 
-AC_OUTPUT([
+AC_CONFIG_HEADERS(config.h)
+AC_CONFIG_FILES([
 Makefile
 imlib2.pc
 src/Makefile
@@ -524,9 +522,11 @@ doc/Makefile
 imlib2-config
 README
 imlib2.spec
-],[
-chmod +x imlib2-config
 ])
+AC_CONFIG_COMMANDS([default],[
+chmod +x imlib2-config
+],[])
+AC_OUTPUT
 
 #####################################################################
 ## Info
