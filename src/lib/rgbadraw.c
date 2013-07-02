@@ -258,11 +258,6 @@ __imlib_SharpenImage(ImlibImage * im, int rad)
       return;
    else
      {
-        int                 mul, mul2, tot;
-
-        mul = (rad * 4) + 1;
-        mul2 = rad;
-        tot = mul - (mul2 * 4);
         for (y = 1; y < (im->h - 1); y++)
           {
              p1 = im->data + 1 + (y * im->w);

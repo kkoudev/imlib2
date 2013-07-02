@@ -97,7 +97,7 @@ __imlib_RenderGetPixel(Display * d, Drawable w, Visual * v, Colormap cm,
           }
         for (i = 31; i >= 0; i--)
           {
-             if (rm >= (1 << i))
+             if (rm >= (1U << i))
                {
                   rshift = i - 7;
                   break;
@@ -105,7 +105,7 @@ __imlib_RenderGetPixel(Display * d, Drawable w, Visual * v, Colormap cm,
           }
         for (i = 31; i >= 0; i--)
           {
-             if (gm >= (1 << i))
+             if (gm >= (1U << i))
                {
                   gshift = i - 7;
                   break;
@@ -113,7 +113,7 @@ __imlib_RenderGetPixel(Display * d, Drawable w, Visual * v, Colormap cm,
           }
         for (i = 31; i >= 0; i--)
           {
-             if (bm >= (1 << i))
+             if (bm >= (1U << i))
                {
                   bshift = i - 7;
                   break;
@@ -140,11 +140,12 @@ static void
 __imlib_generic_render(DATA32 * src, int jump, int w, int h, int dx, int dy,
                        XImage * xim, Visual * v, Context * ct)
 {
-   unsigned int        x, y, r, g, b, val, hh;
+   int                 x, y, hh;
+   unsigned int        r, g, b, val;
    unsigned int        rmask, gmask, bmask;
    int                 i, rshift, gshift, bshift;
 
-   const DATA8         _dither_88[8][8] = {
+   static const DATA8  _dither_88[8][8] = {
       {0, 32, 8, 40, 2, 34, 10, 42},
       {48, 16, 56, 24, 50, 18, 58, 26},
       {12, 44, 4, 36, 14, 46, 6, 38},
@@ -184,7 +185,7 @@ __imlib_generic_render(DATA32 * src, int jump, int w, int h, int dx, int dy,
    bshift = 0;
    for (i = 31; i >= 0; i--)
      {
-        if (rmask >= (1 << i))
+        if (rmask >= (1U << i))
           {
              rshift = i - 7;
              break;
@@ -192,7 +193,7 @@ __imlib_generic_render(DATA32 * src, int jump, int w, int h, int dx, int dy,
      }
    for (i = 31; i >= 0; i--)
      {
-        if (gmask >= (1 << i))
+        if (gmask >= (1U << i))
           {
              gshift = i - 7;
              break;
@@ -200,7 +201,7 @@ __imlib_generic_render(DATA32 * src, int jump, int w, int h, int dx, int dy,
      }
    for (i = 31; i >= 0; i--)
      {
-        if (bmask >= (1 << i))
+        if (bmask >= (1U << i))
           {
              bshift = i - 7;
              break;
@@ -529,7 +530,6 @@ __imlib_RenderImageSkewed(Display * d, ImlibImage * im, Drawable w, Drawable m,
                           char dither_mask, int mat, ImlibColorModifier * cmod,
                           ImlibOp op)
 {
-   Context            *ct;
    int                 dx1, dy1, dx2, dy2, dw, dh, tsx, tsy;
    ImlibImage         *back;
 
@@ -580,7 +580,7 @@ __imlib_RenderImageSkewed(Display * d, ImlibImage * im, Drawable w, Drawable m,
         dy1 = 0;
      }
 
-   ct = __imlib_GetContext(d, v, cm, depth);
+   __imlib_GetContext(d, v, cm, depth);
 
    back = __imlib_CreateImage(dw, dh, NULL);
    back->data = calloc(dw * dh, sizeof(DATA32));

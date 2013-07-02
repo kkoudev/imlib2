@@ -2133,11 +2133,8 @@ imlib_create_image_from_ximage(XImage * image, XImage * mask, int x, int y,
                                int width, int height, char need_to_grab_x)
 {
    ImlibImage         *im;
-   char                domask = 0;
 
    CHECK_CONTEXT(ctx);
-   if (mask)
-      domask = 1;
    im = __imlib_CreateImage(width, height, NULL);
    im->data = malloc(width * height * sizeof(DATA32));
    __imlib_GrabXImageToRGBA(im->data, 0, 0, width, height,

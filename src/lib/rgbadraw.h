@@ -2,13 +2,14 @@
 #define __RGBADRAW 1
 
 #define IN_SEGMENT(x, sx, sw) \
-((unsigned)((x) - (sx)) < (sw))
+((unsigned)((x) - (sx)) < (unsigned)(sw))
 
 #define IN_RANGE(x, y, w, h) \
-( ((unsigned)(x) < (w)) && ((unsigned)(y) < (h)) )
+( ((unsigned)(x) < (unsigned)(w)) && ((unsigned)(y) < (unsigned)(h)) )
 
 #define IN_RECT(x, y, rx, ry, rw, rh) \
-( ((unsigned)((x) - (rx)) < (rw)) && ((unsigned)((y) - (ry)) < (rh)) )
+( ((unsigned)((x) - (rx)) < (unsigned)(rw)) && \
+  ((unsigned)((y) - (ry)) < (unsigned)(rh)) )
 
 #define CLIP_RECT_TO_RECT(x, y, w, h, rx, ry, rw, rh) \
 {								\

@@ -16,8 +16,8 @@
 #include "script.h"
 #include "loaderpath.h"
 
-pImlibExternalFilter filters = NULL;
-int                 dyn_initialised = 0;
+static pImlibExternalFilter filters = NULL;
+static int          dyn_initialised = 0;
 
 #define MALLOCSHOW
 #define FREESHOW
@@ -87,7 +87,7 @@ __imlib_dynamic_filters_init()
      {
         MALLOCSHOW;
         filters = malloc(sizeof(ImlibExternalFilter));
-        filters->filename = "";
+        filters->filename = (char *)"";
         filters->next = NULL;
         ptr = filters;
 #ifdef FDEBUG

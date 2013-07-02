@@ -128,19 +128,19 @@ __check_inside_coords(int x, int y, int dxh, int dyh, int dxv, int dyv,
    sw <<= _ROTATE_PREC;
    sh <<= _ROTATE_PREC;
 
-   if (((unsigned)x >= sw) || ((unsigned)y >= sh))
+   if (((unsigned)x >= (unsigned)sw) || ((unsigned)y >= (unsigned)sh))
       return 0;
    x += dxh * dw;
    y += dyh * dw;
-   if (((unsigned)x >= sw) || ((unsigned)y >= sh))
+   if (((unsigned)x >= (unsigned)sw) || ((unsigned)y >= (unsigned)sh))
       return 0;
    x += dxv * dh;
    y += dyv * dh;
-   if (((unsigned)x >= sw) || ((unsigned)y >= sh))
+   if (((unsigned)x >= (unsigned)sw) || ((unsigned)y >= (unsigned)sh))
       return 0;
    x -= dxh * dw;
    y -= dyh * dw;
-   if (((unsigned)x >= sw) || ((unsigned)y >= sh))
+   if (((unsigned)x >= (unsigned)sw) || ((unsigned)y >= (unsigned)sh))
       return 0;
 
    return 1;
@@ -172,7 +172,7 @@ __imlib_RotateSample(DATA32 * src, DATA32 * dest, int sow, int sw, int sh,
         i = dw - 1;
         do
           {
-             if (((unsigned)x < sw) && ((unsigned)y < sh))
+             if (((unsigned)x < (unsigned)sw) && ((unsigned)y < (unsigned)sh))
                 *dest = src[(x >> _ROTATE_PREC) + ((y >> _ROTATE_PREC) * sow)];
              else
                 *dest = 0;
@@ -228,9 +228,9 @@ __imlib_RotateAA(DATA32 * src, DATA32 * dest, int sow, int sw, int sh,
           {
              DATA32             *src_x_y = (src + (x >> _ROTATE_PREC) +
                                             ((y >> _ROTATE_PREC) * sow));
-             if ((unsigned)x < sw)
+             if ((unsigned)x < (unsigned)sw)
                {
-                  if ((unsigned)y < sh)
+                  if ((unsigned)y < (unsigned)sh)
                     {
                        /*\  12
                         * |*|  34
@@ -257,7 +257,7 @@ __imlib_RotateAA(DATA32 * src, DATA32 * dest, int sow, int sw, int sh,
                }
              else if ((unsigned)(x - sw) < (_ROTATE_PREC_MAX))
                {
-                  if ((unsigned)y < sh)
+                  if ((unsigned)y < (unsigned)sh)
                     {
                        /*\  1.
                         * |*|  3.
@@ -283,7 +283,7 @@ __imlib_RotateAA(DATA32 * src, DATA32 * dest, int sow, int sw, int sh,
                }
              else if ((unsigned)(~x) < _ROTATE_PREC_MAX)
                {
-                  if ((unsigned)y < sh)
+                  if ((unsigned)y < (unsigned)sh)
                     {
                        /*\  .2
                         * |*|  .4

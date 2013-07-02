@@ -29,8 +29,6 @@ TmpXError(Display * d, XErrorEvent * ev)
 {
    _x_err = 1;
    return 0;
-   d = NULL;
-   ev = NULL;
 }
 
 void
@@ -67,7 +65,7 @@ __imlib_ShmGetXImage(Display * d, Visual * v, Drawable draw, int depth,
         /* get the shm addr for this data chunk */
         if (xim->data != (char *)-1)
           {
-             XErrorHandler       ph;
+             XErrorHandler       ph = NULL;
 
              if (x_does_shm == 2)
                {
@@ -149,7 +147,6 @@ int
 __imlib_GetMaxXImageCount(Display * d)
 {
    return list_max_count;
-   d = NULL;
 }
 
 void
@@ -163,7 +160,6 @@ int
 __imlib_GetMaxXImageTotalSize(Display * d)
 {
    return list_max_mem;
-   d = NULL;
 }
 
 void

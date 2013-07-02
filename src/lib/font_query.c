@@ -22,7 +22,7 @@ void
 imlib_font_query_size(ImlibFont * fn, const char *text, int *w, int *h)
 {
    int                 use_kerning;
-   int                 pen_x, pen_y;
+   int                 pen_x /*, pen_y */ ;
    int                 start_x, end_x;
    int                 chr;
    FT_UInt             prev_index;
@@ -30,7 +30,7 @@ imlib_font_query_size(ImlibFont * fn, const char *text, int *w, int *h)
    start_x = 0;
    end_x = 0;
    pen_x = 0;
-   pen_y = 0;
+/* pen_y = 0; */
    use_kerning = FT_HAS_KERNING(fn->ft.face);
    prev_index = 0;
    for (chr = 0; text[chr];)
@@ -38,7 +38,7 @@ imlib_font_query_size(ImlibFont * fn, const char *text, int *w, int *h)
         FT_UInt             index;
         Imlib_Font_Glyph   *fg;
         ImlibFont          *fn_in_chain;
-        int                 chr_x, chr_y, chr_w;
+        int                 chr_x, /*chr_y, */ chr_w;
         int                 gl;
 
         gl = imlib_font_utf8_get_next((unsigned char *)text, &chr);
@@ -58,7 +58,7 @@ imlib_font_query_size(ImlibFont * fn, const char *text, int *w, int *h)
            continue;
 
         chr_x = (pen_x >> 8) + fg->glyph_out->left;
-        chr_y = (pen_y >> 8) + fg->glyph_out->top;
+/*      chr_y = (pen_y >> 8) + fg->glyph_out->top; */
         chr_w = fg->glyph_out->bitmap.width;
 
         if (pen_x == 0)
@@ -104,14 +104,13 @@ imlib_font_query_advance(ImlibFont * fn, const char *text, int *h_adv,
                          int *v_adv)
 {
    int                 use_kerning;
-   int                 pen_x, pen_y;
+   int                 pen_x;
    int                 start_x;
    int                 chr;
    FT_UInt             prev_index;
 
    start_x = 0;
    pen_x = 0;
-   pen_y = 0;
    use_kerning = FT_HAS_KERNING(fn->ft.face);
    prev_index = 0;
    for (chr = 0; text[chr];)
@@ -119,7 +118,6 @@ imlib_font_query_advance(ImlibFont * fn, const char *text, int *h_adv,
         FT_UInt             index;
         Imlib_Font_Glyph   *fg;
         ImlibFont          *fn_in_chain;
-        int                 chr_x, chr_y, chr_w;
         int                 gl;
 
         gl = imlib_font_utf8_get_next((unsigned char *)text, &chr);
@@ -138,10 +136,6 @@ imlib_font_query_advance(ImlibFont * fn, const char *text, int *h_adv,
         if (!fg)
            continue;
 
-        chr_x = (pen_x >> 8) + fg->glyph_out->left;
-        chr_y = (pen_y >> 8) + fg->glyph_out->top;
-        chr_w = fg->glyph_out->bitmap.width;
-
         pen_x += fg->glyph->advance.x >> 8;
         prev_index = index;
      }
@@ -157,14 +151,13 @@ imlib_font_query_char_coords(ImlibFont * fn, const char *text, int pos,
                              int *cx, int *cy, int *cw, int *ch)
 {
    int                 use_kerning;
-   int                 pen_x, pen_y;
+   int                 pen_x;
    int                 prev_chr_end;
    int                 chr;
    int                 asc, desc;
    FT_UInt             prev_index;
 
    pen_x = 0;
-   pen_y = 0;
    use_kerning = FT_HAS_KERNING(fn->ft.face);
    prev_index = 0;
    prev_chr_end = 0;
@@ -176,7 +169,7 @@ imlib_font_query_char_coords(ImlibFont * fn, const char *text, int pos,
         FT_UInt             index;
         Imlib_Font_Glyph   *fg;
         ImlibFont          *fn_in_chain;
-        int                 chr_x, chr_y, chr_w;
+        int                 chr_x, chr_w;
         int                 gl, kern;
         FT_Vector           delta;
 
@@ -200,7 +193,6 @@ imlib_font_query_char_coords(ImlibFont * fn, const char *text, int pos,
         if (kern < 0)
            kern = 0;
         chr_x = ((pen_x - kern) >> 8) + fg->glyph_out->left;
-        chr_y = (pen_y >> 8) + fg->glyph_out->top;
         chr_w = fg->glyph_out->bitmap.width + (kern >> 8);
         if (text[chr])
           {
@@ -240,14 +232,13 @@ imlib_font_query_text_at_pos(ImlibFont * fn, const char *text, int x, int y,
                              int *cx, int *cy, int *cw, int *ch)
 {
    int                 use_kerning;
-   int                 pen_x, pen_y;
+   int                 pen_x;
    int                 prev_chr_end;
    int                 chr;
    int                 asc, desc;
    FT_UInt             prev_index;
 
    pen_x = 0;
-   pen_y = 0;
    use_kerning = FT_HAS_KERNING(fn->ft.face);
    prev_index = 0;
    prev_chr_end = 0;
@@ -259,7 +250,7 @@ imlib_font_query_text_at_pos(ImlibFont * fn, const char *text, int x, int y,
         FT_UInt             index;
         Imlib_Font_Glyph   *fg;
         ImlibFont          *fn_in_chain;
-        int                 chr_x, chr_y, chr_w;
+        int                 chr_x, chr_w;
         int                 gl, kern;
         FT_Vector           delta;
 
@@ -283,7 +274,6 @@ imlib_font_query_text_at_pos(ImlibFont * fn, const char *text, int x, int y,
         if (kern < 0)
            kern = 0;
         chr_x = ((pen_x - kern) >> 8) + fg->glyph_out->left;
-        chr_y = (pen_y >> 8) + fg->glyph_out->top;
         chr_w = fg->glyph_out->bitmap.width + (kern >> 8);
         if (text[chr])
           {

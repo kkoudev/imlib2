@@ -15,8 +15,6 @@ static DATA8        rtab[256], gtab[256], btab[256];
 static void
 Tmp_HandleXError(Display * d, XErrorEvent * ev)
 {
-   d = NULL;
-   ev = NULL;
    _x_err = 1;
 }
 
@@ -528,7 +526,7 @@ __imlib_GrabDrawableToRGBA(DATA32 * data, int ox, int oy, int ow, int oh,
    char                is_pixmap = 0, created_mask = 0, is_shm = 0, is_mshm = 0;
    char                domask;
    int                 i;
-   int                 src_x, src_y, src_w, src_h, origw, origh;
+   int                 src_x, src_y, src_w, src_h;
    int                 width, height, clipx, clipy;
    XShmSegmentInfo     shminfo, mshminfo;
    XImage             *xim, *mxim;
@@ -537,8 +535,6 @@ __imlib_GrabDrawableToRGBA(DATA32 * data, int ox, int oy, int ow, int oh,
    domask = (pdomask) ? *pdomask : 0;
    /* FIXME: oh isn't used - i wonder if there's a bug looming... */
    oh = 0;
-   origw = w;
-   origh = h;
    if (grab)
       XGrabServer(d);
    XSync(d, False);

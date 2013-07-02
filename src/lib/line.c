@@ -565,7 +565,7 @@ __imlib_Line_DrawToData_AA(int x0, int y0, int x1, int y1, DATA32 color,
                      break;
                }
 
-             if ((unsigned)(px) < clw)
+             if ((unsigned)(px) < (unsigned)clw)
                {
                   aa = (yy - (y << 16)) >> 8;
 
@@ -573,10 +573,10 @@ __imlib_Line_DrawToData_AA(int x0, int y0, int x1, int y1, DATA32 color,
                   if (ca < 255)
                      MULT(A_VAL(&color), ca, A_VAL(&color), tmp);
 
-                  if ((unsigned)(py) < clh)
+                  if ((unsigned)(py) < (unsigned)clh)
                      pfunc(color, p);
 
-                  if ((unsigned)(py + 1) < clh)
+                  if ((unsigned)(py + 1) < (unsigned)clh)
                     {
                        A_VAL(&color) = aa;
                        if (ca < 255)
@@ -624,7 +624,7 @@ __imlib_Line_DrawToData_AA(int x0, int y0, int x1, int y1, DATA32 color,
                 break;
           }
 
-        if ((unsigned)(py) < clh)
+        if ((unsigned)(py) < (unsigned)clh)
           {
              aa = (xx - (x << 16)) >> 8;
 
@@ -632,10 +632,10 @@ __imlib_Line_DrawToData_AA(int x0, int y0, int x1, int y1, DATA32 color,
              if (ca < 255)
                 MULT(A_VAL(&color), ca, A_VAL(&color), tmp);
 
-             if ((unsigned)(px) < clw)
+             if ((unsigned)(px) < (unsigned)clw)
                 pfunc(color, p);
 
-             if ((unsigned)(px + 1) < clw)
+             if ((unsigned)(px + 1) < (unsigned)clw)
                {
                   A_VAL(&color) = aa;
                   if (ca < 255)

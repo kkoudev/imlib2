@@ -356,27 +356,20 @@ do { \
    switch(e->type)							\
    {									\
     case SHALLOW_EDGE:							\
-     {									\
 	elx = (e->xx - (2 * e->dxx)) >> 16;				\
 	erx = (e->xx + (2 * e->dxx)) >> 16;				\
 	if (e->dxx < 0)							\
 	  { lx = elx; elx = erx; erx = lx; }				\
 	break;								\
-     }									\
+    default:								\
     case STEEP_EDGE:							\
-      {									\
 	lx = (e->xx >> 16);						\
 	elx = erx = lx;							\
 	break;								\
-      }									\
     case HORZ_EDGE:							\
-      {									\
 	elx = e->v0->x;							\
 	erx = e->v1->x;							\
 	break;								\
-      }									\
-    default:								\
-      break;								\
    }                                                                    \
 } while (0)
 

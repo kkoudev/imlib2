@@ -2925,9 +2925,6 @@ __imlib_RGBA_to_RGB565_fast(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -2997,9 +2994,6 @@ __imlib_RGBA_to_RGB565_dither(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -3067,9 +3061,6 @@ __imlib_RGBA_to_BGR565_fast(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -3139,9 +3130,6 @@ __imlib_RGBA_to_BGR565_dither(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -3209,9 +3197,6 @@ __imlib_RGBA_to_RGB555_fast(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -3281,9 +3266,6 @@ __imlib_RGBA_to_RGB555_dither(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -3351,9 +3333,6 @@ __imlib_RGBA_to_BGR555_fast(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -3423,9 +3402,6 @@ __imlib_RGBA_to_BGR555_dither(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -3521,9 +3497,6 @@ __imlib_RGBA_to_RGB332_fast(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -3601,9 +3574,6 @@ __imlib_RGBA_to_RGB332_dither(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -3699,9 +3669,6 @@ __imlib_RGBA_to_RGB666_fast(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -3779,9 +3746,6 @@ __imlib_RGBA_to_RGB666_dither(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -3877,9 +3841,6 @@ __imlib_RGBA_to_RGB232_fast(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -3957,9 +3918,6 @@ __imlib_RGBA_to_RGB232_dither(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -4055,9 +4013,6 @@ __imlib_RGBA_to_RGB222_fast(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -4135,9 +4090,6 @@ __imlib_RGBA_to_RGB222_dither(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -4233,9 +4185,6 @@ __imlib_RGBA_to_RGB221_fast(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -4313,9 +4262,6 @@ __imlib_RGBA_to_RGB221_dither(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -4411,9 +4357,6 @@ __imlib_RGBA_to_RGB121_fast(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -4491,9 +4434,6 @@ __imlib_RGBA_to_RGB121_dither(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -4589,9 +4529,6 @@ __imlib_RGBA_to_RGB111_fast(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -4669,9 +4606,6 @@ __imlib_RGBA_to_RGB111_dither(DATA32 * src, int src_jump,
                }
           }
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -4694,9 +4628,6 @@ __imlib_RGBA_to_RGB1_fast(DATA32 * src, int src_jump,
         src += src_jump;
         dest += dest_jump;
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -4719,9 +4650,6 @@ __imlib_RGBA_to_RGB1_dither(DATA32 * src, int src_jump,
         src += src_jump;
         dest += dest_jump;
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -4739,14 +4667,11 @@ __imlib_RGBA_to_A1_fast(DATA32 * src, int src_jump,
      {
         for (x = 0; x < w; x++)
           {
-             WRITE1_RGBA_A1(src, dest, threshold);
+             WRITE1_RGBA_A1(src, dest, (DATA32) threshold);
           }
         src += src_jump;
         dest += dest_jump;
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -4769,9 +4694,6 @@ __imlib_RGBA_to_A1_dither(DATA32 * src, int src_jump,
         src += src_jump;
         dest += dest_jump;
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
 static void
@@ -4797,11 +4719,9 @@ __imlib_RGBA_to_RGB8888_fast(DATA32 * src, int src_jump,
      }
    else
       memcpy(dest, src, h * w * sizeof(DATA32));
-   return;
-   dx = 0;
-   dy = 0;
 }
 
+#if 0                           /* Unused */
 static void
 __imlib_RGBA_to_BGR8888_fast(DATA32 * src, int src_jump,
                              DATA8 * dst, int dow,
@@ -4823,10 +4743,8 @@ __imlib_RGBA_to_BGR8888_fast(DATA32 * src, int src_jump,
         src += src_jump;
         dest += dest_jump;
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
+#endif
 
 static void
 __imlib_RGBA_to_RGB888_fast(DATA32 * src, int src_jump,
@@ -4848,11 +4766,9 @@ __imlib_RGBA_to_RGB888_fast(DATA32 * src, int src_jump,
         src += src_jump;
         dest += dest_jump;
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
 
+#if 0                           /* Unused */
 static void
 __imlib_RGBA_to_BGR888_fast(DATA32 * src, int src_jump,
                             DATA8 * dest, int dow,
@@ -4873,11 +4789,10 @@ __imlib_RGBA_to_BGR888_fast(DATA32 * src, int src_jump,
         src += src_jump;
         dest += dest_jump;
      }
-   return;
-   dx = 0;
-   dy = 0;
 }
+#endif
 
+#if 0                           /* Unused */
 static void
 __imlib_RGBA_to_Nothing(DATA32 * src, int src_jump,
                         DATA8 * dest, int dow,
@@ -4885,6 +4800,7 @@ __imlib_RGBA_to_Nothing(DATA32 * src, int src_jump,
 {
    /*\ Nothing: Dummy function \ */
 }
+#endif
 
 ImlibRGBAFunction
 __imlib_GetRGBAFunction(int depth,

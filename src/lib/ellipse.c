@@ -378,9 +378,9 @@ __imlib_Ellipse_FillToData(int xc, int yc, int a, int b, DATA32 color,
                   bpp -= (lx + 1);
                }
 
-             if (((unsigned)(ty) < clh) && (len > 0))
+             if (((unsigned)ty < (unsigned)clh) && (len > 0))
                 sfunc(color, tpp, len);
-             if (((unsigned)(by) < clh) && (len > 0))
+             if (((unsigned)by < (unsigned)clh) && (len > 0))
                 sfunc(color, bpp, len);
           }
 
@@ -448,9 +448,9 @@ __imlib_Ellipse_FillToData(int xc, int yc, int a, int b, DATA32 color,
              bpp -= lx;
           }
 
-        if (((unsigned)(ty) < clh) && (len > 0))
+        if (((unsigned)ty < (unsigned)clh) && (len > 0))
            sfunc(color, tpp, len);
-        if (((unsigned)(by) < clh) && (len > 0))
+        if (((unsigned)by < (unsigned)clh) && (len > 0))
            sfunc(color, bpp, len);
 
         dx -= a2;
@@ -535,9 +535,9 @@ __imlib_Ellipse_FillToData_AA(int xc, int yc, int a, int b, DATA32 color,
                   bpp -= (lx + 1);
                }
 
-             if (((unsigned)(ty) < clh) && (len > 0))
+             if (((unsigned)ty < (unsigned)clh) && (len > 0))
                 sfunc(color, tpp, len);
-             if (((unsigned)(by) < clh) && (len > 0))
+             if (((unsigned)by < (unsigned)clh) && (len > 0))
                 sfunc(color, bpp, len);
           }
 
@@ -609,9 +609,9 @@ __imlib_Ellipse_FillToData_AA(int xc, int yc, int a, int b, DATA32 color,
              bpp -= (lx + 1);
           }
 
-        if (((unsigned)(ty) < clh) && (len > 0))
+        if (((unsigned)ty < (unsigned)clh) && (len > 0))
            sfunc(color, tpp, len);
-        if (((unsigned)(by) < clh) && (len > 0))
+        if (((unsigned)by < (unsigned)clh) && (len > 0))
            sfunc(color, bpp, len);
 
         A_VAL(&col1) = ((xx - (x << 16)) >> 8);

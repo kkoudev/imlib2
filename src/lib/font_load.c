@@ -265,8 +265,6 @@ font_modify_cache_cb(Imlib_Hash * hash, const char *key, void *data,
    dir = fdata;
    font_cache_usage += (*dir) * ((fg->glyph_out->bitmap.width * fg->glyph_out->bitmap.rows) + sizeof(Imlib_Font_Glyph) + sizeof(Imlib_Object_List) + 400);      /* fudge values */
    return 1;
-   hash = 0;
-   key = 0;
 }
 
 void
@@ -316,9 +314,6 @@ font_flush_free_glyph_cb(Imlib_Hash * hash, const char *key, void *data,
    FT_Done_Glyph(fg->glyph);
    free(fg);
    return 1;
-   hash = 0;
-   key = 0;
-   fdata = 0;
 }
 
 void
