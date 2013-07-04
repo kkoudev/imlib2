@@ -1,7 +1,11 @@
 AUTOMAKE_OPTIONS     = 1.4 foreign
 MAINTAINERCLEANFILES = Makefile.in
 AM_CFLAGS            = $(CWARNFLAGS)
-AM_CPPFLAGS	     = @my_includes@ -I. -I$(top_srcdir)  -I$(top_builddir)  -DPACKAGE_LIB_DIR=\"$(libdir)\"
+AM_CPPFLAGS          = -DPACKAGE_LIB_DIR=\"$(libdir)\" \
+                       -I$(top_builddir) \
+                       $(X_CFLAGS) \
+                       $(FREETYPE_CFLAGS)
+
 # Older automakes (<1.10) do not use INCLUDES when compiling .S files
 AM_CCASFLAGS = -I$(top_builddir)
 
@@ -82,17 +86,19 @@ AMD64_OBJS = $(AMD64_SRCS:.S=.lo)
 
 EXTRA_DIST = $(MMX_SRCS) $(AMD64_SRCS) asm_loadimmq.S
 
+MY_LIBS = -lXext -lX11 $(FREETYPE_LIBS) $(DLOPEN_LIBS) -lm
+
 if BUILD_MMX
-libImlib2_la_LIBADD       = $(MMX_OBJS) @my_libs@
+libImlib2_la_LIBADD       = $(MMX_OBJS) $(MY_LIBS)
 libImlib2_la_DEPENDENCIES = $(top_builddir)/config.h $(MMX_OBJS)
 EXTRA_libImlib2_la_SOURCES = $(MMX_SRCS) 
 else
 if BUILD_AMD64
-libImlib2_la_LIBADD       = $(AMD64_OBJS) @my_libs@
+libImlib2_la_LIBADD       = $(AMD64_OBJS) $(MY_LIBS)
 libImlib2_la_DEPENDENCIES = $(top_builddir)/config.h $(AMD64_OBJS)
 EXTRA_libImlib2_la_SOURCES = $(AMD64_SRCS)
 else
-libImlib2_la_LIBADD       = @my_libs@
+libImlib2_la_LIBADD       = $(MY_LIBS)
 libImlib2_la_DEPENDENCIES = $(top_builddir)/config.h
 endif
 endif

@@ -35,6 +35,8 @@ VERSION_AGE=4
 lt_version=${VERSION_CUR}:${VERSION_REV}:${VERSION_AGE}
 AC_SUBST(lt_version)
 
+PKG_PROG_PKG_CONFIG
+
 
 mmx=no
 amd64=no
@@ -89,19 +91,10 @@ AC_MSG_RESULT($amd64)
 AM_CONDITIONAL(BUILD_AMD64, test x$amd64 = xyes)
 
 # check for freetype
-AC_ARG_WITH(freetype-config,
-  [AS_HELP_STRING([--with-freetype-config], [use freetype-config specified])],
-  [ FREETYPE_CONFIG=$withval;
-    echo "using "$FREETYPE_CONFIG" for freetype-config"; ],
-  [ if test -z "$FREETYPE_CONFIG"; then
-      AC_PATH_PROG(FREETYPE_CONFIG, "freetype-config", "", $PATH)
-    fi
-  ]
-)
-freetype_cflags=`$FREETYPE_CONFIG --cflags`
-freetype_libs=`$FREETYPE_CONFIG --libs`
+PKG_CHECK_MODULES(FREETYPE, freetype2)
 
 AC_PATH_X
+AC_PATH_XTRA
 
 if test "x$have_x" = "xno"; then
    # If --without-x was passed, this will be "disabled" instead of "no" --
@@ -112,25 +105,14 @@ path on your system, or --without-x to disable X support.])
 fi
 
 if test "x$have_x" = "xyes"; then
-  AC_PATH_XTRA
-  x_cflags=$X_CFLAGS
-  x_libs=$X_LIBS" -lX11 -lXext"
   AC_DEFINE(BUILD_X11, 1, [enabling X11 support])
 else
-  x_cflags=""
-  x_libs=""
   have_x="no"
 fi
 AM_CONDITIONAL(BUILD_X11, test "x$have_x" = "xyes")
 
-dlopen_libs=""
-AC_CHECK_LIB(dl, dlopen, dlopen_libs=-ldl)
-
-my_includes=$freetype_cflags" "$x_cflags" "
-my_libs=$freetype_libs" "$x_libs" "$dlopen_libs" -lm"
-AC_SUBST(my_includes)
-AC_SUBST(my_libs)
-
+AC_CHECK_LIB(dl, dlopen, DLOPEN_LIBS=-ldl)
+AC_SUBST(DLOPEN_LIBS)
 
 
 AC_MSG_CHECKING(whether to enable jpeg support)
@@ -148,20 +130,9 @@ AC_ARG_WITH([jpeg],
 AC_MSG_RESULT($jpeg_loader)
 
 if test "$jpeg_loader" != no ; then
-  AC_CHECK_LIB(jpeg, jpeg_destroy_decompress,
-    jpeg_ok=yes,
-    jpeg_ok=no,
-    )
+  AC_CHECK_LIB(jpeg, jpeg_destroy_decompress, jpeg_ok=yes, jpeg_ok=no)
   if test "$jpeg_ok" = yes; then
-    AC_MSG_CHECKING([for jpeglib.h])
-    AC_TRY_CPP(
-    [#include <stdio.h>
-     #undef PACKAGE
-     #undef VERSION
-     #include <jpeglib.h>],
-    jpeg_ok=yes,
-    jpeg_ok=no)
-    AC_MSG_RESULT($jpeg_ok)
+    AC_CHECK_HEADER([jpeglib.h], , jpeg_ok=no)
     if test "$jpeg_ok" = yes; then
       JPEGLIBS="-ljpeg"
     fi
@@ -178,7 +149,6 @@ else
 fi
 AM_CONDITIONAL(BUILD_JPEG_LOADER, test "$jpeg_ok" = yes)
 AC_SUBST(JPEGLIBS)
-
 
 
 AC_MSG_CHECKING(whether to enable png support)
@@ -205,7 +175,6 @@ else
   png_ok="no"
 fi
 AM_CONDITIONAL(BUILD_PNG_LOADER, test "$png_ok" = yes)
-
 
 
 AC_MSG_CHECKING(whether to enable tiff support)
@@ -237,15 +206,7 @@ if test "$tiff_loader" != no ; then
     -ljpeg -lz -lm),
     )
   if test "$tiff_ok" = yes; then
-    AC_MSG_CHECKING([for tiffio.h])
-    AC_TRY_CPP(
-    [#include <stdio.h>
-     #undef PACKAGE
-     #undef VERSION
-     #include <tiffio.h>],
-    tiff_ok=yes,
-    tiff_ok=no)
-    AC_MSG_RESULT($tiff_ok)
+    AC_CHECK_HEADER([tiffio.h], , tiff_ok=no)
     if test "$tiff_ok" = yes; then
       TIFFLIBS=$tiff_libs
     fi
@@ -262,7 +223,6 @@ else
 fi
 AM_CONDITIONAL(BUILD_TIFF_LOADER, test "$tiff_ok" = yes)
 AC_SUBST(TIFFLIBS)
-
 
 
 AC_MSG_CHECKING(whether to enable gif support)
@@ -289,21 +249,9 @@ if test "$gif_loader" != no ; then
   AC_MSG_RESULT($gif_lib)
 
   if test "$gif_lib" != libungif ; then
-    AC_CHECK_LIB(gif, DGifOpenFileName,
-      gif_libs="-lgif"
-      gif_ok=yes,
-      gif_ok=no,
-      )
+    AC_CHECK_LIB(gif, DGifOpenFileName, gif_libs="-lgif" gif_ok=yes, gif_ok=no)
     if test "$gif_ok" = yes; then
-      AC_MSG_CHECKING([for gif_lib.h])
-      AC_TRY_CPP(
-      [#include <stdio.h>
-       #undef PACKAGE
-       #undef VERSION
-       #include <gif_lib.h>],
-      gif_ok=yes,
-      gif_ok=no)
-      AC_MSG_RESULT($gif_ok)
+      AC_CHECK_HEADER([gif_lib.h], , gif_ok=no)
       if test "$gif_ok" = yes; then
         GIFLIBS=$gif_libs
         gif_lib=giflib
@@ -312,21 +260,9 @@ if test "$gif_loader" != no ; then
   fi
 
   if test "$gif_lib" != giflib ; then
-    AC_CHECK_LIB(ungif, DGifOpenFileName,
-      gif_libs="-lungif"
-      gif_ok=yes,
-      gif_ok=no,
-      )
+    AC_CHECK_LIB(ungif, DGifOpenFileName, gif_libs="-lungif" gif_ok=yes, gif_ok=no)
     if test "$gif_ok" = yes; then
-      AC_MSG_CHECKING([for gif_lib.h])
-      AC_TRY_CPP(
-      [#include <stdio.h>
-       #undef PACKAGE
-       #undef VERSION
-       #include <gif_lib.h>],
-      gif_ok=yes,
-      gif_ok=no)
-      AC_MSG_RESULT($gif_ok)
+      AC_CHECK_HEADER([gif_lib.h], , gif_ok=no)
       if test "$gif_ok" = yes; then
         GIFLIBS=$gif_libs
         gif_lib=libungif
@@ -348,7 +284,6 @@ AM_CONDITIONAL(BUILD_GIF_LOADER, test "$gif_ok" = yes)
 AC_SUBST(GIFLIBS)
 
 
-
 AC_MSG_CHECKING(whether to enable zlib support)
 AC_ARG_WITH([zlib],
   [AS_HELP_STRING([--without-zlib], [Disable ZLIB loader])],
@@ -364,20 +299,9 @@ AC_ARG_WITH([zlib],
 AC_MSG_RESULT($zlib_loader)
 
 if test "$zlib_loader" != no ; then
-  AC_CHECK_LIB(z, uncompress,
-    zlib_ok=yes,
-    zlib_ok=no,
-    )
+  AC_CHECK_LIB(z, uncompress, zlib_ok=yes, zlib_ok=no)
   if test "$zlib_ok" = yes; then
-    AC_MSG_CHECKING([for zlib.h])
-    AC_TRY_CPP(
-    [#include <stdio.h>
-     #undef PACKAGE
-     #undef VERSION
-     #include <zlib.h>],
-    zlib_ok=yes,
-    zlib_ok=no)
-    AC_MSG_RESULT($zlib_ok)
+    AC_CHECK_HEADER([zlib.h], , zlib_ok=no)
     if test "$zlib_ok" = yes; then
       ZLIBLIBS="-lz"
     fi
@@ -396,7 +320,6 @@ AM_CONDITIONAL(BUILD_ZLIB_LOADER, test "$zlib_ok" = yes)
 AC_SUBST(ZLIBLIBS)
 
 
-
 AC_MSG_CHECKING(whether to enable bzip2 support)
 AC_ARG_WITH([bzip2],
   [AS_HELP_STRING([--without-bzip2], [Disable BZIP2 loader])],
@@ -412,20 +335,9 @@ AC_ARG_WITH([bzip2],
 AC_MSG_RESULT($bz2_loader)
 
 if test "$bz2_loader" != no ; then
-  AC_CHECK_LIB(bz2, BZ2_bzRead,
-    bz2_ok=yes,
-    bz2_ok=no,
-    )
+  AC_CHECK_LIB(bz2, BZ2_bzRead, bz2_ok=yes, bz2_ok=no)
   if test "$bz2_ok" = yes; then
-    AC_MSG_CHECKING([for bzlib.h])
-    AC_TRY_CPP(
-    [#include <stdio.h>
-     #undef PACKAGE
-     #undef VERSION
-     #include <bzlib.h>],
-    bz2_ok=yes,
-    bz2_ok=no)
-    AC_MSG_RESULT($bz2_ok)
+    AC_CHECK_HEADER([bzlib.h], , bz2_ok=no)
     if test "$bz2_ok" = yes; then
       BZ2LIBS="-lbz2"
     fi
@@ -442,7 +354,6 @@ else
 fi
 AM_CONDITIONAL(BUILD_BZ2_LOADER, test "$bz2_ok" = yes)
 AC_SUBST(BZ2LIBS)
-
 
 
 AC_MSG_CHECKING(whether to enable id3 support)
@@ -466,15 +377,7 @@ if test "$id3_loader" != no ; then
     id3_ok=no,
     -lz)
   if test "$id3_ok" = yes; then
-    AC_MSG_CHECKING([for id3tag.h])
-    AC_TRY_CPP(
-    [#include <stdio.h>
-     #undef PACKAGE
-     #undef VERSION
-     #include <id3tag.h>],
-    id3_ok=yes,
-    id3_ok=no)
-    AC_MSG_RESULT($id3_ok)
+    AC_CHECK_HEADER([id3tag.h], , id3_ok=no)
     if test "$id3_ok" = yes; then
       ID3LIBS=$id3_libs
     fi
@@ -491,6 +394,7 @@ else
 fi
 AM_CONDITIONAL(BUILD_ID3_LOADER, test "$id3_ok" = yes)
 AC_SUBST(ID3LIBS)
+
 
 AC_C_WARNFLAGS()
 

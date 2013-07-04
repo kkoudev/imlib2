@@ -1,12 +1,7 @@
 MAINTAINERCLEANFILES = Makefile.in
-AUTOMAKE_OPTIONS     = 1.4 foreign
 
 AM_CFLAGS            = $(CWARNFLAGS)
-AM_CPPFLAGS          = -I. \
-                       -I$(top_srcdir) \
-                       -I$(top_srcdir)/src/lib \
-                       -I$(top_srcdir)/src/modules/filters \
-                       @my_includes@
+AM_CPPFLAGS          = -I$(top_builddir) -I$(top_srcdir)/src/lib
 
 pkgdir                = $(libdir)/imlib2/filters
 pkg_LTLIBRARIES       = testfilter.la bumpmap.la colormod.la

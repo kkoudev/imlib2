@@ -1,10 +1,9 @@
 MAINTAINERCLEANFILES = Makefile.in
 
 AM_CPPFLAGS = \
--I../lib \
--I$(top_srcdir)/src/lib \
 -DPACKAGE_DATA_DIR=\"$(datadir)/$(PACKAGE)\" \
-@my_includes@
+-I$(top_builddir)/src/lib \
+$(X_CFLAGS)
 
 if BUILD_X11
 X_BASED_PROGS = imlib2_show imlib2_test imlib2_bumpmap imlib2_poly imlib2_colorspace imlib2_view imlib2_grab
