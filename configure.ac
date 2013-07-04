@@ -35,15 +35,6 @@ VERSION_AGE=4
 lt_version=${VERSION_CUR}:${VERSION_REV}:${VERSION_AGE}
 AC_SUBST(lt_version)
 
-dnl See if the compiler supports -std=gnu99 since some math
-dnl functions need it (aka round())
-AC_MSG_CHECKING(whether $CC accepts -std=gnu99)
-cc_supports_gnu99="yes"
-save_CPPFLAGS="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -std=gnu99"
-AC_TRY_COMPILE(,,,[cc_supports_gnu99="no";CPPFLAGS="$save_CPPFLAGS"])
-AC_MSG_RESULT($cc_supports_gnu99)
-
 
 mmx=no
 amd64=no
