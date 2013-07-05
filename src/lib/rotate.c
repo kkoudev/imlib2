@@ -342,7 +342,10 @@ __imlib_BlendImageToImageSkewed(ImlibImage * im_src, ImlibImage * im_dst,
    int                 x, y, dxh, dyh, dxv, dyv, i;
    double              xy2;
    DATA32             *data, *src;
+
+#ifdef DO_MMX_ASM
    int                 do_mmx;
+#endif
 
    if ((ssw < 0) || (ssh < 0))
       return;

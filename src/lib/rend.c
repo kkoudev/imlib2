@@ -268,7 +268,10 @@ __imlib_RenderImage(Display * d, ImlibImage * im,
    ImlibRGBAFunction   rgbaer;
    ImlibMaskFunction   masker = NULL;
    ImlibBlendFunction  blender = NULL;
+
+#ifdef DO_MMX_ASM
    int                 do_mmx;
+#endif
 
    blender = __imlib_GetBlendFunction(op, 1, 0,
                                       (!(im->flags & F_HAS_ALPHA)), NULL);

@@ -37,7 +37,7 @@ id3_tag_get_frame(struct id3_tag *tag, size_t index)
    return tag->frames[index];
 }
 
-static inline       size_t
+static inline unsigned int
 id3_tag_get_numframes(struct id3_tag *tag)
 {
    return tag->nframes;
@@ -200,7 +200,7 @@ context_delref(context * ctx)
 }
 
 static int
-str2int(char *str, int old)
+str2int(const char *str, int old)
 {
    long                index;
 
@@ -209,14 +209,14 @@ str2int(char *str, int old)
    return ((errno || index > INT_MAX) ? old : (int)index);
 }
 
-static              size_t
-str2uint(char *str, size_t old)
+static unsigned int
+str2uint(const char *str, unsigned int old)
 {
    unsigned long       index;
 
    errno = 0;
    index = strtoul(str, NULL, 10);
-   return ((errno || index > UINT_MAX) ? old : (size_t) index);
+   return ((errno || index > UINT_MAX) ? old : index);
 }
 
 static void
@@ -233,7 +233,7 @@ destructor_context(ImlibImage * im, void *data)
 
 typedef struct lopt {
    context            *ctx;
-   size_t              index;
+   unsigned int        index;
    int                 traverse;
    char                cache_level;
 } lopt;
@@ -241,7 +241,7 @@ typedef struct lopt {
 static char
 get_options(lopt * opt, ImlibImage * im)
 {
-   size_t              handle = 0, index = 0, traverse = 0;
+   unsigned int        handle = 0, index = 0, traverse = 0;
    context            *ctx;
 
    if (im->key)
