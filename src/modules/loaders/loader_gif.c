@@ -29,6 +29,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
    /* already data in this image - dont load it again */
    if (im->data)
       return 0;
+
 #ifndef __EMX__
    fd = open(im->real_file, O_RDONLY);
 #else
@@ -36,12 +37,18 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
 #endif
    if (fd < 0)
       return 0;
+
+#if GIFLIB_MAJOR >= 5
+   gif = DGifOpenFileHandle(fd, NULL);
+#else
    gif = DGifOpenFileHandle(fd);
+#endif
    if (!gif)
      {
         close(fd);
         return 0;
      }
+
    do
      {
         if (DGifGetRecordType(gif, &rec) == GIF_ERROR)
