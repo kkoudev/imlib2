@@ -1,9 +1,6 @@
 #include "common.h"
 #include <stdio.h>
 #include <ctype.h>
-#ifdef __EMX__
-#include <sys/types.h>
-#endif
 #include <sys/stat.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -372,16 +369,18 @@ __imlib_FileHomeDir(int uid)
    char               *s;
    struct passwd      *pwd;
 
-#ifndef __EMX__
    s = getenv("HOME");
    if (s)
       return strdup(s);
+
    if (usr_uid < 0)
       usr_uid = getuid();
+
    if ((uid == usr_uid) && (usr_s))
      {
         return (strdup(usr_s));
      }
+
    pwd = getpwuid(uid);
    if (pwd)
      {
@@ -390,11 +389,6 @@ __imlib_FileHomeDir(int uid)
            usr_s = strdup(s);
         return (s);
      }
-#else
-   if ((s = getenv("HOME")))
-      return strdup(s);
-   else if ((s = getenv("TMP")))
-      return strdup(s);
-#endif
+
    return NULL;
 }

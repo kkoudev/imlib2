@@ -158,11 +158,7 @@ __imlib_ListFilters(int *num_ret)
    /* same for system loader path */
    s = (char *)malloc(sizeof(SYS_LOADERS_PATH) + 8 + 1);
    sprintf(s, SYS_LOADERS_PATH "/filters");
-#ifndef __EMX__
    l = __imlib_FileDir(s, &num);
-#else
-   l = __imlib_FileDir(__XOS2RedirRoot(s), &num);
-#endif
    if (num > 0)
      {
         *num_ret += num;
@@ -173,11 +169,7 @@ __imlib_ListFilters(int *num_ret)
                                  sizeof(SYS_LOADERS_PATH) + 9 + strlen(l[i]) +
                                  1);
              sprintf(s, SYS_LOADERS_PATH "/filters/%s", l[i]);
-#ifndef __EMX__
              list[pi + i] = strdup(s);
-#else
-             list[pi + i] = strdup(__XOS2RedirRoot(s));
-#endif
           }
         __imlib_FileFreeDirList(l, num);
      }

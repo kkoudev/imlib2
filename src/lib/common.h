@@ -12,9 +12,6 @@
 #ifdef WITH_DMALLOC
 # include <dmalloc.h>
 #endif
-#ifdef __EMX__
-#include <sys/types.h>
-#endif
 
 #if defined(__GNUC__) && (__GNUC__ >= 4)
 #define __hidden __attribute__((visibility("hidden")))
@@ -43,9 +40,5 @@ if ((y + h) > ((yy) + (hh))) {h = (hh) - (y - yy);}
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 
 #define round(x) ((x)>=0?(int)((x)+0.5):(int)((x)-0.5))
-
-#ifdef __EMX__
-extern char *__XOS2RedirRoot(const char *);
-#endif
 
 #endif

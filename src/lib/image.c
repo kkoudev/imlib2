@@ -601,11 +601,7 @@ __imlib_ListLoaders(int *num_ret)
    /* same for system loader path */
    s = (char *)malloc(sizeof(SYS_LOADERS_PATH) + 8 + 1);
    sprintf(s, SYS_LOADERS_PATH "/loaders");
-#ifndef __EMX__
    l = __imlib_FileDir(s, &num);
-#else
-   l = __imlib_FileDir(__XOS2RedirRoot(s), &num);
-#endif
    if (num > 0)
      {
         *num_ret += num;
@@ -617,11 +613,7 @@ __imlib_ListLoaders(int *num_ret)
                                  sizeof(SYS_LOADERS_PATH) + 9 + strlen(l[i]) +
                                  1);
              sprintf(s, SYS_LOADERS_PATH "/loaders/%s", l[i]);
-#ifndef __EMX__
              list[pi + i] = strdup(s);
-#else
-             list[pi + i] = strdup(__XOS2RedirRoot(s));
-#endif
           }
         __imlib_FileFreeDirList(l, num);
      }
@@ -733,18 +725,9 @@ __imlib_RescanLoaders(void)
       return;
    /* ok - was the system loaders dir contents modified ? */
    last_scan_time = current_time;
-#ifndef __EMX__
    if (__imlib_FileIsDir(SYS_LOADERS_PATH "/loaders/"))
-#else
-   if (__imlib_FileIsDir(__XOS2RedirRoot(SYS_LOADERS_PATH "/loaders/")))
-#endif
      {
-#ifndef __EMX__
         current_time = __imlib_FileModDate(SYS_LOADERS_PATH "/loaders/");
-#else
-        current_time =
-           __imlib_FileModDate(__XOS2RedirRoot(SYS_LOADERS_PATH "/loaders/"));
-#endif
         if ((current_time > last_modified_system_time) || (!scanned))
           {
              /* yup - set the "do_reload" flag */
