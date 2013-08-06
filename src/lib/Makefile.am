@@ -39,8 +39,6 @@ font_draw.c \
 font_load.c \
 font_main.c \
 font_query.c \
-format.c \
-format.h \
 grab.c \
 grab.h \
 grad.c \
