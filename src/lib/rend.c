@@ -3,17 +3,18 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/extensions/XShm.h>
+
+#include "blend.h"
+#include "color.h"
 #include "colormod.h"
+#include "context.h"
+#include "grab.h"
 #include "image.h"
+#include "rend.h"
+#include "rgba.h"
+#include "rotate.h"
 #include "scale.h"
 #include "ximage.h"
-#include "context.h"
-#include "rgba.h"
-#include "color.h"
-#include "grab.h"
-#include "blend.h"
-#include "rend.h"
-#include "rotate.h"
 
 /* The maximum pixmap dimension is 65535. */
 /* However, for now, use 46340 (46340^2 < 2^31) to avoid buffer overflow issues. */

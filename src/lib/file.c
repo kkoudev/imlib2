@@ -1,13 +1,15 @@
 #include "common.h"
-#include <stdio.h>
+
 #include <ctype.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <sys/types.h>
 #include <dirent.h>
-#include <string.h>
-#include <stdlib.h>
 #include <pwd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
 #include "file.h"
 
 char               *

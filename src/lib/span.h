@@ -1,6 +1,7 @@
 #ifndef __SPAN
 #define __SPAN 1
 
+#include "common.h"
 
 typedef void (*ImlibPointDrawFunction)(DATA32, DATA32 *);
 
@@ -19,6 +20,4 @@ typedef void (*ImlibShapedSpanDrawFunction)(DATA8 *, DATA32, DATA32 *, int);
 __hidden ImlibShapedSpanDrawFunction
 __imlib_GetShapedSpanDrawFunction(ImlibOp op, char dst_alpha, char blend);
 
-
 #endif
-

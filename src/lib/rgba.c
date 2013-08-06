@@ -1,6 +1,7 @@
 #include "common.h"
 #ifdef BUILD_X11
 #include <X11/Xlib.h>
+
 #include "context.h"
 #include "rgba.h"
 

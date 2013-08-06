@@ -1,7 +1,8 @@
 #include "common.h"
+
+#include "blend.h"
 #include "colormod.h"
 #include "image.h"
-#include "blend.h"
 #include "span.h"
 
 #define ADD_COPY(r, g, b, dest) \

@@ -1,25 +1,19 @@
 #ifndef __IMAGE
-# define __IMAGE 1
+#define __IMAGE 1
 
-# include "common.h"
-# ifdef BUILD_X11
-#  include <X11/Xlib.h>
-# else
-#  define X_DISPLAY_MISSING
-# endif
+#include "common.h"
+#ifdef BUILD_X11
+#include <X11/Xlib.h>
+#else
+#define X_DISPLAY_MISSING
+#endif
 
-# include <dlfcn.h>
-# include <Imlib2.h>
-
-# ifndef RTLD_LOCAL
-#  define RTLD_LOCAL 0
-#  warning "your crap box doesn't define RTLD_LOCAL !?"
-# endif
+#include <Imlib2.h>
 
 typedef struct _imlibimage              ImlibImage;
-# ifdef BUILD_X11
+#ifdef BUILD_X11
 typedef struct _imlibimagepixmap        ImlibImagePixmap;
-# endif
+#endif
 typedef struct _imlibborder             ImlibBorder;
 typedef struct _imlibloader             ImlibLoader;
 typedef struct _imlibimagetag           ImlibImageTag;
@@ -76,7 +70,7 @@ struct _imlibimage
    char             *key;
 };
 
-# ifdef BUILD_X11
+#ifdef BUILD_X11
 struct _imlibimagepixmap
 {
    int               w, h;
@@ -95,7 +89,7 @@ struct _imlibimagepixmap
    DATABIG           modification_count;
    ImlibImagePixmap *next;
 };
-# endif
+#endif
 
 struct _imlibloader
 {
@@ -129,7 +123,7 @@ __hidden void              __imlib_AddImageToCache(ImlibImage *im);
 __hidden void              __imlib_RemoveImageFromCache(ImlibImage *im);
 __hidden int               __imlib_CurrentCacheSize(void);
 __hidden void              __imlib_CleanupImageCache(void);
-# ifdef BUILD_X11
+#ifdef BUILD_X11
 __hidden ImlibImagePixmap *__imlib_ProduceImagePixmap(void);
 __hidden void              __imlib_ConsumeImagePixmap(ImlibImagePixmap *ip);
 __hidden ImlibImagePixmap *__imlib_FindCachedImagePixmap(ImlibImage *im, int w, int h, 
@@ -142,7 +136,7 @@ __hidden ImlibImagePixmap *__imlib_FindCachedImagePixmapByID(Display *d, Pixmap 
 __hidden void              __imlib_AddImagePixmapToCache(ImlibImagePixmap *ip);
 __hidden void              __imlib_RemoveImagePixmapFromCache(ImlibImagePixmap *ip);
 __hidden void              __imlib_CleanupImagePixmapCache(void);
-# endif
+#endif
 __hidden ImlibLoader      *__imlib_ProduceLoader(char *file);
 __hidden char            **__imlib_ListLoaders(int *num_ret);
 __hidden char            **__imlib_TrimLoaderList(char **list, int *num);
@@ -159,36 +153,36 @@ __hidden ImlibImage       *__imlib_LoadImage(const char *file,
 				    ImlibProgressFunction progress,
 				    char progress_granularity, char immediate_load,
 				    char dont_cache, ImlibLoadError *er);
-# ifdef BUILD_X11
+#ifdef BUILD_X11
 __hidden ImlibImagePixmap *__imlib_FindImlibImagePixmapByID(Display *d, Pixmap p);
-# endif
+#endif
 __hidden void              __imlib_FreeImage(ImlibImage *im);
-# ifdef BUILD_X11
+#ifdef BUILD_X11
 __hidden void              __imlib_FreePixmap(Display *d, Pixmap p);
-# endif
+#endif
 __hidden void              __imlib_FlushCache(void);
-# ifdef BUILD_X11
+#ifdef BUILD_X11
 __hidden void              __imlib_DirtyPixmapsForImage(ImlibImage *im);
-# else
-#  define	__imlib_DirtyPixmapsForImage(x)	/* x */
-# endif
+#else
+#define	__imlib_DirtyPixmapsForImage(x)	/* x */
+#endif
 __hidden void              __imlib_DirtyImage(ImlibImage *im);
 __hidden void              __imlib_SaveImage(ImlibImage *im, const char *file,
 				    ImlibProgressFunction progress,
 		                    char progress_granularity,
 		                    ImlibLoadError *er);
 
-# define IMAGE_HAS_ALPHA(im) ((im)->flags & F_HAS_ALPHA)
-# define IMAGE_IS_UNLOADED(im) ((im)->flags & F_UNLOADED)
-# define IMAGE_IS_UNCACHEABLE(im) ((im)->flags & F_UNCACHEABLE)
-# define IMAGE_ALWAYS_CHECK_DISK(im) ((im)->flags & F_ALWAYS_CHECK_DISK)
-# define IMAGE_IS_VALID(im) (!((im)->flags & F_INVALID))
-# define IMAGE_FREE_DATA(im) (!((im)->flags & F_DONT_FREE_DATA))
+#define IMAGE_HAS_ALPHA(im) ((im)->flags & F_HAS_ALPHA)
+#define IMAGE_IS_UNLOADED(im) ((im)->flags & F_UNLOADED)
+#define IMAGE_IS_UNCACHEABLE(im) ((im)->flags & F_UNCACHEABLE)
+#define IMAGE_ALWAYS_CHECK_DISK(im) ((im)->flags & F_ALWAYS_CHECK_DISK)
+#define IMAGE_IS_VALID(im) (!((im)->flags & F_INVALID))
+#define IMAGE_FREE_DATA(im) (!((im)->flags & F_DONT_FREE_DATA))
 
-# define SET_FLAG(flags, f) ((flags) |= (f))
-# define UNSET_FLAG(flags, f) ((flags) &= (~f))
+#define SET_FLAG(flags, f) ((flags) |= (f))
+#define UNSET_FLAG(flags, f) ((flags) &= (~f))
 
-# define IMAGE_DIMENSIONS_OK(w, h) \
+#define IMAGE_DIMENSIONS_OK(w, h) \
    ( ((w) > 0) && ((h) > 0) && \
      ((unsigned long long)(w) * (unsigned long long)(h) <= (1ULL << 29) - 1) )
 

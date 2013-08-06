@@ -1,4 +1,10 @@
 #include "config.h"
+
+#include <math.h>
+#include <string.h>
+#include <stdarg.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
 #ifdef BUILD_X11
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -6,45 +12,33 @@
 #else
 #define X_DISPLAY_MISSING
 #endif
-#include <string.h>
-#include <stdarg.h>
-#include "common.h"
-#include "colormod.h"
-#include "image.h"
-#include "scale.h"
+
+#include "Imlib2.h"
 #include "blend.h"
+#include "colormod.h"
+#include "color_helpers.h"
+#include "common.h"
+#include "dynamic_filters.h"
+#include "file.h"
+#include "filter.h"
+#include "font.h"
+#include "grad.h"
+#include "image.h"
+#include "rgbadraw.h"
+#include "rotate.h"
+#include "scale.h"
+#include "script.h"
 #include "span.h"
+#include "updates.h"
 #ifdef BUILD_X11
-#include "context.h"
 #include "color.h"
+#include "context.h"
+#include "draw.h"
 #include "grab.h"
 #include "rend.h"
 #include "rgba.h"
 #include "ximage.h"
-#include "draw.h"
 #endif
-#include "file.h"
-#include "updates.h"
-#include "rgbadraw.h"
-#include "Imlib2.h"
-#include <ft2build.h>
-#include FT_FREETYPE_H
-/*#ifdef HAVE_FREETYPE1_FREETYPE_FREETYPE_H
-#include <freetype1/freetype/freetype.h>
-#elif defined(HAVE_FREETYPE_FREETYPE_H)
-#include <freetype/freetype.h>
-#else
-#include <freetype.h>
-#endif
-*/
-#include "font.h"
-#include "grad.h"
-#include "rotate.h"
-#include "filter.h"
-#include "dynamic_filters.h"
-#include "script.h"
-#include <math.h>
-#include "color_helpers.h"
 
 /* convenience macros */
 #define   CAST_IMAGE(im, image) (im) = (ImlibImage *)(image)

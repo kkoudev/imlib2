@@ -5,6 +5,7 @@
 #include <X11/Xutil.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+
 #include "ximage.h"
 
 /* global flags */

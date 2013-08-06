@@ -1,6 +1,8 @@
 #ifndef __CONTEXT
 #define __CONTEXT 1
 
+#include "common.h"
+
 typedef struct _context Context;
 
 struct _context {

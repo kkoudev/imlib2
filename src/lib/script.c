@@ -1,25 +1,24 @@
 #include "common.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
-#include <time.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+
 #include <ctype.h>
 #include <errno.h>
+#include <fcntl.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #ifdef BUILD_X11
 #include <X11/Xlib.h>
 #else
 #define X_DISPLAY_MISSING
 #endif
-#include "image.h"
-#include "file.h"
+
 #include "dynamic_filters.h"
+#include "image.h"
 #include "script.h"
-#include "loaderpath.h"
 
 /*
 #define FDEBUG 1

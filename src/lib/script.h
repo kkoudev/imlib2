@@ -1,15 +1,15 @@
 #ifndef _DYN_FUNCTION_H_
 #define _DYN_FUNCTION_H_
 
-#include <dlfcn.h>
+#include <stdarg.h>
+#include "common.h"
+#include "image.h"
 
 #ifndef BUILD_X11
-# ifndef X_DISPLAY_MISSING
-#  define X_DISPLAY_MISSING
-# endif
+#ifndef X_DISPLAY_MISSING
+#define X_DISPLAY_MISSING
 #endif
-#include "Imlib2.h"
-#include <stdarg.h>
+#endif
 
 #define VAR_CHAR 1
 #define VAR_PTR  2

@@ -1,10 +1,10 @@
 #include "common.h"
-#include "colormod.h"
-#include "file.h"
-#include "loaderpath.h"
+
 #include <math.h>
-#include "image.h"
+
 #include "blend.h"
+#include "colormod.h"
+#include "image.h"
 
 static DATABIG      mod_count = 0;
 

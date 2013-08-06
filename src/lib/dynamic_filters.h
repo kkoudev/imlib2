@@ -1,6 +1,7 @@
 #ifndef _DYNAMIC_FILTERS_H_
 #define _DYNAMIC_FILTERS_H_
 
+#include "common.h"
 #include "script.h"
 
 struct imlib_filter_info

@@ -1,10 +1,10 @@
 #include "common.h"
+
+#include "blend.h"
 #include "colormod.h"
 #include "image.h"
-#include "blend.h"
-#include "span.h"
-#include "updates.h"
 #include "rgbadraw.h"
+#include "span.h"
 
 static void
 __imlib_Rectangle_DrawToData(int x, int y, int rw, int rh, DATA32 color,

@@ -1,11 +1,13 @@
 #include "common.h"
+
 #include <math.h>
+
+#include "blend.h"
 #include "colormod.h"
 #include "image.h"
-#include "scale.h"
-#include "blend.h"
-#include "updates.h"
 #include "rgbadraw.h"
+#include "scale.h"
+#include "updates.h"
 
 void
 __imlib_FlipImageHoriz(ImlibImage * im)

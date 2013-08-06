@@ -2,13 +2,6 @@
 #define __COLORMOD 1
 
 #include "common.h"
-#include <time.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <ctype.h>
-#include <errno.h>
 #include "image.h"
 
 typedef struct _imlib_color_modifier    ImlibColorModifier;

@@ -1,11 +1,12 @@
 #include "common.h"
 #ifdef BUILD_X11
 #include <X11/Xlib.h>
-#include <X11/extensions/XShm.h>
 #include <X11/Xutil.h>
 #include <X11/extensions/shape.h>
+#include <X11/extensions/XShm.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+
 #include "grab.h"
 #include "ximage.h"
 

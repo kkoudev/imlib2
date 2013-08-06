@@ -1,12 +1,12 @@
 #include "common.h"
-#include "colormod.h"
-#include "file.h"
-#include "loaderpath.h"
+
 #include <math.h>
-#include "image.h"
+
 #include "blend.h"
-#include "grad.h"
+#include "colormod.h"
 #include "color_helpers.h"
+#include "grad.h"
+#include "image.h"
 
 ImlibRange         *
 __imlib_CreateRange(void)

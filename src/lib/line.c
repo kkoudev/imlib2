@@ -1,10 +1,11 @@
 #include "common.h"
+
+#include "blend.h"
 #include "colormod.h"
 #include "image.h"
-#include "blend.h"
+#include "rgbadraw.h"
 #include "span.h"
 #include "updates.h"
-#include "rgbadraw.h"
 
 #define EXCHANGE_POINTS(x0, y0, x1, y1)  \
 do {                                     \

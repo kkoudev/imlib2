@@ -1,6 +1,8 @@
 #ifndef __COLOR
 #define __COLOR 1
 
+#include "common.h"
+
 #ifdef BUILD_X11
 
 extern DATA16       _max_colors;

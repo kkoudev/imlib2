@@ -1,6 +1,7 @@
 #include "common.h"
-#include "rotate.h"
+
 #include "blend.h"
+#include "rotate.h"
 
 /*\ Linear interpolation functions \*/
 /*\ Between two values \*/

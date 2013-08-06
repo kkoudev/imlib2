@@ -1,9 +1,9 @@
 #include "common.h"
 #ifdef BUILD_X11
 #include <X11/Xlib.h>
-#include "image.h"
-#include "context.h"
 #include "color.h"
+#include "context.h"
+#include "image.h"
 #include "rgba.h"
 
 static Context     *context = NULL;

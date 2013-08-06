@@ -1,6 +1,9 @@
 #ifndef __DRAW
 #define __DRAW 1
 
+#include "colormod.h"
+#include "common.h"
+
 __hidden char       __imlib_CreatePixmapsForImage(Display * d, Drawable w,
                                                   Visual * v, int depth,
                                                   Colormap cm, ImlibImage * im,

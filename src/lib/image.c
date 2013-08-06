@@ -1,18 +1,20 @@
 #include "common.h"
-#include <time.h>
+
+#include <ctype.h>
+#include <dlfcn.h>
+#include <errno.h>
+#include <fcntl.h>
 #include <string.h>
+#include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <ctype.h>
-#include <errno.h>
 #ifdef BUILD_X11
 #include <X11/Xlib.h>
 #endif
-#include "image.h"
+
 #include "file.h"
+#include "image.h"
 #include "loaderpath.h"
-#include "Imlib2.h"
 
 static ImlibImage  *images = NULL;
 

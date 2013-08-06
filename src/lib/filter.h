@@ -1,6 +1,8 @@
 #ifndef __FILTER
 #define __FILTER 1
 
+#include "common.h"
+
 typedef struct _imlib_filter ImlibFilter;
 typedef struct _imlib_filter_color ImlibFilterColor;
 typedef struct _imlib_filter_pixel ImlibFilterPixel;
@@ -39,4 +41,5 @@ __hidden void
 __imlib_FilterConstants(ImlibFilter *fil, int a, int r, int g, int b);
 __hidden void
 __imlib_FilterImage(ImlibImage *im, ImlibFilter *fil);
+
 #endif

@@ -1,10 +1,10 @@
 #include "common.h"
+
+#include "blend.h"
 #include "colormod.h"
 #include "image.h"
-#include "blend.h"
-#include "span.h"
-#include "updates.h"
 #include "rgbadraw.h"
+#include "span.h"
 
 ImlibPoly
 __imlib_polygon_new()

@@ -1,10 +1,11 @@
 #include "common.h"
-#include "colormod.h"
-#include "image.h"
-#include "blend.h"
-#include "scale.h"
 
 #include <assert.h>
+
+#include "blend.h"
+#include "colormod.h"
+#include "image.h"
+#include "scale.h"
 
 /*\ NB: If you change this, don't forget asm_scale.S \*/
 struct _imlib_scale_info {

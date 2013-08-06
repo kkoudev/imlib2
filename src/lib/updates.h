@@ -1,5 +1,8 @@
 #ifndef __UPDATES
 #define __UPDATES 1
+
+#include "common.h"
+
 typedef struct _imlibupdate ImlibUpdate;
 
 struct _imlibupdate

@@ -1,6 +1,8 @@
 #ifndef __GRAD
 #define __GRAD 1
 
+#include "common.h"
+
 typedef struct _imlib_range       ImlibRange;
 typedef struct _imlib_range_color ImlibRangeColor;
 

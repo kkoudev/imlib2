@@ -1,8 +1,9 @@
 #include "common.h"
-#include "colormod.h"
-#include "image.h"
+
 #include "blend.h"
+#include "colormod.h"
 #include "filter.h"
+#include "image.h"
 
 /*\ Create and return an empty filter struct \*/
 ImlibFilter        *

@@ -1,6 +1,9 @@
 #ifndef __RGBADRAW
 #define __RGBADRAW 1
 
+#include "common.h"
+#include "updates.h"
+
 #define IN_SEGMENT(x, sx, sw) \
 ((unsigned)((x) - (sx)) < (unsigned)(sw))
 

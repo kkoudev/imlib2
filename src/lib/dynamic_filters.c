@@ -1,20 +1,22 @@
 #include "common.h"
+
+#include <ctype.h>
+#include <dlfcn.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdarg.h>
 #include <string.h>
 #include <time.h>
-#include <string.h>
-#include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <ctype.h>
-#include <errno.h>
-#include "image.h"
-#include "file.h"
+#include <sys/types.h>
+
 #include "dynamic_filters.h"
-#include "script.h"
+#include "file.h"
+#include "image.h"
 #include "loaderpath.h"
+#include "script.h"
 
 static pImlibExternalFilter filters = NULL;
 static int          dyn_initialised = 0;

@@ -1,6 +1,8 @@
 #ifndef __RGBA
 #define __RGBA 1
 
+#include "common.h"
+
 #define DM_BS1 (8 + 3)
 #define DM_BS2 (8)
 #define DM_X (8)

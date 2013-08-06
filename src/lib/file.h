@@ -1,6 +1,8 @@
 #ifndef __FILE
 #define __FILE 1
 
+#include "common.h"
+
 __hidden char               *__imlib_FileKey(const char *file);
 __hidden char               *__imlib_FileRealFile(const char *file);
 __hidden char               *__imlib_FileExtension(const char *file);

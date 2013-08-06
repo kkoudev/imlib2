@@ -1,6 +1,8 @@
 #ifndef __REND
 #define __REND 1
 
+#include "common.h"
+
 __hidden DATA32     __imlib_RenderGetPixel(Display * d, Drawable w, Visual * v,
                                            Colormap cm, int depth, DATA8 r,
                                            DATA8 g, DATA8 b);

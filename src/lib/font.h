@@ -2,6 +2,8 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
+#include "common.h"
+
 /* TODO separate fonts and data stuff */
 
 typedef struct _Imlib_Font 		ImlibFont;
