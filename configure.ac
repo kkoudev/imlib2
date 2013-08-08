@@ -14,10 +14,6 @@ AC_C_BIGENDIAN
 AC_PROG_CC
 AM_PROG_AS
 
-dnl Set default visibility to hidden?
-AC_ARG_ENABLE([visibility-hiding],
-  [AS_HELP_STRING([--enable-visibility-hiding], [enable visibility hiding @<:@default=no@:>@])])
-
 AC_HEADER_STDC
 AC_C_CONST
 
@@ -394,10 +390,7 @@ AC_SUBST(ID3LIBS)
 
 
 EC_C_WARNINGS()
-
-if test "x$enable_visibility_hiding" = xyes ; then
-  CPPFLAGS="$CPPFLAGS -fvisibility=hidden"
-fi
+EC_C_VISIBILITY(yes)
 
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_FILES([

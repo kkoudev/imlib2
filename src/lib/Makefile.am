@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS     = 1.4 foreign
 MAINTAINERCLEANFILES = Makefile.in
-AM_CFLAGS            = $(CFLAGS_WARNINGS)
+AM_CFLAGS            = $(CFLAGS_WARNINGS) $(CFLAGS_VISIBILITY)
 AM_CPPFLAGS          = -DPACKAGE_LIB_DIR=\"$(libdir)\" \
                        -I$(top_builddir) \
                        $(X_CFLAGS) \

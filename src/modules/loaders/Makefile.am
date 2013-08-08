@@ -1,6 +1,6 @@
 MAINTAINERCLEANFILES = Makefile.in
 
-AM_CFLAGS            = $(CFLAGS_WARNINGS)
+AM_CFLAGS            = $(CFLAGS_WARNINGS) $(CFLAGS_VISIBILITY)
 AM_CPPFLAGS          = -I$(top_builddir) -I$(top_srcdir)/src/lib
 
 pkgdir               = $(libdir)/imlib2/loaders

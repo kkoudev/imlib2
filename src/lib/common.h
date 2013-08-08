@@ -13,12 +13,6 @@
 # include <dmalloc.h>
 #endif
 
-#if defined(__GNUC__) && (__GNUC__ >= 4)
-#define __EXPORT__ __attribute__((visibility("default")))
-#else
-#define __EXPORT__
-#endif
-
 #define DATABIG unsigned long long
 #define DATA64  unsigned long long
 #define DATA32  unsigned int
