@@ -18,6 +18,3 @@ EXTRA_DIST = AUTHORS COPYING COPYING-PLAIN gendoc \
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = imlib2.pc
-
-changelog:
-	svn2cl
