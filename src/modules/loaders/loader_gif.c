@@ -142,6 +142,14 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
         if (!im->data)
            goto quit;
 
+        if (!cmap)
+          {
+             /* No colormap? Now what?? Let's clear the image (and not segv) */
+             memset(im->data, 0, sizeof(DATA32) * w * h);
+             rc = 1;
+             goto finish;
+          }
+
         ptr = im->data;
         per_inc = 100.0 / (((float)w) * h);
         for (i = 0; i < h; i++)
@@ -177,6 +185,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                }
           }
 
+      finish:
         if (progress)
            progress(im, 100, 0, last_y, w, h);
      }
