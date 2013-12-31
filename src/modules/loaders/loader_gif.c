@@ -8,6 +8,9 @@ char
 load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
      char immediate_load)
 {
+   static const int    intoffset[] = { 0, 4, 2, 1 };
+   static const int    intjump[] = { 8, 8, 4, 2 };
+   int                 rc;
    DATA32             *ptr;
    GifFileType        *gif;
    GifRowType         *rows;
@@ -16,8 +19,6 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
    int                 i, j, done, bg, r, g, b, w = 0, h = 0;
    float               per = 0.0, per_inc;
    int                 last_per = 0, last_y = 0;
-   int                 intoffset[] = { 0, 4, 2, 1 };
-   int                 intjump[] = { 8, 8, 4, 2 };
    int                 transp;
    int                 fd;
 
@@ -45,6 +46,8 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
         return 0;
      }
 
+   rc = 0;                      /* Failure */
+
    do
      {
         if (DGifGetRecordType(gif, &rec) == GIF_ERROR)
@@ -62,37 +65,19 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
              w = gif->Image.Width;
              h = gif->Image.Height;
              if (!IMAGE_DIMENSIONS_OK(w, h))
-               {
-                  DGifCloseFile(gif);
-                  return 0;
-               }
-             rows = malloc(h * sizeof(GifRowType *));
+                goto quit2;
+
+             rows = calloc(h, sizeof(GifRowType *));
              if (!rows)
-               {
-                  DGifCloseFile(gif);
-                  return 0;
-               }
-             for (i = 0; i < h; i++)
-               {
-                  rows[i] = NULL;
-               }
+                goto quit2;
+
              for (i = 0; i < h; i++)
                {
                   rows[i] = malloc(w * sizeof(GifPixelType));
                   if (!rows[i])
-                    {
-                       DGifCloseFile(gif);
-                       for (i = 0; i < h; i++)
-                         {
-                            if (rows[i])
-                              {
-                                 free(rows[i]);
-                              }
-                         }
-                       free(rows);
-                       return 0;
-                    }
+                     goto quit;
                }
+
              if (gif->Image.Interlace)
                {
                   for (i = 0; i < 4; i++)
@@ -131,6 +116,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
           }
      }
    while (rec != TERMINATE_RECORD_TYPE);
+
    if (transp >= 0)
      {
         SET_FLAG(im->flags, F_HAS_ALPHA);
@@ -139,6 +125,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
      {
         UNSET_FLAG(im->flags, F_HAS_ALPHA);
      }
+
    /* set the format string member to the lower-case full extension */
    /* name for the format - so example names would be: */
    /* "png", "jpeg", "tiff", "ppm", "pgm", "pbm", "gif", "xpm" ... */
@@ -146,17 +133,15 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
    im->h = h;
    if (!im->format)
       im->format = strdup("gif");
+
    if (im->loader || immediate_load || progress)
      {
         bg = gif->SBackGroundColor;
         cmap = (gif->Image.ColorMap ? gif->Image.ColorMap : gif->SColorMap);
         im->data = (DATA32 *) malloc(sizeof(DATA32) * w * h);
         if (!im->data)
-          {
-             DGifCloseFile(gif);
-             free(rows);
-             return 0;
-          }
+           goto quit;
+
         ptr = im->data;
         per_inc = 100.0 / (((float)w) * h);
         for (i = 0; i < h; i++)
@@ -184,30 +169,29 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                        last_per = (int)per;
                        if (!(progress(im, (int)per, 0, last_y, w, i)))
                          {
-                            DGifCloseFile(gif);
-                            for (i = 0; i < h; i++)
-                              {
-                                 free(rows[i]);
-                              }
-                            free(rows);
-                            return 2;
+                            rc = 2;
+                            goto quit;
                          }
                        last_y = i;
                     }
                }
           }
+
+        if (progress)
+           progress(im, 100, 0, last_y, w, h);
      }
-   if (progress)
-     {
-        progress(im, 100, 0, last_y, w, h);
-     }
-   DGifCloseFile(gif);
+
+   rc = 1;                      /* Success */
+
+ quit:
    for (i = 0; i < h; i++)
-     {
-        free(rows[i]);
-     }
+      free(rows[i]);
    free(rows);
-   return 1;
+
+ quit2:
+   DGifCloseFile(gif);
+
+   return rc;
 }
 
 void
