@@ -16,10 +16,7 @@ AM_PROG_AS
 
 dnl Set default visibility to hidden?
 AC_ARG_ENABLE([visibility-hiding],
-  [AS_HELP_STRING([--enable-visibility-hiding], [enable visibility hiding @<:@default=no@:>@])],
-  [enable_visibility_hiding=yes],
-  [enable_visibility_hiding=no]
-)
+  [AS_HELP_STRING([--enable-visibility-hiding], [enable visibility hiding @<:@default=no@:>@])])
 
 AC_HEADER_STDC
 AC_C_CONST
