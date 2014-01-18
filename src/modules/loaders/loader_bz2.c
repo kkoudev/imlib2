@@ -28,7 +28,8 @@ uncompress_file(FILE * fp, int dest)
         bytes = BZ2_bzRead(&error, bf, &outbuf, OUTBUF_SIZE);
 
         if (error == BZ_OK || error == BZ_STREAM_END)
-           write(dest, outbuf, bytes);
+           if (write(dest, outbuf, bytes) != bytes)
+              break;
 
         if (error == BZ_STREAM_END)
            break;

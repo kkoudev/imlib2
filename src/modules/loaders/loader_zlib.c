@@ -29,8 +29,8 @@ uncompress_file(int src, int dest)
              ret = 0;
              break;
           }
-        else
-           write(dest, outbuf, bytes);
+        else if (write(dest, outbuf, bytes) != bytes)
+           break;
      }
 
    gzclose(gf);

@@ -37,7 +37,11 @@ load(ImlibImage * im, ImlibProgressFunction progress,
         unsigned char       buf[PNG_BYTES_TO_CHECK];
 
         /* if we haven't read the header before, set the header data */
-        fread(buf, 1, PNG_BYTES_TO_CHECK, f);
+        if (fread(buf, 1, PNG_BYTES_TO_CHECK, f) != PNG_BYTES_TO_CHECK)
+          {
+             fclose(f);
+             return 0;
+          }
         if (png_sig_cmp(buf, 0, PNG_BYTES_TO_CHECK))
           {
              fclose(f);

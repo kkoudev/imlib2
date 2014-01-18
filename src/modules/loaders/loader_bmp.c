@@ -208,14 +208,22 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                 if (ncols > 256)
                    ncols = 256;
                 for (i = 0; i < ncols; i++)
-                   fread(&rgbQuads[i], 3, 1, f);
+                   if (fread(&rgbQuads[i], 3, 1, f) != 1)
+                     {
+                        fclose(f);
+                        return 0;
+                     }
              }
            else
              {
                 ncols /= 4;
                 if (ncols > 256)
                    ncols = 256;
-                fread(rgbQuads, 4, ncols, f);
+                if (fread(rgbQuads, 4, ncols, f) != ncols)
+                  {
+                     fclose(f);
+                     return 0;
+                  }
              }
         }
       else if (bitcount == 16 || bitcount == 32)
@@ -293,12 +301,18 @@ load(ImlibImage * im, ImlibProgressFunction progress,
         im->data = malloc(w * h * sizeof(DATA32));
         if (!im->data)
           {
-             fclose(f);
              free(buffer);
+             fclose(f);
              return 0;
           }
 
-        fread(buffer, imgsize, 1, f);
+        if (fread(buffer, imgsize, 1, f) != 1)
+          {
+             free(im->data);
+             free(buffer);
+             fclose(f);
+             return 0;
+          }
         fclose(f);
         buffer_ptr = buffer;
         buffer_end = buffer + imgsize;

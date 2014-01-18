@@ -71,12 +71,22 @@ load(ImlibImage * im, ImlibProgressFunction progress,
              {
                 int                 x;
 
-                fread(ptr, im->w, 4, f);
+                if (fread(ptr, im->w, 4, f) != 4)
+                  {
+                     free(ptr);
+                     fclose(f);
+                     return 0;
+                  }
                 for (x = 0; x < im->w; x++)
                    SWAP32(ptr[x]);
              }
 #else
-             fread(ptr, im->w, 4, f);
+             if (fread(ptr, im->w, 4, f) != 4)
+               {
+                  free(ptr);
+                  fclose(f);
+                  return 0;
+               }
 #endif
              ptr += im->w;
              if (progress)

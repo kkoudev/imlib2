@@ -278,7 +278,11 @@ load(ImlibImage * im, ImlibProgressFunction progress,
    if (!file)
       return 0;
 
-   fread(&magic_number, sizeof(uint16), 1, file);
+   if (fread(&magic_number, sizeof(uint16), 1, file) != 1)
+     {
+        fclose(file);
+        return 0;
+     }
    /* Apparently rewind(f) isn't sufficient */
    fseek(file, (long)0, SEEK_SET);
 
