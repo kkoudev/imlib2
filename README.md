@@ -6,7 +6,7 @@ The base commit is http://git.enlightenment.org/legacy/imlib2.git/commit/?id=560
 <br>
 This imlib2 is supported scale denom for libjpeg.
 
-<h1>INSTALL</h1>
+<h2>INSTALL</h2>
 
 ```bash
 ./autogen.sh
