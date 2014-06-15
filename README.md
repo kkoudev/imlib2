@@ -9,6 +9,7 @@ This Imlib2 is supported scaling denom of the libjpeg.
 <h2>INSTALL</h2>
 
 ```bash
+yum install -y libpng-devel libjpeg-devel libtiff-devel giflib-devel libid3tag-devel libICE libSM libX11 libXext libXt
 ./autogen.sh
 make
 make install
