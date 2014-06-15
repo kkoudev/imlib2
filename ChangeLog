@@ -1,0 +1,7 @@
+Version 1.4.6
+- TGA loader: Fix for corrupt RLE format.
+- Fix drawing of closed polygons in certain situations (ticket 2309).
+- Set warning options when using gcc.
+- Silence compiler warnings.
+- Don't set -std=gnu99.
+- XPM loader: Simplify and fix certain case of cpp > 2.
