@@ -13,7 +13,9 @@
 #ifdef BUILD_X11
 #include <X11/Xlib.h>
 #else
+#ifndef X_DISPLAY_MISSING
 #define X_DISPLAY_MISSING
+#endif
 #endif
 
 #include "dynamic_filters.h"

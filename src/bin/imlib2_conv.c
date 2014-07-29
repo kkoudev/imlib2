@@ -8,7 +8,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifndef X_DISPLAY_MISSING
 #define X_DISPLAY_MISSING
+#endif
 #include <Imlib2.h>
 
 #define PROG_NAME "imlib2_conv"
