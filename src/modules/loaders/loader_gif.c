@@ -198,7 +198,11 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
    free(rows);
 
  quit2:
+#if GIFLIB_MAJOR > 5 || (GIFLIB_MAJOR == 5 && GIFLIB_MINOR >= 1)
+   DGifCloseFile(gif, NULL);
+#else
    DGifCloseFile(gif);
+#endif
 
    return rc;
 }
