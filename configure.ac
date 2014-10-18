@@ -393,7 +393,7 @@ AM_CONDITIONAL(BUILD_ID3_LOADER, test "$id3_ok" = yes)
 AC_SUBST(ID3LIBS)
 
 
-AC_C_WARNFLAGS()
+EC_C_WARNINGS()
 
 if test "x$enable_visibility_hiding" = xyes ; then
   CPPFLAGS="$CPPFLAGS -fvisibility=hidden"
