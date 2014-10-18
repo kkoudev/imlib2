@@ -15,8 +15,10 @@
 
 #if defined(__GNUC__) && (__GNUC__ >= 4)
 #define __hidden __attribute__((visibility("hidden")))
+#define __EXPORT__ __attribute__((visibility("default")))
 #else
 #define __hidden
+#define __EXPORT__
 #endif
 
 #define DATABIG unsigned long long

@@ -60,9 +60,9 @@ typedef struct _imlib_variable
    struct _imlib_variable *next;
 } IVariable;
 
-__hidden Imlib_Image     __imlib_script_parse( Imlib_Image im, char *script, va_list );
-__hidden IFunctionParam *__imlib_script_parse_parameters( Imlib_Image im, char *parameters );
-__hidden Imlib_Image     __imlib_script_parse_function( Imlib_Image im, char *function );
+__hidden ImlibImage     *__imlib_script_parse(ImlibImage *im, char *script, va_list);
+__hidden IFunctionParam *__imlib_script_parse_parameters(ImlibImage *im, char *parameters);
+__hidden ImlibImage     *__imlib_script_parse_function(ImlibImage *im, char *function);
 __hidden void            __imlib_script_tidyup(void);
 __hidden void           *__imlib_script_get_next_var(void);
 __hidden void            __imlib_script_add_var( void *ptr );
