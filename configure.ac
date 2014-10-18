@@ -24,7 +24,7 @@ AC_C_CONST
 dnl Next two lines is a hack to prevent libtool checking for CXX/F77
 define([AC_LIBTOOL_LANG_CXX_CONFIG], [:])dnl
 define([AC_LIBTOOL_LANG_F77_CONFIG], [:])dnl
-AC_PROG_LIBTOOL
+LT_INIT
 
 VERSION_CUR=5
 VERSION_REV=6
