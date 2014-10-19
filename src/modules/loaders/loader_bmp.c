@@ -863,8 +863,8 @@ char
 save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
 {
    FILE               *f;
-   Imlib_Color         pixel_color;
    int                 i, j, pad;
+   DATA32              pixel;
 
    if (!im->data)
       return 0;
@@ -899,10 +899,10 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
      {
         for (j = 0; j < im->w; j++)
           {
-             imlib_image_query_pixel(j, im->h - i - 1, &pixel_color);
-             WriteleByte(f, pixel_color.blue);
-             WriteleByte(f, pixel_color.green);
-             WriteleByte(f, pixel_color.red);
+             pixel = im->data[im->w * (im->h - i - 1) + j];
+             WriteleByte(f, pixel & 0xff);
+             WriteleByte(f, (pixel >> 8) & 0xff);
+             WriteleByte(f, (pixel >> 16) & 0xff);
           }
         for (j = 0; j < pad; j++)
            WriteleByte(f, 0);
