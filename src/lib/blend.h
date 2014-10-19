@@ -389,22 +389,22 @@ typedef enum _imlibop ImlibOp;
 typedef void (*ImlibBlendFunction)(DATA32*, int, DATA32*, int, int, int,
 				   ImlibColorModifier *);
 
-__hidden ImlibBlendFunction
+ImlibBlendFunction
 __imlib_GetBlendFunction(ImlibOp op, char merge_alpha, char blend, char rgb_src,
 			 ImlibColorModifier * cm);
-__hidden void
+void
 __imlib_BlendImageToImage(ImlibImage *im_src, ImlibImage *im_dst,
                           char aa, char blend, char merge_alpha,
                           int ssx, int ssy, int ssw, int ssh,
                           int ddx, int ddy, int ddw, int ddh,
 			  ImlibColorModifier *cm, ImlibOp op,
 			  int clx, int cly, int clw, int clh);
-__hidden void
+void
 __imlib_BlendRGBAToData(DATA32 *src, int src_w, int src_h, DATA32 *dst,
 			int dst_w, int dst_h, int sx, int sy, int dx, int dy,
 			int w, int h, char blend, char merge_alpha,
 			ImlibColorModifier *cm, ImlibOp op, char rgb_src);
-__hidden void
+void
 __imlib_build_pow_lut(void);
 
 #ifdef DO_MMX_ASM

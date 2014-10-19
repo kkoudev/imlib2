@@ -31,10 +31,10 @@ struct _imlib_external_filter
    pImlibExternalFilter next;
 };
 
-__hidden void                 __imlib_dynamic_filters_init(void);
-__hidden void                 __imlib_dynamic_filters_deinit(void);
-__hidden pImlibExternalFilter __imlib_get_dynamic_filter( char *name );
-__hidden char               **__imlib_ListFilters(int *num_ret);
-__hidden pImlibExternalFilter __imlib_LoadFilter( char *file );
+void                 __imlib_dynamic_filters_init(void);
+void                 __imlib_dynamic_filters_deinit(void);
+pImlibExternalFilter __imlib_get_dynamic_filter( char *name );
+char               **__imlib_ListFilters(int *num_ret);
+pImlibExternalFilter __imlib_LoadFilter( char *file );
 
 #endif
