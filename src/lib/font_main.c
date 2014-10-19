@@ -17,14 +17,14 @@
 
 FT_Library          ft_lib;
 
-static int          imlib_hash_gen(const char *key);
+static int          __imlib_hash_gen(const char *key);
 static int          imlib_list_alloc_error(void);
 
 static int          _imlib_hash_alloc_error = 0;
 static int          _imlib_list_alloc_error = 0;
 
 void
-imlib_font_init(void)
+__imlib_font_init(void)
 {
    static int          initialised = 0;
    int                 error;
@@ -38,7 +38,7 @@ imlib_font_init(void)
 }
 
 int
-imlib_font_ascent_get(ImlibFont * fn)
+__imlib_font_ascent_get(ImlibFont * fn)
 {
    int                 val;
    int                 ret;
@@ -53,7 +53,7 @@ imlib_font_ascent_get(ImlibFont * fn)
 }
 
 int
-imlib_font_descent_get(ImlibFont * fn)
+__imlib_font_descent_get(ImlibFont * fn)
 {
    int                 val;
    int                 ret;
@@ -68,7 +68,7 @@ imlib_font_descent_get(ImlibFont * fn)
 }
 
 int
-imlib_font_max_ascent_get(ImlibFont * fn)
+__imlib_font_max_ascent_get(ImlibFont * fn)
 {
    int                 val;
    int                 ret;
@@ -83,7 +83,7 @@ imlib_font_max_ascent_get(ImlibFont * fn)
 }
 
 int
-imlib_font_max_descent_get(ImlibFont * fn)
+__imlib_font_max_descent_get(ImlibFont * fn)
 {
    int                 val;
    int                 ret;
@@ -98,7 +98,7 @@ imlib_font_max_descent_get(ImlibFont * fn)
 }
 
 int
-imlib_font_get_line_advance(ImlibFont * fn)
+__imlib_font_get_line_advance(ImlibFont * fn)
 {
    int                 val;
    int                 ret;
@@ -113,7 +113,7 @@ imlib_font_get_line_advance(ImlibFont * fn)
 }
 
 int
-imlib_font_utf8_get_next(unsigned char *buf, int *iindex)
+__imlib_font_utf8_get_next(unsigned char *buf, int *iindex)
 {
    /* Reads UTF8 bytes from @buf, starting at *@index and returns the code
     * point of the next valid code point. @index is updated ready for the
@@ -178,7 +178,7 @@ imlib_font_utf8_get_next(unsigned char *buf, int *iindex)
 /* TODO put this somewhere else */
 
 void               *
-imlib_object_list_prepend(void *in_list, void *in_item)
+__imlib_object_list_prepend(void *in_list, void *in_item)
 {
    Imlib_Object_List  *new_l;
    Imlib_Object_List  *list, *item;
@@ -201,7 +201,7 @@ imlib_object_list_prepend(void *in_list, void *in_item)
 }
 
 void               *
-imlib_object_list_remove(void *in_list, void *in_item)
+__imlib_object_list_remove(void *in_list, void *in_item)
 {
    Imlib_Object_List  *return_l;
    Imlib_Object_List  *list, *item;
@@ -235,7 +235,7 @@ imlib_object_list_remove(void *in_list, void *in_item)
 }
 
 static int
-imlib_hash_gen(const char *key)
+__imlib_hash_gen(const char *key)
 {
    unsigned int        hash_num = 0;
    const unsigned char *ptr;
@@ -251,7 +251,7 @@ imlib_hash_gen(const char *key)
 }
 
 Imlib_Hash         *
-imlib_hash_add(Imlib_Hash * hash, const char *key, const void *data)
+__imlib_hash_add(Imlib_Hash * hash, const char *key, const void *data)
 {
    int                 hash_num;
    Imlib_Hash_El      *el;
@@ -285,7 +285,7 @@ imlib_hash_add(Imlib_Hash * hash, const char *key, const void *data)
              _imlib_hash_alloc_error = 1;
              return hash;
           }
-        hash_num = imlib_hash_gen(key);
+        hash_num = __imlib_hash_gen(key);
      }
    else
      {
@@ -295,7 +295,7 @@ imlib_hash_add(Imlib_Hash * hash, const char *key, const void *data)
    el->data = (void *)data;
 
    hash->buckets[hash_num] =
-      imlib_object_list_prepend(hash->buckets[hash_num], el);
+      __imlib_object_list_prepend(hash->buckets[hash_num], el);
 
    if (imlib_list_alloc_error())
      {
@@ -310,7 +310,7 @@ imlib_hash_add(Imlib_Hash * hash, const char *key, const void *data)
 }
 
 void               *
-imlib_hash_find(Imlib_Hash * hash, const char *key)
+__imlib_hash_find(Imlib_Hash * hash, const char *key)
 {
    int                 hash_num;
    Imlib_Hash_El      *el;
@@ -319,7 +319,7 @@ imlib_hash_find(Imlib_Hash * hash, const char *key)
    _imlib_hash_alloc_error = 0;
    if (!hash)
       return NULL;
-   hash_num = imlib_hash_gen(key);
+   hash_num = __imlib_hash_gen(key);
    for (l = hash->buckets[hash_num]; l; l = l->next)
      {
         el = (Imlib_Hash_El *) l;
@@ -330,9 +330,9 @@ imlib_hash_find(Imlib_Hash * hash, const char *key)
                {
                   /* FIXME: move to front of list without alloc */
                   hash->buckets[hash_num] =
-                     imlib_object_list_remove(hash->buckets[hash_num], el);
+                     __imlib_object_list_remove(hash->buckets[hash_num], el);
                   hash->buckets[hash_num] =
-                     imlib_object_list_prepend(hash->buckets[hash_num], el);
+                     __imlib_object_list_prepend(hash->buckets[hash_num], el);
                   if (imlib_list_alloc_error())
                     {
                        _imlib_hash_alloc_error = 1;
@@ -346,7 +346,7 @@ imlib_hash_find(Imlib_Hash * hash, const char *key)
 }
 
 static int
-imlib_hash_size(Imlib_Hash * hash)
+__imlib_hash_size(Imlib_Hash * hash)
 {
    if (!hash)
       return 0;
@@ -354,13 +354,13 @@ imlib_hash_size(Imlib_Hash * hash)
 }
 
 void
-imlib_hash_free(Imlib_Hash * hash)
+__imlib_hash_free(Imlib_Hash * hash)
 {
    int                 i, size;
 
    if (!hash)
       return;
-   size = imlib_hash_size(hash);
+   size = __imlib_hash_size(hash);
    for (i = 0; i < size; i++)
      {
         while (hash->buckets[i])
@@ -370,7 +370,8 @@ imlib_hash_free(Imlib_Hash * hash)
              el = (Imlib_Hash_El *) hash->buckets[i];
              if (el->key)
                 free(el->key);
-             hash->buckets[i] = imlib_object_list_remove(hash->buckets[i], el);
+             hash->buckets[i] =
+                __imlib_object_list_remove(hash->buckets[i], el);
              free(el);
           }
      }
@@ -378,16 +379,16 @@ imlib_hash_free(Imlib_Hash * hash)
 }
 
 void
-imlib_hash_foreach(Imlib_Hash * hash, int (*func) (Imlib_Hash * hash,
-                                                   const char *key, void *data,
-                                                   void *fdata),
-                   const void *fdata)
+__imlib_hash_foreach(Imlib_Hash * hash, int (*func) (Imlib_Hash * hash,
+                                                     const char *key,
+                                                     void *data, void *fdata),
+                     const void *fdata)
 {
    int                 i, size;
 
    if (!hash)
       return;
-   size = imlib_hash_size(hash);
+   size = __imlib_hash_size(hash);
    for (i = 0; i < size; i++)
      {
         Imlib_Object_List  *l, *next_l;
