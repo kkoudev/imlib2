@@ -74,7 +74,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
 
              for (i = 0; i < h; i++)
                {
-                  rows[i] = malloc(w * sizeof(GifPixelType));
+                  rows[i] = calloc(w, sizeof(GifPixelType));
                   if (!rows[i])
                      goto quit;
                }
