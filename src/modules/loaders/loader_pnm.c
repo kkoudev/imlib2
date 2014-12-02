@@ -229,7 +229,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                          }
                     }
                   iptr = idata;
-                  if (v == 255)
+                  if (v == 0 || v == 255)
                     {
                        for (x = 0; x < w; x++)
                          {
@@ -303,7 +303,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                          }
                     }
                   iptr = idata;
-                  if (v == 255)
+                  if (v == 0 || v == 255)
                     {
                        for (x = 0; x < w; x++)
                          {
@@ -376,7 +376,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                      break;
 
                   ptr = data;
-                  if (v == 255)
+                  if (v == 0 || v == 255)
                     {
                        for (x = 0; x < w; x++)
                          {
@@ -418,7 +418,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                      break;
 
                   ptr = data;
-                  if (v == 255)
+                  if (v == 0 || v == 255)
                     {
                        for (x = 0; x < w; x++)
                          {
@@ -493,7 +493,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                      break;
 
                   ptr = data;
-                  if (v == 255)
+                  if (v == 0 || v == 255)
                     {
                        for (x = 0; x < w; x++)
                          {
