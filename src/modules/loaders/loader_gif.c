@@ -61,6 +61,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                {
                   /* PrintGifError(); */
                   rec = TERMINATE_RECORD_TYPE;
+                  break;
                }
              w = gif->Image.Width;
              h = gif->Image.Height;
