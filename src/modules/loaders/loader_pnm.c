@@ -373,7 +373,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
              for (y = 0; y < h; y++)
                {
                   if (!fread(data, w * 1, 1, f))
-                     break;
+                     goto quit_error;
 
                   ptr = data;
                   if (v == 0 || v == 255)
@@ -415,7 +415,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
              for (y = 0; y < h; y++)
                {
                   if (!fread(data, w * 3, 1, f))
-                     break;
+                     goto quit_error;
 
                   ptr = data;
                   if (v == 0 || v == 255)
@@ -457,7 +457,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
              for (y = 0; y < h; y++)
                {
                   if (!fread(data, w * 1, 1, f))
-                     break;
+                     goto quit_error;
 
                   ptr = data;
                   for (x = 0; x < w; x++)
@@ -490,7 +490,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
              for (y = 0; y < h; y++)
                {
                   if (!fread(data, w * 4, 1, f))
-                     break;
+                     goto quit_error;
 
                   ptr = data;
                   if (v == 0 || v == 255)
