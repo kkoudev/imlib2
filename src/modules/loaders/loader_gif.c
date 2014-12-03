@@ -132,6 +132,10 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
      {
         UNSET_FLAG(im->flags, F_HAS_ALPHA);
      }
+   if (!rows)
+     {
+        goto quit2;
+     }
 
    /* set the format string member to the lower-case full extension */
    /* name for the format - so example names would be: */
