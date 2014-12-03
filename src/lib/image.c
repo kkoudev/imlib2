@@ -1048,7 +1048,7 @@ __imlib_LoadImage(const char *file, ImlibProgressFunction progress,
       im->loader = best_loader;
    /* all loaders have been tried and they all failed. free the skeleton */
    /* image struct we had and return NULL */
-   if (im->w == 0)
+   if ((loader_ret == 0) || (im->w == 0))
      {
         /* if the caller wants an error return */
         if (er)
