@@ -4603,7 +4603,8 @@ imlib_save_image(const char *filename)
    CHECK_PARAM_POINTER("imlib_save_image", "filename", filename);
    CAST_IMAGE(im, ctx->image);
    if ((!(im->data)) && (im->loader) && (im->loader->load))
-      im->loader->load(im, NULL, 0, 1);
+      if (!im->loader->load(im, NULL, 0, 1))
+         return;
    if (!im->data)
       return;
    prev_ctxt_image = ctx->image;
