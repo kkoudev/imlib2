@@ -413,10 +413,16 @@ load(ImlibImage * im, ImlibProgressFunction progress,
              DATA32             *final_pixel = dataptr + im->w * im->h;
 
              /* loop until we've got all the pixels or run out of input */
-             while ((dataptr < final_pixel) &&
-                    ((bufptr + 1 + (bpp / 8)) <= bufend))
+             while ((dataptr < final_pixel))
                {
                   int                 count;
+
+                  if ((bufptr + 1 + (bpp / 8)) > bufend)
+                     {
+                        munmap(seg, ss.st_size);
+                        close(fd);
+                        return 0;
+                     }
 
                   curbyte = *bufptr++;
                   count = (curbyte & 0x7F) + 1;
@@ -471,9 +477,14 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                     {
                        int                 i;
 
-                       for (i = 0; (i < count) && (dataptr < final_pixel) &&
-                            ((bufptr + (bpp / 8)) <= bufend); i++)
+                       for (i = 0; (i < count) && (dataptr < final_pixel); i++)
                          {
+                            if ((bufptr + 1 + (bpp / 8)) > bufend)
+                              {
+                                 munmap(seg, ss.st_size);
+                                 close(fd);
+                                 return 0;
+                              }
                             switch (bpp)
                               {
 
