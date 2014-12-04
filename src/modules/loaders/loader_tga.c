@@ -356,8 +356,14 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                   else
                      dataptr = im->data + (y * im->w);
 
-                  for (x = 0; (x < im->w) && (bufptr + bpp / 8 <= bufend); x++) /* for each pixel in the row */
+                  for (x = 0; (x < im->w); x++) /* for each pixel in the row */
                     {
+                       if (bufptr + bpp / 8 > bufend)
+                         {
+                           munmap(seg, ss.st_size);
+                           close(fd);
+                           return 0;
+                         }
                        switch (bpp)
                          {
 
