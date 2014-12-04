@@ -237,6 +237,14 @@ load(ImlibImage * im, ImlibProgressFunction progress,
      {
      }
 
+   if ((size_t)ss.st_size < sizeof(tga_header) + header->idLength +
+      (footer_present ? sizeof(tga_footer) : 0))
+     {
+        munmap(seg, ss.st_size);
+        close(fd);
+        return 0;
+     }
+
    /* skip over header */
    filedata = (char *)filedata + sizeof(tga_header);
 
