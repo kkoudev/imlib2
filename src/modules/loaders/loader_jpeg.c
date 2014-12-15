@@ -46,7 +46,7 @@ char
 load(ImlibImage * im, ImlibProgressFunction progress,
      char progress_granularity, char immediate_load)
 {
-   int                 w, h;
+   int                 w, h, rc;
    struct jpeg_decompress_struct cinfo;
    struct ImLib_JPEG_error_mgr jerr;
    FILE               *f;
@@ -56,71 +56,55 @@ load(ImlibImage * im, ImlibProgressFunction progress,
    f = fopen(im->real_file, "rb");
    if (!f)
       return 0;
+
    cinfo.err = jpeg_std_error(&(jerr.pub));
    jerr.pub.error_exit = _JPEGFatalErrorHandler;
    jerr.pub.emit_message = _JPEGErrorHandler2;
    jerr.pub.output_message = _JPEGErrorHandler;
    if (sigsetjmp(jerr.setjmp_buffer, 1))
-     {
-        jpeg_destroy_decompress(&cinfo);
-        fclose(f);
-        return 0;
-     }
+      goto quit_error;
    jpeg_create_decompress(&cinfo);
    jpeg_stdio_src(&cinfo, f);
    jpeg_read_header(&cinfo, TRUE);
-   cinfo.do_fancy_upsampling = FALSE;
-   cinfo.do_block_smoothing = FALSE;
-   jpeg_start_decompress(&cinfo);
+   im->w = w = cinfo.image_width;
+   im->h = h = cinfo.image_height;
+
+   rc = 1;                      /* Ok */
+
    if ((!im->loader) && (!im->data))
      {
-        im->w = w = cinfo.output_width;
-        im->h = h = cinfo.output_height;
         if (!IMAGE_DIMENSIONS_OK(w, h))
-          {
-             im->w = im->h = 0;
-             jpeg_destroy_decompress(&cinfo);
-             fclose(f);
-             return 0;
-          }
+           goto quit_error;
         UNSET_FLAG(im->flags, F_HAS_ALPHA);
         im->format = strdup("jpeg");
      }
+
    if (((!im->data) && (im->loader)) || (immediate_load) || (progress))
      {
         DATA8              *ptr, *line[16], *data;
         DATA32             *ptr2;
         int                 x, y, l, i, scans, count, prevy;
 
-        im->w = w = cinfo.output_width;
-        im->h = h = cinfo.output_height;
+        cinfo.do_fancy_upsampling = FALSE;
+        cinfo.do_block_smoothing = FALSE;
+        jpeg_start_decompress(&cinfo);
 
         if ((cinfo.rec_outbuf_height > 16) || (cinfo.output_components <= 0) ||
             !IMAGE_DIMENSIONS_OK(w, h))
-          {
-             im->w = im->h = 0;
-             jpeg_destroy_decompress(&cinfo);
-             fclose(f);
-             return 0;
-          }
+           goto quit_error;
+
         data = malloc(w * 16 * cinfo.output_components);
         if (!data)
-          {
-             im->w = im->h = 0;
-             jpeg_destroy_decompress(&cinfo);
-             fclose(f);
-             return 0;
-          }
+           goto quit_error;
+
         /* must set the im->data member before callign progress function */
         ptr2 = im->data = malloc(w * h * sizeof(DATA32));
         if (!im->data)
           {
-             im->w = im->h = 0;
              free(data);
-             jpeg_destroy_decompress(&cinfo);
-             fclose(f);
-             return 0;
+             goto quit_error;
           }
+
         count = 0;
         prevy = 0;
         if (cinfo.output_components > 1)
@@ -156,11 +140,8 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                             if (!progress
                                 (im, per, 0, prevy, w, scans + l - prevy))
                               {
-                                 free(data);
-                                 jpeg_finish_decompress(&cinfo);
-                                 jpeg_destroy_decompress(&cinfo);
-                                 fclose(f);
-                                 return 2;
+                                 rc = 2;
+                                 goto done;
                               }
                             prevy = l + scans;
                          }
@@ -200,23 +181,28 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                             if (!progress
                                 (im, per, 0, prevy, w, l + scans - prevy))
                               {
-                                 free(data);
-                                 jpeg_finish_decompress(&cinfo);
-                                 jpeg_destroy_decompress(&cinfo);
-                                 fclose(f);
-                                 return 2;
+                                 rc = 2;
+                                 goto done;
                               }
                             prevy = l + scans;
                          }
                     }
                }
           }
+      done:
+        jpeg_finish_decompress(&cinfo);
         free(data);
      }
-   jpeg_finish_decompress(&cinfo);
+
+ quit:
    jpeg_destroy_decompress(&cinfo);
    fclose(f);
-   return 1;
+   return rc;
+
+ quit_error:
+   rc = 0;                      /* Error */
+   im->w = im->h = 0;
+   goto quit;
 }
 
 char
