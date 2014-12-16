@@ -85,10 +85,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                     {
                        for (j = intoffset[i]; j < h; j += intjump[i])
                          {
-                            if (DGifGetLine(gif, rows[i], w) == GIF_ERROR)
-                               {
-                                  break;
-                               }
+                            DGifGetLine(gif, rows[j], w);
                          }
                     }
                }
@@ -96,10 +93,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                {
                   for (i = 0; i < h; i++)
                     {
-                       if (DGifGetLine(gif, rows[i], w) == GIF_ERROR)
-                          {
-                             break;
-                          }
+                       DGifGetLine(gif, rows[i], w);
                     }
                }
              done = 1;
