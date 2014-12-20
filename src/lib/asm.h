@@ -4,9 +4,9 @@
 #define PR_(sym) __##sym
 
 #if defined(__GNUC__) && (__GNUC__ >= 4)
-# define HIDDEN_(sym) .hidden PR_(sym)
+#define HIDDEN_(sym) .hidden PR_(sym)
 #else
-# define HIDDEN_(sym)
+#define HIDDEN_(sym)
 #endif
 
 #define FN_(sym) \

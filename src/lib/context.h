@@ -20,17 +20,17 @@ struct _context {
    void               *b_dither;
 };
 
-void       __imlib_SetMaxContexts(int num);
-int        __imlib_GetMaxContexts(void);
-void       __imlib_FlushContexts(void);
-void       __imlib_FreeContextForDisplay(Display * d);
-void       __imlib_FreeContextForColormap(Display * d, Colormap cm);
-void       __imlib_FreeContextForVisual(Display * d, Visual * v);
-Context   *__imlib_FindContext(Display * d, Visual * v, Colormap c,
+void                __imlib_SetMaxContexts(int num);
+int                 __imlib_GetMaxContexts(void);
+void                __imlib_FlushContexts(void);
+void                __imlib_FreeContextForDisplay(Display * d);
+void                __imlib_FreeContextForColormap(Display * d, Colormap cm);
+void                __imlib_FreeContextForVisual(Display * d, Visual * v);
+Context            *__imlib_FindContext(Display * d, Visual * v, Colormap c,
                                         int depth);
-Context   *__imlib_NewContext(Display * d, Visual * v, Colormap c,
+Context            *__imlib_NewContext(Display * d, Visual * v, Colormap c,
                                        int depth);
-Context   *__imlib_GetContext(Display * d, Visual * v, Colormap c,
+Context            *__imlib_GetContext(Display * d, Visual * v, Colormap c,
                                        int depth);
 
 #endif

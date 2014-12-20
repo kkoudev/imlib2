@@ -4,37 +4,36 @@
 #include "common.h"
 #include "script.h"
 
-struct imlib_filter_info
-{
-   char *name;
-   char *author;
-   char *description;
-   char **filters;
-   int num_filters;
+struct imlib_filter_info {
+   char               *name;
+   char               *author;
+   char               *description;
+   char              **filters;
+   int                 num_filters;
 };
 
 typedef struct _imlib_external_filter ImlibExternalFilter;
 typedef struct _imlib_external_filter *pImlibExternalFilter;
 
-struct _imlib_external_filter
-{
-   char *name;
-   char *author;
-   char *description;
-   int    num_filters;
-   char  *filename;
-   void  *handle;
-   char **filters;
-   void  (*init_filter)( struct imlib_filter_info *info );
-   void  (*deinit_filter)(void);
-   void  *(*exec_filter)( char *filter, void *im, pIFunctionParam params );
+struct _imlib_external_filter {
+   char               *name;
+   char               *author;
+   char               *description;
+   int                 num_filters;
+   char               *filename;
+   void               *handle;
+   char              **filters;
+   void                (*init_filter) (struct imlib_filter_info * info);
+   void                (*deinit_filter) (void);
+   void               *(*exec_filter) (char *filter, void *im,
+                                       pIFunctionParam params);
    pImlibExternalFilter next;
 };
 
-void                 __imlib_dynamic_filters_init(void);
-void                 __imlib_dynamic_filters_deinit(void);
-pImlibExternalFilter __imlib_get_dynamic_filter( char *name );
-char               **__imlib_ListFilters(int *num_ret);
-pImlibExternalFilter __imlib_LoadFilter( char *file );
+void                __imlib_dynamic_filters_init(void);
+void                __imlib_dynamic_filters_deinit(void);
+pImlibExternalFilter __imlib_get_dynamic_filter(char *name);
+char              **__imlib_ListFilters(int *num_ret);
+pImlibExternalFilter __imlib_LoadFilter(char *file);
 
 #endif

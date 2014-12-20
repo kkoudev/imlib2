@@ -6,44 +6,38 @@
 
 /* TODO separate fonts and data stuff */
 
-typedef struct _Imlib_Font 		ImlibFont;
-typedef struct _Imlib_Font_Glyph 	Imlib_Font_Glyph;
+typedef struct _Imlib_Font ImlibFont;
+typedef struct _Imlib_Font_Glyph Imlib_Font_Glyph;
 
-typedef struct _Imlib_Object_List 	Imlib_Object_List;
-typedef struct _Imlib_Hash 		Imlib_Hash;
-typedef struct _Imlib_Hash_El 		Imlib_Hash_El;
+typedef struct _Imlib_Object_List Imlib_Object_List;
+typedef struct _Imlib_Hash Imlib_Hash;
+typedef struct _Imlib_Hash_El Imlib_Hash_El;
 
-struct _Imlib_Object_List
-{
+struct _Imlib_Object_List {
    Imlib_Object_List  *next, *prev;
    Imlib_Object_List  *last;
 };
 
-struct _Imlib_Hash
-{
+struct _Imlib_Hash {
    int                 population;
    Imlib_Object_List  *buckets[256];
 };
 
-struct _Imlib_Hash_El
-{
+struct _Imlib_Hash_El {
    Imlib_Object_List   _list_data;
    char               *key;
    void               *data;
 };
 
-struct _Imlib_Font
-{
+struct _Imlib_Font {
    Imlib_Object_List   _list_data;
    char               *name;
    char               *file;
    int                 size;
 
-   struct
-   {
+   struct {
       FT_Face             face;
-   }
-   ft;
+   } ft;
 
    Imlib_Hash         *glyphs;
 
@@ -52,12 +46,11 @@ struct _Imlib_Font
    int                 references;
 
    /* using a double-linked list for the fallback chain */
-   struct _Imlib_Font	*fallback_prev;
-   struct _Imlib_Font	*fallback_next;
+   struct _Imlib_Font *fallback_prev;
+   struct _Imlib_Font *fallback_next;
 };
 
-struct _Imlib_Font_Glyph
-{
+struct _Imlib_Font_Glyph {
    FT_Glyph            glyph;
    FT_BitmapGlyph      glyph_out;
 };
@@ -80,7 +73,8 @@ char              **__imlib_font_list_fonts(int *num_ret);
 ImlibFont          *__imlib_font_load_joined(const char *name);
 void                __imlib_font_free(ImlibFont * fn);
 int                 __imlib_font_insert_into_fallback_chain_imp(ImlibFont * fn,
-                                                              ImlibFont * fallback);
+                                                                ImlibFont *
+                                                                fallback);
 void                __imlib_font_remove_from_fallback_chain_imp(ImlibFont * fn);
 int                 __imlib_font_cache_get(void);
 void                __imlib_font_cache_set(int size);
@@ -89,45 +83,47 @@ void                __imlib_font_modify_cache_by(ImlibFont * fn, int dir);
 void                __imlib_font_modify_cache_by(ImlibFont * fn, int dir);
 void                __imlib_font_flush_last(void);
 ImlibFont          *__imlib_font_find(const char *name, int size);
-ImlibFont          *__imlib_font_find_glyph(ImlibFont * fn, int gl, unsigned int *ret_index);
+ImlibFont          *__imlib_font_find_glyph(ImlibFont * fn, int gl,
+                                            unsigned int *ret_index);
 
 void                __imlib_font_query_size(ImlibFont * fn, const char *text,
-					  int *w, int *h);
+                                            int *w, int *h);
 int                 __imlib_font_query_inset(ImlibFont * fn, const char *text);
 void                __imlib_font_query_advance(ImlibFont * fn, const char *text,
-					     int *h_adv, int *v_adv);
+                                               int *h_adv, int *v_adv);
 int                 __imlib_font_query_char_coords(ImlibFont * fn,
-						 const char *text, int pos,
-						 int *cx, int *cy, int *cw,
-						 int *ch);
+                                                   const char *text, int pos,
+                                                   int *cx, int *cy,
+                                                   int *cw, int *ch);
 int                 __imlib_font_query_text_at_pos(ImlibFont * fn,
-						 const char *text, int x, int y,
-						 int *cx, int *cy, int *cw,
-						 int *ch);
+                                                   const char *text,
+                                                   int x, int y,
+                                                   int *cx, int *cy,
+                                                   int *cw, int *ch);
 
 Imlib_Font_Glyph   *__imlib_font_cache_glyph_get(ImlibFont * fn, FT_UInt index);
-void                __imlib_render_str(ImlibImage * im, ImlibFont * f, int drx,
-				     int dry, const char *text, DATA8 r,
-				     DATA8 g, DATA8 b, DATA8 a, char dir,
-				     double angle, int *retw, int *reth,
-				     int blur, int *nextx, int *nexty,
-				     ImlibOp op, int clx, int cly, int clw,
-				     int clh);
+void                __imlib_render_str(ImlibImage * im, ImlibFont * f,
+                                       int drx, int dry, const char *text,
+                                       DATA8 r, DATA8 g, DATA8 b, DATA8 a,
+                                       char dir, double angle,
+                                       int *retw, int *reth, int blur,
+                                       int *nextx, int *nexty, ImlibOp op,
+                                       int clx, int cly, int clw, int clh);
 void                __imlib_font_draw(ImlibImage * dst, DATA32 col,
-				    ImlibFont * fn, int x, int y,
-				    const char *text, int *nextx, int *nexty,
-				    int clx, int cly, int clw, int clh);
+                                      ImlibFont * fn, int x, int y,
+                                      const char *text, int *nextx, int *nexty,
+                                      int clx, int cly, int clw, int clh);
 
 /* data manipulation */
 
 void               *__imlib_object_list_prepend(void *in_list, void *in_item);
 void               *__imlib_object_list_remove(void *in_list, void *in_item);
 Imlib_Hash         *__imlib_hash_add(Imlib_Hash * hash, const char *key,
-				   const void *data);
+                                     const void *data);
 void               *__imlib_hash_find(Imlib_Hash * hash, const char *key);
 void                __imlib_hash_free(Imlib_Hash * hash);
 void                __imlib_hash_foreach(Imlib_Hash * hash,
-				       int (*func) (Imlib_Hash * hash,
-						    const char *key, void *data,
-						    void *fdata),
-				       const void *fdata);
+                                         int (*func) (Imlib_Hash * hash,
+                                                      const char *key,
+                                                      void *data, void *fdata),
+                                         const void *fdata);
