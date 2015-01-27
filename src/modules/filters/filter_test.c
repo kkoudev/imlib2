@@ -1,5 +1,6 @@
 #include "filter_common.h"
 #include <string.h>
+#include <Imlib2.h>
 
 void
 init(struct imlib_filter_info *info)

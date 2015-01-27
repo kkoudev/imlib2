@@ -1,6 +1,7 @@
 #include "filter_common.h"
 #include <string.h>
 #include <math.h>
+#include <Imlib2.h>
 #include "colormod.h"
 #include "blend.h"
 

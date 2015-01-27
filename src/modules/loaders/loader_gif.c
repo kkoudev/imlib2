@@ -61,6 +61,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                {
                   /* PrintGifError(); */
                   rec = TERMINATE_RECORD_TYPE;
+                  break;
                }
              w = gif->Image.Width;
              h = gif->Image.Height;
@@ -73,7 +74,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
 
              for (i = 0; i < h; i++)
                {
-                  rows[i] = malloc(w * sizeof(GifPixelType));
+                  rows[i] = calloc(w, sizeof(GifPixelType));
                   if (!rows[i])
                      goto quit;
                }
@@ -124,6 +125,10 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
    else
      {
         UNSET_FLAG(im->flags, F_HAS_ALPHA);
+     }
+   if (!rows)
+     {
+        goto quit2;
      }
 
    /* set the format string member to the lower-case full extension */

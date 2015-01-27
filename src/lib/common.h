@@ -10,13 +10,7 @@
 #include <string.h>
 #include <math.h>
 #ifdef WITH_DMALLOC
-# include <dmalloc.h>
-#endif
-
-#if defined(__GNUC__) && (__GNUC__ >= 4)
-#define __hidden __attribute__((visibility("hidden")))
-#else
-#define __hidden
+#include <dmalloc.h>
 #endif
 
 #define DATABIG unsigned long long
@@ -26,7 +20,8 @@
 #define DATA8   unsigned char
 
 #ifdef DO_MMX_ASM
-__hidden int __imlib_get_cpuid(void);
+int                 __imlib_get_cpuid(void);
+
 #define CPUID_MMX (1 << 23)
 #define CPUID_XMM (1 << 25)
 #endif

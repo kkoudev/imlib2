@@ -18,7 +18,7 @@
 extern FT_Library   ft_lib;
 
 Imlib_Font_Glyph   *
-imlib_font_cache_glyph_get(ImlibFont * fn, FT_UInt index)
+__imlib_font_cache_glyph_get(ImlibFont * fn, FT_UInt index)
 {
    Imlib_Font_Glyph   *fg;
    char                key[6];
@@ -31,7 +31,7 @@ imlib_font_cache_glyph_get(ImlibFont * fn, FT_UInt index)
    key[4] = ((index >> 28) & 0x0f) + 1;
    key[5] = 0;
 
-   fg = imlib_hash_find(fn->glyphs, key);
+   fg = __imlib_hash_find(fn->glyphs, key);
    if (fg)
       return fg;
 
@@ -62,24 +62,24 @@ imlib_font_cache_glyph_get(ImlibFont * fn, FT_UInt index)
      }
    fg->glyph_out = (FT_BitmapGlyph) fg->glyph;
 
-   fn->glyphs = imlib_hash_add(fn->glyphs, key, fg);
+   fn->glyphs = __imlib_hash_add(fn->glyphs, key, fg);
    return fg;
 }
 
 void
-imlib_render_str(ImlibImage * im, ImlibFont * fn, int drx, int dry,
-                 const char *text, DATA8 r, DATA8 g, DATA8 b, DATA8 a,
-                 char dir, double angle, int *retw, int *reth, int blur,
-                 int *nextx, int *nexty, ImlibOp op, int clx, int cly,
-                 int clw, int clh)
+__imlib_render_str(ImlibImage * im, ImlibFont * fn, int drx, int dry,
+                   const char *text, DATA8 r, DATA8 g, DATA8 b, DATA8 a,
+                   char dir, double angle, int *retw, int *reth, int blur,
+                   int *nextx, int *nexty, ImlibOp op, int clx, int cly,
+                   int clw, int clh)
 {
    int                 w, h, ascent;
    ImlibImage         *im2;
    DATA32             *data, col;
    int                 nx, ny;
 
-   imlib_font_query_advance(fn, text, &w, NULL);
-   h = imlib_font_max_ascent_get(fn) - imlib_font_max_descent_get(fn);
+   __imlib_font_query_advance(fn, text, &w, NULL);
+   h = __imlib_font_max_ascent_get(fn) - __imlib_font_max_descent_get(fn);
 
    data = malloc(w * h * sizeof(DATA32));
    if (!data)
@@ -97,9 +97,9 @@ imlib_render_str(ImlibImage * im, ImlibFont * fn, int drx, int dry,
    /* TODO check for endianess */
    col = (a << 24) | (r << 16) | (g << 8) | b;
 
-   ascent = imlib_font_max_ascent_get(fn);
+   ascent = __imlib_font_max_ascent_get(fn);
 
-   imlib_font_draw(im2, col, fn, 0, ascent, text, &nx, &ny, 0, 0, w, h);
+   __imlib_font_draw(im2, col, fn, 0, ascent, text, &nx, &ny, 0, 0, w, h);
 
    /* OK, now we have small ImlibImage with text rendered, 
     * have to blend it on im */
@@ -253,7 +253,7 @@ imlib_render_str(ImlibImage * im, ImlibFont * fn, int drx, int dry,
  * ret_index will be set to 0
  */
 ImlibFont          *
-imlib_font_find_glyph(ImlibFont * first_fn, int gl, unsigned int *ret_index)
+__imlib_font_find_glyph(ImlibFont * first_fn, int gl, unsigned int *ret_index)
 {
    ImlibFont          *fn = first_fn;
 
@@ -276,9 +276,9 @@ imlib_font_find_glyph(ImlibFont * first_fn, int gl, unsigned int *ret_index)
 }
 
 void
-imlib_font_draw(ImlibImage * dst, DATA32 col, ImlibFont * fn, int x, int y,
-                const char *text, int *nextx, int *nexty, int clx, int cly,
-                int clw, int clh)
+__imlib_font_draw(ImlibImage * dst, DATA32 col, ImlibFont * fn, int x, int y,
+                  const char *text, int *nextx, int *nexty, int clx, int cly,
+                  int clw, int clh)
 {
    int                 use_kerning;
    int                 pen_x, pen_y;
@@ -344,10 +344,10 @@ imlib_font_draw(ImlibImage * dst, DATA32 col, ImlibFont * fn, int x, int y,
         int                 chr_x, chr_y;
         int                 gl;
 
-        gl = imlib_font_utf8_get_next((unsigned char *)text, &chr);
+        gl = __imlib_font_utf8_get_next((unsigned char *)text, &chr);
         if (gl == 0)
            break;
-        fn_in_chain = imlib_font_find_glyph(fn, gl, &index);
+        fn_in_chain = __imlib_font_find_glyph(fn, gl, &index);
         if ((use_kerning) && (prev_index) && (index))
           {
              FT_Vector           delta;
@@ -356,7 +356,7 @@ imlib_font_draw(ImlibImage * dst, DATA32 col, ImlibFont * fn, int x, int y,
                             ft_kerning_default, &delta);
              pen_x += delta.x << 2;
           }
-        fg = imlib_font_cache_glyph_get(fn_in_chain, index);
+        fg = __imlib_font_cache_glyph_get(fn_in_chain, index);
         if (!fg)
            continue;
 
@@ -449,5 +449,5 @@ imlib_font_draw(ImlibImage * dst, DATA32 col, ImlibFont * fn, int x, int y,
    if (nextx)
       *nextx = (pen_x >> 8) - x;
    if (nexty)
-      *nexty = imlib_font_get_line_advance(fn);
+      *nexty = __imlib_font_get_line_advance(fn);
 }

@@ -18,6 +18,7 @@
 #endif
 #endif
 
+#include "Imlib2.h"
 #include "dynamic_filters.h"
 #include "image.h"
 #include "script.h"
@@ -124,7 +125,7 @@ __imlib_script_add_var(void *ptr)
 }
 
 IFunctionParam     *
-__imlib_script_parse_parameters(Imlib_Image im, char *parameters)
+__imlib_script_parse_parameters(ImlibImage * im, char *parameters)
 {
    int                 i = 0, in_quote = 0, depth = 0, start = 0, value_start =
       0;
@@ -197,13 +198,13 @@ __imlib_script_parse_parameters(Imlib_Image im, char *parameters)
    return rootptr;
 }
 
-Imlib_Image
-__imlib_script_parse_function(Imlib_Image im, char *function)
+ImlibImage         *
+__imlib_script_parse_function(ImlibImage * im, char *function)
 {
    char               *funcname, *funcparams;
    IFunctionParam     *params;
    ImlibExternalFilter *filter = NULL;
-   Imlib_Image         retval;
+   ImlibImage         *retval;
 
    D("(--) ===> Entering __imlib_script_parse_function()");
    funcname =
@@ -242,8 +243,8 @@ __imlib_script_parse_function(Imlib_Image im, char *function)
    return retval;
 }
 
-Imlib_Image
-__imlib_script_parse(Imlib_Image im, char *script, va_list param_list)
+ImlibImage         *
+__imlib_script_parse(ImlibImage * im, char *script, va_list param_list)
 {
    int                 i = 0, in_quote = 0, start = 0, depth = 0;
    int                 script_len;

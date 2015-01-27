@@ -24,7 +24,7 @@ static char       **fpath = NULL;
 static int          fpath_num = 0;
 static Imlib_Object_List *fonts = NULL;
 
-static ImlibFont   *imlib_font_load(const char *name, int faceidx, int size);
+static ImlibFont   *__imlib_font_load(const char *name, int faceidx, int size);
 static int          font_modify_cache_cb(Imlib_Hash * hash, const char *key,
                                          void *data, void *fdata);
 static int          font_flush_free_glyph_cb(Imlib_Hash * hash, const char *key,
@@ -32,9 +32,9 @@ static int          font_flush_free_glyph_cb(Imlib_Hash * hash, const char *key,
 
 /* FIXME now! listdir() from evas_object_text.c */
 
-/* separate fontname and size, find font file, start imlib_font_load() then */
+/* separate fontname and size, find font file, start __imlib_font_load() then */
 ImlibFont          *
-imlib_font_load_joined(const char *fontname)
+__imlib_font_load_joined(const char *fontname)
 {
    int                 j, k, size, faceidx, namelen;
    char               *name, *file = NULL, *tmp;
@@ -128,23 +128,23 @@ imlib_font_load_joined(const char *fontname)
    if (!file)
       return NULL;
 
-   fn = imlib_font_load(file, faceidx, size);
+   fn = __imlib_font_load(file, faceidx, size);
    free(file);
    return fn;
 }
 
 static ImlibFont   *
-imlib_font_load(const char *name, int faceidx, int size)
+__imlib_font_load(const char *name, int faceidx, int size)
 {
    int                 error;
    ImlibFont          *fn;
    char               *file;
 
-   fn = imlib_font_find(name, size);
+   fn = __imlib_font_find(name, size);
    if (fn)
       return fn;
 
-   imlib_font_init();
+   __imlib_font_init();
 
    fn = malloc(sizeof(ImlibFont));
    file = (char *)name;
@@ -209,30 +209,31 @@ imlib_font_load(const char *name, int faceidx, int size)
    fn->fallback_prev = NULL;
    fn->fallback_next = NULL;
 
-   fonts = imlib_object_list_prepend(fonts, fn);
+   fonts = __imlib_object_list_prepend(fonts, fn);
    return fn;
 }
 
 void
-imlib_font_free(ImlibFont * fn)
+__imlib_font_free(ImlibFont * fn)
 {
    fn->references--;
    if (fn->references == 0)
      {
-        imlib_font_modify_cache_by(fn, 1);
-        imlib_font_flush();
+        __imlib_font_modify_cache_by(fn, 1);
+        __imlib_font_flush();
      }
 }
 
 int
-imlib_font_insert_into_fallback_chain_imp(ImlibFont * fn, ImlibFont * fallback)
+__imlib_font_insert_into_fallback_chain_imp(ImlibFont * fn,
+                                            ImlibFont * fallback)
 {
    /* avoid infinite recursion */
    if (fn == fallback)
       return 1;
 
    /* now remove the given fallback font from any chain it's already in */
-   imlib_font_remove_from_fallback_chain_imp(fallback);
+   __imlib_font_remove_from_fallback_chain_imp(fallback);
 
    /* insert fallback into fn's font chain */
    ImlibFont          *tmp = fn->fallback_next;
@@ -246,7 +247,7 @@ imlib_font_insert_into_fallback_chain_imp(ImlibFont * fn, ImlibFont * fallback)
 }
 
 void
-imlib_font_remove_from_fallback_chain_imp(ImlibFont * fn)
+__imlib_font_remove_from_fallback_chain_imp(ImlibFont * fn)
 {
    /* if fn has a previous font in its font chain, then make its fallback_next fn's fallback_next since fn is going away */
    if (fn->fallback_prev)
@@ -269,7 +270,7 @@ font_modify_cache_cb(Imlib_Hash * hash, const char *key, void *data,
 }
 
 void
-imlib_font_modify_cache_by(ImlibFont * fn, int dir)
+__imlib_font_modify_cache_by(ImlibFont * fn, int dir)
 {
    int                 sz_name = 0, sz_file = 0, sz_hash = 0;
 
@@ -279,30 +280,30 @@ imlib_font_modify_cache_by(ImlibFont * fn, int dir)
       sz_file = strlen(fn->file);
    if (fn->glyphs)
       sz_hash = sizeof(Imlib_Hash);
-   imlib_hash_foreach(fn->glyphs, font_modify_cache_cb, &dir);
+   __imlib_hash_foreach(fn->glyphs, font_modify_cache_cb, &dir);
    font_cache_usage += dir * (sizeof(ImlibFont) + sz_name + sz_file + sz_hash + sizeof(FT_FaceRec) + 16384);    /* fudge values */
 }
 
 int
-imlib_font_cache_get(void)
+__imlib_font_cache_get(void)
 {
    return font_cache;
 }
 
 void
-imlib_font_cache_set(int size)
+__imlib_font_cache_set(int size)
 {
    font_cache = size;
-   imlib_font_flush();
+   __imlib_font_flush();
 }
 
 void
-imlib_font_flush(void)
+__imlib_font_flush(void)
 {
    if (font_cache_usage < font_cache)
       return;
    while (font_cache_usage > font_cache)
-      imlib_font_flush_last();
+      __imlib_font_flush_last();
 }
 
 static int
@@ -318,7 +319,7 @@ font_flush_free_glyph_cb(Imlib_Hash * hash, const char *key, void *data,
 }
 
 void
-imlib_font_flush_last(void)
+__imlib_font_flush_last(void)
 {
    Imlib_Object_List  *l;
    ImlibFont          *fn = NULL;
@@ -334,11 +335,11 @@ imlib_font_flush_last(void)
    if (!fn)
       return;
 
-   fonts = imlib_object_list_remove(fonts, fn);
-   imlib_font_modify_cache_by(fn, -1);
+   fonts = __imlib_object_list_remove(fonts, fn);
+   __imlib_font_modify_cache_by(fn, -1);
 
-   imlib_hash_foreach(fn->glyphs, font_flush_free_glyph_cb, NULL);
-   imlib_hash_free(fn->glyphs);
+   __imlib_hash_foreach(fn->glyphs, font_flush_free_glyph_cb, NULL);
+   __imlib_hash_free(fn->glyphs);
 
    if (fn->file)
       free(fn->file);
@@ -349,7 +350,7 @@ imlib_font_flush_last(void)
 }
 
 ImlibFont          *
-imlib_font_find(const char *name, int size)
+__imlib_font_find(const char *name, int size)
 {
    Imlib_Object_List  *l;
 
@@ -361,10 +362,10 @@ imlib_font_find(const char *name, int size)
         if ((fn->size == size) && (!strcmp(name, fn->name)))
           {
              if (fn->references == 0)
-                imlib_font_modify_cache_by(fn, -1);
+                __imlib_font_modify_cache_by(fn, -1);
              fn->references++;
-             fonts = imlib_object_list_remove(fonts, fn);
-             fonts = imlib_object_list_prepend(fonts, fn);
+             fonts = __imlib_object_list_remove(fonts, fn);
+             fonts = __imlib_object_list_prepend(fonts, fn);
              return fn;
           }
      }
@@ -373,7 +374,7 @@ imlib_font_find(const char *name, int size)
 
 /* font pathes */
 void
-imlib_font_add_font_path(const char *path)
+__imlib_font_add_font_path(const char *path)
 {
    fpath_num++;
    if (!fpath)
@@ -384,7 +385,7 @@ imlib_font_add_font_path(const char *path)
 }
 
 void
-imlib_font_del_font_path(const char *path)
+__imlib_font_del_font_path(const char *path)
 {
    int                 i, j;
 
@@ -409,7 +410,7 @@ imlib_font_del_font_path(const char *path)
 }
 
 int
-imlib_font_path_exists(const char *path)
+__imlib_font_path_exists(const char *path)
 {
    int                 i;
 
@@ -422,7 +423,7 @@ imlib_font_path_exists(const char *path)
 }
 
 char              **
-imlib_font_list_font_path(int *num_ret)
+__imlib_font_list_font_path(int *num_ret)
 {
    *num_ret = fpath_num;
    return fpath;
@@ -430,14 +431,14 @@ imlib_font_list_font_path(int *num_ret)
 
 /* fonts list */
 char              **
-imlib_font_list_fonts(int *num_ret)
+__imlib_font_list_fonts(int *num_ret)
 {
    int                 i, j, d, l = 0;
    char              **list = NULL, **dir, *path;
    FT_Error            error;
    char               *p;
 
-   imlib_font_init();
+   __imlib_font_init();
 
    for (i = 0; i < fpath_num; i++)
      {

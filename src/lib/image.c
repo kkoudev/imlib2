@@ -12,6 +12,7 @@
 #include <X11/Xlib.h>
 #endif
 
+#include "Imlib2.h"
 #include "file.h"
 #include "image.h"
 #include "loaderpath.h"
@@ -26,7 +27,7 @@ static int          cache_size = 4096 * 1024;
 
 /* attach a string key'd data and/or int value to an image that cna be */
 /* looked up later by its string key */
-void
+__EXPORT__ void
 __imlib_AttachTag(ImlibImage * im, const char *key, int val, void *data,
                   ImlibDataDestructorFunction destructor)
 {
@@ -52,7 +53,7 @@ __imlib_AttachTag(ImlibImage * im, const char *key, int val, void *data,
 }
 
 /* look up a tage by its key on the image it was attached to */
-ImlibImageTag      *
+__EXPORT__ ImlibImageTag *
 __imlib_GetTag(ImlibImage * im, const char *key)
 {
    ImlibImageTag      *t;
@@ -794,7 +795,7 @@ __imlib_LoadAllLoaders(void)
    free(list);
 }
 
-ImlibLoader        *
+__EXPORT__ ImlibLoader *
 __imlib_FindBestLoaderForFile(const char *file, int for_save)
 {
    char               *extension, *lower, *rfile;

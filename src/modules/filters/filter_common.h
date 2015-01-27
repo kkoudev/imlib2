@@ -6,8 +6,8 @@
 #include "dynamic_filters.h"
 #include "image.h"
 
-EAPI void           init(struct imlib_filter_info *info);
-EAPI void           deinit(void);
-EAPI void          *exec(char *filter, void *im, pIFunctionParam params);
+__EXPORT__ void     init(struct imlib_filter_info *info);
+__EXPORT__ void     deinit(void);
+__EXPORT__ void    *exec(char *filter, void *im, pIFunctionParam params);
 
 #endif /* __FILTER_COMMON_H */

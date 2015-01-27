@@ -4,7 +4,7 @@
 #include "colormod.h"
 #include "common.h"
 
-__hidden char       __imlib_CreatePixmapsForImage(Display * d, Drawable w,
+char                __imlib_CreatePixmapsForImage(Display * d, Drawable w,
                                                   Visual * v, int depth,
                                                   Colormap cm, ImlibImage * im,
                                                   Pixmap * p, Mask * m, int sx,

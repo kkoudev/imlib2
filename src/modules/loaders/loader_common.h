@@ -5,13 +5,13 @@
 #include "common.h"
 #include "image.h"
 
-EAPI char           load(ImlibImage * im, ImlibProgressFunction progress,
+__EXPORT__ char     load(ImlibImage * im, ImlibProgressFunction progress,
                          char progress_granularity, char immediate_load);
-EAPI char           load_scale(ImlibImage * im, ImlibProgressFunction progress,
+__EXPORT__ char     load_scale(ImlibImage * im, ImlibProgressFunction progress,
                          char progress_granularity, char immediate_load,
                          int scale_width, int scale_height);
-EAPI char           save(ImlibImage * im, ImlibProgressFunction progress,
+__EXPORT__ char     save(ImlibImage * im, ImlibProgressFunction progress,
                          char progress_granularity);
-EAPI void           formats(ImlibLoader * l);
+__EXPORT__ void     formats(ImlibLoader * l);
 
 #endif /* __LOADER_COMMON_H */

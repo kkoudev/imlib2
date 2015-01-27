@@ -4,15 +4,14 @@
 #include "common.h"
 #include "image.h"
 
-typedef struct _imlib_color_modifier    ImlibColorModifier;
+typedef struct _imlib_color_modifier ImlibColorModifier;
 
-struct _imlib_color_modifier
-{
-   DATA8     red_mapping[256];
-   DATA8     green_mapping[256];
-   DATA8     blue_mapping[256];
-   DATA8     alpha_mapping[256];
-   DATABIG   modification_count;
+struct _imlib_color_modifier {
+   DATA8               red_mapping[256];
+   DATA8               green_mapping[256];
+   DATA8               blue_mapping[256];
+   DATA8               alpha_mapping[256];
+   DATABIG             modification_count;
 };
 
 #define CMOD_APPLY_RGB(cm, r, g, b) \
@@ -44,22 +43,20 @@ struct _imlib_color_modifier
 #define A_CMOD(cm, a) \
 (cm)->alpha_mapping[(int)(a)]
 
-__hidden ImlibColorModifier * __imlib_CreateCmod(void);
-__hidden void                 __imlib_FreeCmod(ImlibColorModifier *cm);
-__hidden void                 __imlib_CmodChanged(ImlibColorModifier *cm);
-__hidden void                 __imlib_CmodSetTables(ImlibColorModifier *cm, DATA8 *r, 
-					   DATA8 *g, DATA8 *b, DATA8 *a);
-__hidden void                 __imlib_CmodReset(ImlibColorModifier *cm);
-__hidden void                 __imlib_DataCmodApply(DATA32 *data, int w, int h, 
-					   int jump, ImlibImageFlags *fl,
-					   ImlibColorModifier *cm);
+ImlibColorModifier *__imlib_CreateCmod(void);
+void                __imlib_FreeCmod(ImlibColorModifier * cm);
+void                __imlib_CmodChanged(ImlibColorModifier * cm);
+void                __imlib_CmodSetTables(ImlibColorModifier * cm, DATA8 * r,
+                                          DATA8 * g, DATA8 * b, DATA8 * a);
+void                __imlib_CmodReset(ImlibColorModifier * cm);
+void                __imlib_DataCmodApply(DATA32 * data, int w, int h,
+                                          int jump, ImlibImageFlags * fl,
+                                          ImlibColorModifier * cm);
 
-__hidden void                 __imlib_CmodGetTables(ImlibColorModifier *cm, DATA8 *r, 
-					   DATA8 *g, DATA8 *b, DATA8 *a);
-__hidden void                 __imlib_CmodModBrightness(ImlibColorModifier *cm, 
-					       double v);
-__hidden void                 __imlib_CmodModContrast(ImlibColorModifier *cm, 
-					     double v);
-__hidden void                 __imlib_CmodModGamma(ImlibColorModifier *cm, 
-					  double v);
+void                __imlib_CmodGetTables(ImlibColorModifier * cm, DATA8 * r,
+                                          DATA8 * g, DATA8 * b, DATA8 * a);
+void                __imlib_CmodModBrightness(ImlibColorModifier * cm,
+                                              double v);
+void                __imlib_CmodModContrast(ImlibColorModifier * cm, double v);
+void                __imlib_CmodModGamma(ImlibColorModifier * cm, double v);
 #endif
