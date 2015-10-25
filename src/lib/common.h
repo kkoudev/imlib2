@@ -9,6 +9,7 @@
 #include <config.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 #ifdef WITH_DMALLOC
 #include <dmalloc.h>
 #endif
