@@ -31,6 +31,7 @@ pkg_LTLIBRARIES      = \
 $(JPEG_L) \
 $(PNG_L) \
 $(TIFF_L) \
+$(FF_L) \
 $(GIF_L) \
 $(ZLIB_L) \
 $(BZ2_L) \
@@ -38,6 +39,7 @@ $(ID3_L) \
 pnm.la \
 argb.la \
 bmp.la \
+ff.la \
 xpm.la \
 tga.la \
 lbm.la
@@ -59,6 +61,11 @@ tiff_la_SOURCES      = loader_tiff.c
 tiff_la_LDFLAGS      = -module -avoid-version
 tiff_la_LIBADD       = @TIFFLIBS@ $(top_builddir)/src/lib/libImlib2.la
 tiff_la_LIBTOOLFLAGS = --tag=disable-static
+
+ff_la_SOURCES        = loader_ff.c
+ff_la_LDFLAGS        = -module -avoid-version
+ff_la_LIBADD         = $(top_builddir)/src/lib/libImlib2.la
+ff_la_LIBTOOLFLAGS   = --tag=disable-static
 
 gif_la_SOURCES       = loader_gif.c
 gif_la_LDFLAGS       = -module -avoid-version
