@@ -1,5 +1,26 @@
 
 ***
+*** Version 1.4.8 ***
+***
+
+Chloe Kudryavtsev (1):
+      add time.h include to common.h for time_t
+
+FRIGN (1):
+      Add a Farbfeld loader
+
+Kim Woelders (4):
+      Remove redundant config.h.
+      Add compile to MAINTAINERCLEANFILES.
+      Indent.
+      1.4.8.
+
+Quentin Rameau (2):
+      Fix bz2 loader filename check
+      Fix zlib loader filename check
+
+
+***
 *** Version 1.4.7 ***
 ***
 
@@ -42,6 +63,7 @@ Kim Woelders (20):
       Enable visibility hiding by default.
       Indent the remaining unindented files.
       Generate a ChangeLog using git shortlog between existing tags.
+      1.4.7.
 
 Michał Górny (1):
       fix -I flags to support building out-of-source
