@@ -109,26 +109,27 @@ __imlib_MergeUpdate(ImlibUpdate * u, int w, int h, int hgapmax)
           {
              if (T(x, y).used & T_USED)
                {
-                  int                 xx, yy, ww, hh, ok;
+                  int                 xx, yy, ww, hh, ok, xww;
 
                   for (xx = x + 1, ww = 1;
                        (T(xx, y).used & T_USED) && (xx < tw); xx++, ww++);
+                  xww = x + ww;
                   for (yy = y + 1, hh = 1, ok = 1;
                        (yy < th) && (ok); yy++, hh++)
                     {
-                       for (xx = x; xx < (x + ww); xx++)
+                       for (xx = x; xx < xww; xx++)
                          {
                             if (!(T(xx, yy).used & T_USED))
                               {
                                  ok = 0;
-                                 xx = x + ww;
                                  hh--;
+                                 break;
                               }
                          }
                     }
                   for (yy = y; yy < (y + hh); yy++)
                     {
-                       for (xx = x; xx < (x + ww); xx++)
+                       for (xx = x; xx < xww; xx++)
                           T(xx, yy).used = T_UNUSED;
                     }
                   nu = __imlib_AddUpdate(nu, (x << TB), (y << TB),
