@@ -80,7 +80,10 @@ main(int argc, char **argv)
    int                 scaleup = 0;
    int                 scaleboth = 0;
    int                 origone = 0;
+
+#if 0
    int                 bump_map_to_point = 0;
+#endif
    Imlib_Color_Modifier colormod = 0;
    ImlibPolygon        poly, poly2, poly3;
    int                 textdir = IMLIB_TEXT_TO_RIGHT;
@@ -158,8 +161,10 @@ main(int argc, char **argv)
            scaleup = 1;
         else if (!strcmp(argv[i], "-both"))
            scaleboth = 1;
+#if 0
         else if (!strcmp(argv[i], "-bmp2pt"))
            bump_map_to_point = 1;
+#endif
         else if (!strcmp(argv[i], "-orig"))
            origone = 1;
         else if (!strcmp(argv[i], "-blend"))
@@ -786,8 +791,8 @@ main(int argc, char **argv)
      }
    else if (interactive)
      {
-        int                 wo, ho, px, py, first = 1;
-        Imlib_Image         im_bg, im_sh1, im_sh2, im_sh3, im_ic[13], im_tmp;
+        int                 px, py, first = 1;
+        Imlib_Image         im_bg, im_sh1, im_sh2, im_sh3, im_ic[13];
 
         /* Imlib_Border border; */
         Imlib_Updates       up = NULL;
@@ -935,11 +940,8 @@ main(int argc, char **argv)
         else
            im_bg = imlib_load_image(PACKAGE_DATA_DIR "/data/images/bg.png");
         imlib_context_set_image(im_bg);
-        im_tmp = imlib_clone_image();
         w = imlib_image_get_width();
         h = imlib_image_get_height();
-        wo = w;
-        ho = h;
         w *= 1;
         h *= 1;
         XResizeWindow(disp, win, w, h);
@@ -1047,12 +1049,17 @@ main(int argc, char **argv)
                                                 imlib_image_get_height());
 
                }
-/*	     
-	     if( bump_map_to_point )
-	       imlib_apply_filter("bump_map_point(x=[],y=[],map=test_images/bulb.png);", &x, &y );
-	     else
-	       imlib_apply_filter("bump_map(x=[],y=[],map=test_images/bulb.png);", &x, &y );
-*/
+
+#if 0
+             if (bump_map_to_point)
+                imlib_apply_filter
+                   ("bump_map_point(x=[],y=[],map=test_images/bulb.png);",
+                    &x, &y);
+             else
+                imlib_apply_filter
+                   ("bump_map(x=[],y=[],map=test_images/bulb.png);", &x, &y);
+#endif
+
              up = imlib_update_append_rect(up, 0, 0,
                                            imlib_image_get_width(),
                                            imlib_image_get_height());
