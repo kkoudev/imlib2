@@ -214,10 +214,10 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
    DATA8              *buf;
    DATA32             *ptr;
    JSAMPROW           *jbuf;
-   int                 y = 0, quality = 75, compression = 2;
+   int                 y, quality, compression;
    ImlibImageTag      *tag;
-   int                 i, j, pl = 0;
-   char                pper = 0;
+   int                 i, j, pl;
+   char                pper;
 
    /* no image data? abort */
    if (!im->data)
@@ -257,6 +257,7 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
    /* saver modules */
 
    /* compression */
+   compression = 2;
    tag = __imlib_GetTag(im, "compression");
    if (tag)
      {
@@ -279,6 +280,9 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
       quality = 100;
 
    /* set up jepg compression parameters */
+   y = 0;
+   pl = 0;
+   pper = 0;
    jpeg_set_defaults(&cinfo);
    jpeg_set_quality(&cinfo, quality, TRUE);
    jpeg_start_compress(&cinfo, TRUE);
