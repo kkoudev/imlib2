@@ -170,9 +170,16 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                     }
                   else
                     {
-                       r = cmap->Colors[rows[i][j]].Red;
-                       g = cmap->Colors[rows[i][j]].Green;
-                       b = cmap->Colors[rows[i][j]].Blue;
+                       if (rows[i][j] < cmap->ColorCount)
+                         {
+                            r = cmap->Colors[rows[i][j]].Red;
+                            g = cmap->Colors[rows[i][j]].Green;
+                            b = cmap->Colors[rows[i][j]].Blue;
+                         }
+                       else
+                         {
+                            r = g = b = 0;
+                         }
                        *ptr++ = (0xff << 24) | (r << 16) | (g << 8) | b;
                     }
                   per += per_inc;
