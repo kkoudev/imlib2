@@ -164,12 +164,13 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
            goto quit;
 
         ptr = im->data;
-        per_inc = 100.0 / (((float)w) * h);
+        per_inc = 100.0 / (float)h;
         for (i = 0; i < h; i++)
           {
              for (j = 0; j < w; j++)
                {
                   *ptr++ = colormap[rows[i][j]];
+               }
                   per += per_inc;
                   if (progress && (((int)per) != last_per)
                       && (((int)per) % progress_granularity == 0))
@@ -182,7 +183,6 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                          }
                        last_y = i;
                     }
-               }
           }
 
       finish:
