@@ -141,24 +141,25 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
 
    if (im->loader || immediate_load || progress)
      {
-        DATA32 colormap[256];
+        DATA32              colormap[256];
 
         bg = gif->SBackGroundColor;
         cmap = (gif->Image.ColorMap ? gif->Image.ColorMap : gif->SColorMap);
-        memset (colormap, 0, sizeof(colormap));
+        memset(colormap, 0, sizeof(colormap));
         if (cmap != NULL)
-           {
-              for (i = cmap->ColorCount > 256 ? 256 : cmap->ColorCount; i-- > 0;)
-                 {
-                    r = cmap->Colors[i].Red;
-                    g = cmap->Colors[i].Green;
-                    b = cmap->Colors[i].Blue;
-                    colormap[i] = (0xff << 24) | (r << 16) | (g << 8) | b;
-                 }
-              /* if bg > cmap->ColorCount, it is transparent black already */
-              if (transp >= 0 && transp < 256)
-                 colormap[transp] = bg >= 0 && bg < 256 ? colormap[bg] & 0x00ffffff : 0x00000000;
-           }
+          {
+             for (i = cmap->ColorCount > 256 ? 256 : cmap->ColorCount; i-- > 0;)
+               {
+                  r = cmap->Colors[i].Red;
+                  g = cmap->Colors[i].Green;
+                  b = cmap->Colors[i].Blue;
+                  colormap[i] = (0xff << 24) | (r << 16) | (g << 8) | b;
+               }
+             /* if bg > cmap->ColorCount, it is transparent black already */
+             if (transp >= 0 && transp < 256)
+                colormap[transp] = bg >= 0 && bg < 256 ?
+                   colormap[bg] & 0x00ffffff : 0x00000000;
+          }
         im->data = (DATA32 *) malloc(sizeof(DATA32) * w * h);
         if (!im->data)
            goto quit;
@@ -171,21 +172,20 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                {
                   *ptr++ = colormap[rows[i][j]];
                }
-                  per += per_inc;
-                  if (progress && (((int)per) != last_per)
-                      && (((int)per) % progress_granularity == 0))
+             per += per_inc;
+             if (progress && (((int)per) != last_per)
+                 && (((int)per) % progress_granularity == 0))
+               {
+                  last_per = (int)per;
+                  if (!(progress(im, (int)per, 0, last_y, w, i)))
                     {
-                       last_per = (int)per;
-                       if (!(progress(im, (int)per, 0, last_y, w, i)))
-                         {
-                            rc = 2;
-                            goto quit;
-                         }
-                       last_y = i;
+                       rc = 2;
+                       goto quit;
                     }
+                  last_y = i;
+               }
           }
 
-      finish:
         if (progress)
            progress(im, 100, 0, last_y, w, h);
      }
