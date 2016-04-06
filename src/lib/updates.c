@@ -112,7 +112,7 @@ __imlib_MergeUpdate(ImlibUpdate * u, int w, int h, int hgapmax)
                   int                 xx, yy, ww, hh, ok, xww;
 
                   for (xx = x + 1, ww = 1;
-                       (T(xx, y).used & T_USED) && (xx < tw); xx++, ww++);
+                       (xx < tw) && (T(xx, y).used & T_USED); xx++, ww++);
                   xww = x + ww;
                   for (yy = y + 1, hh = 1, ok = 1;
                        (yy < th) && (ok); yy++, hh++)
