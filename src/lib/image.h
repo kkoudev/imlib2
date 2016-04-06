@@ -188,7 +188,8 @@ void                __imlib_SaveImage(ImlibImage * im, const char *file,
 
 /* The maximum pixmap dimension is 65535. */
 /* However, for now, use 46340 (46340^2 < 2^31) to avoid buffer overflow issues. */
-#define X_MAX_DIM 46340
+/* Reduced further to 32767, so that (w * h * sizeof(DATA32)) won't exceed ULONG_MAX */
+#define X_MAX_DIM 32767
 
 #define IMAGE_DIMENSIONS_OK(w, h) \
    ( ((w) > 0) && ((h) > 0) && ((w) < X_MAX_DIM) && ((h) < X_MAX_DIM) )
