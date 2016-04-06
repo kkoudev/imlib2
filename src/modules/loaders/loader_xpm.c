@@ -510,8 +510,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
              line = realloc(line, lsz);
           }
 
-        if (((ptr) && ((ptr - im->data) >= (w * h * (int)sizeof(DATA32)))) ||
-            ((context > 1) && (count >= pixels)))
+        if ((context > 1) && (count >= pixels))
            done = 1;
      }
 
