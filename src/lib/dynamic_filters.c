@@ -20,7 +20,7 @@
 
 static char       **__imlib_ListFilters(int *num_ret);
 
-static pImlibExternalFilter filters = NULL;
+static ImlibExternalFilter *filters = NULL;
 static int          dyn_initialised = 0;
 
 #define MALLOCSHOW
@@ -29,7 +29,7 @@ static int          dyn_initialised = 0;
 #define FDEBUG
 */
 
-static              pImlibExternalFilter
+static ImlibExternalFilter *
 __imlib_LoadFilter(char *file)
 {
    ImlibExternalFilter *ptr;
@@ -127,10 +127,10 @@ __imlib_dynamic_filters_deinit()
 {
 }
 
-pImlibExternalFilter
+ImlibExternalFilter *
 __imlib_get_dynamic_filter(char *name)
 {
-   pImlibExternalFilter f_ptr;
+   ImlibExternalFilter *f_ptr;
    int                 i = 0;
 
    /* scan the filters */
