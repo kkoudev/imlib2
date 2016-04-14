@@ -240,7 +240,7 @@ __imlib_FileCanRead(const char *s)
 }
 
 char              **
-__imlib_FileDir(char *dir, int *num)
+__imlib_FileDir(const char *dir, int *num)
 {
    int                 i, dirlen;
    int                 done = 0;
@@ -249,12 +249,12 @@ __imlib_FileDir(char *dir, int *num)
    struct dirent      *dp;
 
    if ((!dir) || (!*dir))
-      return (0);
+      return 0;
    dirp = opendir(dir);
    if (!dirp)
      {
         *num = 0;
-        return (NULL);
+        return NULL;
      }
    /* count # of entries in dir (worst case) */
    for (dirlen = 0; (dp = readdir(dirp)); dirlen++);
@@ -262,12 +262,12 @@ __imlib_FileDir(char *dir, int *num)
      {
         closedir(dirp);
         *num = dirlen;
-        return (NULL);
+        return NULL;
      }
    names = (char **)malloc(dirlen * sizeof(char *));
 
    if (!names)
-      return (NULL);
+      return NULL;
 
    rewinddir(dirp);
    for (i = 0; i < dirlen;)
@@ -303,7 +303,7 @@ __imlib_FileDir(char *dir, int *num)
                }
           }
      }
-   return (names);
+   return names;
 }
 
 void
@@ -315,16 +315,14 @@ __imlib_FileFreeDirList(char **l, int num)
       if (l[num])
          free(l[num]);
    free(l);
-   return;
 }
 
 void
-__imlib_FileDel(char *s)
+__imlib_FileDel(const char *s)
 {
    if ((!s) || (!*s))
       return;
    unlink(s);
-   return;
 }
 
 int
@@ -332,7 +330,7 @@ __imlib_IsRealFile(const char *s)
 {
    struct stat         st;
 
-   return ((stat(s, &st) != -1) && (S_ISREG(st.st_mode)));
+   return (stat(s, &st) != -1) && (S_ISREG(st.st_mode));
 }
 
 time_t
@@ -380,7 +378,7 @@ __imlib_FileHomeDir(int uid)
 
    if ((uid == usr_uid) && (usr_s))
      {
-        return (strdup(usr_s));
+        return strdup(usr_s);
      }
 
    pwd = getpwuid(uid);
@@ -389,7 +387,7 @@ __imlib_FileHomeDir(int uid)
         s = strdup(pwd->pw_dir);
         if (uid == usr_uid)
            usr_s = strdup(s);
-        return (s);
+        return s;
      }
 
    return NULL;
