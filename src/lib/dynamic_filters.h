@@ -33,7 +33,5 @@ struct _imlib_external_filter {
 void                __imlib_dynamic_filters_init(void);
 void                __imlib_dynamic_filters_deinit(void);
 pImlibExternalFilter __imlib_get_dynamic_filter(char *name);
-char              **__imlib_ListFilters(int *num_ret);
-pImlibExternalFilter __imlib_LoadFilter(char *file);
 
 #endif

@@ -135,14 +135,9 @@ void                __imlib_AddImagePixmapToCache(ImlibImagePixmap * ip);
 void                __imlib_RemoveImagePixmapFromCache(ImlibImagePixmap * ip);
 void                __imlib_CleanupImagePixmapCache(void);
 #endif
-ImlibLoader        *__imlib_ProduceLoader(char *file);
-char              **__imlib_ListLoaders(int *num_ret);
 char              **__imlib_TrimLoaderList(char **list, int *num);
 int                 __imlib_ItemInList(char **list, int size, char *item);
-void                __imlib_ConsumeLoader(ImlibLoader * l);
-void                __imlib_RescanLoaders(void);
 void                __imlib_RemoveAllLoaders(void);
-void                __imlib_LoadAllLoaders(void);
 ImlibLoader        *__imlib_FindBestLoaderForFile(const char *file,
                                                   int for_save);
 ImlibLoader        *__imlib_FindBestLoaderForFileFormat(const char *file,

@@ -18,6 +18,8 @@
 #include "loaderpath.h"
 #include "script.h"
 
+static char       **__imlib_ListFilters(int *num_ret);
+
 static pImlibExternalFilter filters = NULL;
 static int          dyn_initialised = 0;
 
@@ -27,7 +29,7 @@ static int          dyn_initialised = 0;
 #define FDEBUG
 */
 
-pImlibExternalFilter
+static              pImlibExternalFilter
 __imlib_LoadFilter(char *file)
 {
    ImlibExternalFilter *ptr;
@@ -150,7 +152,7 @@ __imlib_get_dynamic_filter(char *name)
 }
 
 /* loader dir */
-char              **
+static char       **
 __imlib_ListFilters(int *num_ret)
 {
    char              **list = NULL, **l, *s;

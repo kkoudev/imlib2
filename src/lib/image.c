@@ -17,6 +17,8 @@
 #include "image.h"
 #include "loaderpath.h"
 
+static void         __imlib_LoadAllLoaders(void);
+
 static ImlibImage  *images = NULL;
 
 #ifdef BUILD_X11
@@ -560,7 +562,7 @@ __imlib_CleanupImagePixmapCache(void)
 
 /* try dlopen()ing the file if we succeed finish filling out the malloced */
 /* loader struct and return it */
-ImlibLoader        *
+static ImlibLoader *
 __imlib_ProduceLoader(char *file)
 {
    ImlibLoader        *l;
@@ -594,7 +596,7 @@ __imlib_ProduceLoader(char *file)
 
 /* list all the filenames of loaders  in the system loaders dir and the user */
 /* loader dir */
-char              **
+static char       **
 __imlib_ListLoaders(int *num_ret)
 {
    char              **list = NULL, **l, *s;
@@ -695,7 +697,7 @@ __imlib_ItemInList(char **list, int size, char *item)
 }
 
 /* fre the struct for a loader and close its dlopen'd handle */
-void
+static void
 __imlib_ConsumeLoader(ImlibLoader * l)
 {
    if (l->file)
@@ -713,7 +715,7 @@ __imlib_ConsumeLoader(ImlibLoader * l)
    free(l);
 }
 
-void
+static void
 __imlib_RescanLoaders(void)
 {
    static time_t       last_scan_time = 0;
@@ -764,7 +766,7 @@ __imlib_RemoveAllLoaders(void)
 
 /* find all the loaders we can find and load them up to see what they can */
 /* load / save */
-void
+static void
 __imlib_LoadAllLoaders(void)
 {
    int                 i, num;
