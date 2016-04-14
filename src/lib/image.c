@@ -594,88 +594,6 @@ __imlib_ProduceLoader(char *file)
    return l;
 }
 
-/* list all the filenames of loaders  in the system loaders dir and the user */
-/* loader dir */
-static char       **
-__imlib_ListLoaders(int *num_ret)
-{
-   char              **list = NULL, **l, *s;
-   int                 num, i, pi = 0;
-
-   *num_ret = 0;
-   /* same for system loader path */
-   s = (char *)malloc(sizeof(SYS_LOADERS_PATH) + 8 + 1);
-   sprintf(s, SYS_LOADERS_PATH "/loaders");
-   l = __imlib_FileDir(s, &num);
-   if (num > 0)
-     {
-        *num_ret += num;
-        list = realloc(list, sizeof(char *) * *num_ret);
-
-        for (i = 0; i < num; i++)
-          {
-             s = (char *)realloc(s,
-                                 sizeof(SYS_LOADERS_PATH) + 9 + strlen(l[i]) +
-                                 1);
-             sprintf(s, SYS_LOADERS_PATH "/loaders/%s", l[i]);
-             list[pi + i] = strdup(s);
-          }
-        __imlib_FileFreeDirList(l, num);
-     }
-   free(s);
-
-   /* List currently contains *everything in there* we need to weed out
-    * the .so, .la, .a versions of the same loader or whatever else.
-    * dlopen can take an extension-less name and do the Right Thing
-    * with it, so that's what we'll give it. */
-   list = __imlib_TrimLoaderList(list, num_ret);
-
-   return list;
-}
-
-char              **
-__imlib_TrimLoaderList(char **list, int *num)
-{
-   int                 i, n, size = 0;
-
-   char              **ret = NULL;
-
-   if (!list)
-      return NULL;
-   if (*num == 0)
-      return list;
-
-   n = *num;
-
-   for (i = 0; i < n; i++)
-     {
-        char               *ext;
-
-        if (!list[i])
-           continue;
-        ext = strrchr(list[i], '.');
-        if ((ext) && (
-#ifdef __CYGWIN__
-                        (!strcasecmp(ext, ".dll")) ||
-#endif
-                        (!strcasecmp(ext, ".so"))))
-          {
-             /* Don't add the same loader multiple times... */
-             if (!__imlib_ItemInList(ret, size, list[i]))
-               {
-                  ret = realloc(ret, sizeof(char *) * (size + 1));
-
-                  ret[size++] = strdup(list[i]);
-               }
-          }
-        if (list[i])
-           free(list[i]);
-     }
-   free(list);
-   *num = size;
-   return ret;
-}
-
 /* fre the struct for a loader and close its dlopen'd handle */
 static void
 __imlib_ConsumeLoader(ImlibLoader * l)
@@ -753,7 +671,7 @@ __imlib_LoadAllLoaders(void)
    char              **list;
 
    /* list all the loaders imlib can find */
-   list = __imlib_ListLoaders(&num);
+   list = __imlib_ListModules("loaders", &num);
    /* no loaders? well don't load anything */
    if (!list)
       return;

@@ -20,4 +20,6 @@ int                 __imlib_IsRealFile(const char *s);
 
 int                 __imlib_ItemInList(char **list, int size, char *item);
 
+char              **__imlib_ListModules(const char *what, int *num_ret);
+
 #endif
