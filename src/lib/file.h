@@ -18,4 +18,6 @@ int                 __imlib_FilePermissions(const char *s);
 int                 __imlib_FileCanRead(const char *s);
 int                 __imlib_IsRealFile(const char *s);
 
+int                 __imlib_ItemInList(char **list, int size, char *item);
+
 #endif

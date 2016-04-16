@@ -392,3 +392,21 @@ __imlib_FileHomeDir(int uid)
 
    return NULL;
 }
+
+int
+__imlib_ItemInList(char **list, int size, char *item)
+{
+   int                 i;
+
+   if (!list)
+      return 0;
+   if (!item)
+      return 0;
+
+   for (i = 0; i < size; i++)
+     {
+        if (!strcmp(list[i], item))
+           return 1;
+     }
+   return 0;
+}

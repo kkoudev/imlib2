@@ -136,7 +136,6 @@ void                __imlib_RemoveImagePixmapFromCache(ImlibImagePixmap * ip);
 void                __imlib_CleanupImagePixmapCache(void);
 #endif
 char              **__imlib_TrimLoaderList(char **list, int *num);
-int                 __imlib_ItemInList(char **list, int size, char *item);
 void                __imlib_RemoveAllLoaders(void);
 ImlibLoader        *__imlib_FindBestLoaderForFile(const char *file,
                                                   int for_save);

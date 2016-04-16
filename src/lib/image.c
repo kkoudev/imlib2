@@ -676,26 +676,6 @@ __imlib_TrimLoaderList(char **list, int *num)
    return ret;
 }
 
-int
-__imlib_ItemInList(char **list, int size, char *item)
-{
-   int                 i;
-
-   if (!size)
-      return 0;
-   if (!list)
-      return 0;
-   if (!item)
-      return 0;
-
-   for (i = 0; i < size; i++)
-     {
-        if (!strcmp(list[i], item))
-           return 1;
-     }
-   return 0;
-}
-
 /* fre the struct for a loader and close its dlopen'd handle */
 static void
 __imlib_ConsumeLoader(ImlibLoader * l)
