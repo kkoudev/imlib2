@@ -1,5 +1,39 @@
 
 ***
+*** Version 1.4.9 ***
+***
+
+Alexander Smirnov (1):
+      Fix cross-endianness for masks (1-bit depth images)
+
+Bernhard Übelacker (1):
+      gif: fix oob reads w/bad colormaps
+
+Kim Woelders (16):
+      Fix "assuming signed overflow does not occur" warning.
+      Fix some "variable set but not used" warnings.
+      Fix some "variable might be clobbered" warnings.
+      Fix off-by-one OOB read in __imlib_MergeUpdate().
+      Revert "gif: fix oob reads w/bad colormaps"
+      GIF loader: Fix out-of-bound reads from colormap.
+      GIF loader: Remove check made redundant by previous commit.
+      GIF loader: Reduce progress checks from per-pixel to per-row.
+      GIF loader: Indent.
+      Fix potential divide-by-zero in imlib_image_draw_ellipse().
+      Make a number of functions static.
+      Eliminate pImlibExternalFilter type.
+      Trivial file function cleanups.
+      Move __imlib_ItemInList() to file.c.
+      Fix various potential OOM crashes.
+      1.4.9.
+
+Yuriy M. Kaminskiy (3):
+      Fix integer overflow resulting in insufficient heap allocation
+      loader_xpm: remove nonsense/impossible/broken condition
+      Harden API and internals against overly large images
+
+
+***
 *** Version 1.4.8 ***
 ***
 
