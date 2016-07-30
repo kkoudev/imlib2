@@ -179,6 +179,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                                goto quit_error;
                             ptr2++;
                             i++;
+                            x++;
                          }
                     }
                   if (progress &&
