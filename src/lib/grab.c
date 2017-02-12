@@ -94,6 +94,7 @@ __imlib_GrabXImageToRGBA(DATA32 * data, int ox, int oy, int ow, int oh,
                        tmp++;
                     }
                }
+             break;
           case 24:
           case 25:
           case 32:
