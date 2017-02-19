@@ -202,7 +202,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                   if ((cpp > 5) || (cpp < 1))
                     {
                        fprintf(stderr,
-                               "IMLIB ERROR: XPM files with characters per pixel > 5 or < 1not supported\n");
+                               "IMLIB ERROR: XPM files with characters per pixel > 5 or < 1 not supported\n");
                        free(line);
                        fclose(f);
                        xpm_parse_done();
@@ -277,6 +277,14 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                        col[0] = 0;
                        s[0] = 0;
                        len = strlen(line);
+                       if (len < cpp)
+                         {
+                            free(cmap);
+                            free(line);
+                            fclose(f);
+                            xpm_parse_done();
+                            return 0;
+                         }
                        strncpy(cmap[j].str, line, cpp);
                        cmap[j].str[cpp] = 0;
                        cmap[j].r = -1;
@@ -415,7 +423,8 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
 #define CM2_G()     (unsigned char)cmap[lookup[col[0] - ' '][col[1] - ' ']].g
 #define CM2_B()     (unsigned char)cmap[lookup[col[0] - ' '][col[1] - ' ']].b
                        for (i = 0;
-                            ((i < 65536) && (ptr < end) && (line[i])); i++)
+                            ((i < 65536) && (ptr < end)
+                             && (line[i]) && (line[i + 1])); i++)
                          {
                             col[0] = line[i++];
                             col[1] = line[i];
@@ -438,7 +447,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                        for (i = 0;
                             ((i < 65536) && (ptr < end) && (line[i])); i++)
                          {
-                            for (j = 0; j < cpp; j++, i++)
+                            for (j = 0; ((j < cpp) && (line[i])); j++, i++)
                               {
                                  col[j] = line[i];
                               }
@@ -506,8 +515,19 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
 
         if (i >= lsz)
           {
+             char               *nline;
+
              lsz += 256;
-             line = realloc(line, lsz);
+             nline = realloc(line, lsz);
+             if (nline == NULL)
+               {
+                  free(cmap);
+                  free(line);
+                  fclose(f);
+                  xpm_parse_done();
+                  return 0;
+               }
+             line = nline;
           }
 
         if ((context > 1) && (count >= pixels))
