@@ -539,6 +539,12 @@ load(ImlibImage * im, ImlibProgressFunction progress,
      }
  quit:
    fclose(f);
+   if (rc == 0)
+     {
+        free(im->data);
+        im->data = NULL;
+        im->w = 0;
+     }
    return rc;
 }
 

@@ -82,6 +82,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
              png_read_end(png_ptr, info_ptr);
              png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp) NULL);
              fclose(f);
+             im->w = 0;
              return 0;
           }
         if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
@@ -151,6 +152,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
         im->data = malloc(w * h * sizeof(DATA32));
         if (!im->data)
           {
+             im->w = 0;
              png_read_end(png_ptr, info_ptr);
              png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp) NULL);
              fclose(f);
@@ -162,6 +164,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
           {
              free(im->data);
              im->data = NULL;
+             im->w = 0;
              png_read_end(png_ptr, info_ptr);
              png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp) NULL);
              fclose(f);

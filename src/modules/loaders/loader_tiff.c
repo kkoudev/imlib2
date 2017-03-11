@@ -329,7 +329,10 @@ load(ImlibImage * im, ImlibProgressFunction progress,
         break;
      }
    if (!IMAGE_DIMENSIONS_OK(im->w, im->h))
-      goto quit2;
+     {
+        im->w = 0;
+        goto quit2;
+     }
    rgba_image.num_pixels = num_pixels = im->w * im->h;
    if (rgba_image.rgba.alpha != EXTRASAMPLE_UNSPECIFIED)
       SET_FLAG(im->flags, F_HAS_ALPHA);
@@ -352,11 +355,9 @@ load(ImlibImage * im, ImlibProgressFunction progress,
 
              if (rast)
                 _TIFFfree(rast);
-             if (im->data)
-               {
-                  free(im->data);
-                  im->data = NULL;
-               }
+             free(im->data);
+             im->data = NULL;
+             im->w = 0;
              goto quit2;
           }
 
@@ -367,6 +368,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
              _TIFFfree(rast);
              free(im->data);
              im->data = NULL;
+             im->w = 0;
              goto quit2;
           }
 
@@ -387,6 +389,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
              _TIFFfree(rast);
              free(im->data);
              im->data = NULL;
+             im->w = 0;
              goto quit2;
           }
 

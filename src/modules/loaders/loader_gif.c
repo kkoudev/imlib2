@@ -204,6 +204,12 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
    DGifCloseFile(gif);
 #endif
 
+   if (rc == 0)
+     {
+        free(im->data);
+        im->data = NULL;
+        im->w = 0;
+     }
    return rc;
 }
 

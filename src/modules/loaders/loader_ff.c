@@ -35,6 +35,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
         im->h = ntohl(hdr[3]);
         if (!IMAGE_DIMENSIONS_OK(im->w, im->h))
           {
+             im->w = 0;
              fclose(f);
              return 0;
           }
@@ -44,6 +45,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
           {
              if (!(im->format = strdup("ff")))
                {
+                  im->w = 0;
                   fclose(f);
                   return 0;
                }
@@ -64,6 +66,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
           {
              free(im->data);
              im->data = NULL;
+             im->w = 0;
              free(row);
              fclose(f);
              return 0;
@@ -76,6 +79,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
                {
                   free(im->data);
                   im->data = NULL;
+                  im->w = 0;
                   free(row);
                   fclose(f);
                   return 0;

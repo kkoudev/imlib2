@@ -62,6 +62,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
         ptr = im->data = malloc(w * h * sizeof(DATA32));
         if (!im->data)
           {
+             im->w = 0;
              fclose(f);
              return 0;
           }
@@ -73,7 +74,9 @@ load(ImlibImage * im, ImlibProgressFunction progress,
 
                 if (fread(ptr, im->w, 4, f) != 4)
                   {
-                     free(ptr);
+                     free(im->data);
+                     im->data = NULL;
+                     im->w = 0;
                      fclose(f);
                      return 0;
                   }
@@ -83,7 +86,9 @@ load(ImlibImage * im, ImlibProgressFunction progress,
 #else
              if (fread(ptr, im->w, 4, f) != 4)
                {
-                  free(ptr);
+                  free(im->data);
+                  im->data = NULL;
+                  im->w = 0;
                   fclose(f);
                   return 0;
                }

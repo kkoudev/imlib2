@@ -301,6 +301,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
         im->data = malloc(w * h * sizeof(DATA32));
         if (!im->data)
           {
+             im->w = 0;
              free(buffer);
              fclose(f);
              return 0;
@@ -309,6 +310,8 @@ load(ImlibImage * im, ImlibProgressFunction progress,
         if (fread(buffer, imgsize, 1, f) != 1)
           {
              free(im->data);
+             im->data = NULL;
+             im->w = 0;
              free(buffer);
              fclose(f);
              return 0;

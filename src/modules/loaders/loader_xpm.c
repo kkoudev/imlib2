@@ -227,6 +227,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
 
                   if (!cmap)
                     {
+                       im->w = 0;
                        free(line);
                        fclose(f);
                        xpm_parse_done();
@@ -241,6 +242,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                           (DATA32 *) malloc(sizeof(DATA32) * im->w * im->h);
                        if (!im->data)
                          {
+                            im->w = 0;
                             free(cmap);
                             free(line);
                             fclose(f);
@@ -253,6 +255,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                     }
                   else
                     {
+                       im->w = 0;
                        free(cmap);
                        free(line);
                        fclose(f);
@@ -279,6 +282,9 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                        len = strlen(line);
                        if (len < cpp)
                          {
+                            free(im->data);
+                            im->data = NULL;
+                            im->w = 0;
                             free(cmap);
                             free(line);
                             fclose(f);
@@ -521,6 +527,9 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
              nline = realloc(line, lsz);
              if (nline == NULL)
                {
+                  free(im->data);
+                  im->data = NULL;
+                  im->w = 0;
                   free(cmap);
                   free(line);
                   fclose(f);
