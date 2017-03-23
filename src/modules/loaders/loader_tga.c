@@ -11,6 +11,7 @@
  */
 #include "loader_common.h"
 #include <fcntl.h>
+#include <stdint.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include "blend.h"
@@ -213,7 +214,8 @@ load(ImlibImage * im, ImlibProgressFunction progress,
         return 0;
      }
 
-   if (ss.st_size < (long)(sizeof(tga_header) + sizeof(tga_footer)))
+   if (ss.st_size < (long)(sizeof(tga_header) + sizeof(tga_footer)) ||
+       (uintmax_t) ss.st_size > SIZE_MAX)
      {
         close(fd);
         return 0;
