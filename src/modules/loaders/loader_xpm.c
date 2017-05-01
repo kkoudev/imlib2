@@ -255,7 +255,6 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
                     }
                   else
                     {
-                       im->w = 0;
                        free(cmap);
                        free(line);
                        fclose(f);
