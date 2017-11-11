@@ -2070,7 +2070,7 @@ imlib_create_image(int width, int height)
    DATA32             *data;
 
    CHECK_CONTEXT(ctx);
-   if ((width <= 0) || (height <= 0))
+   if (!IMAGE_DIMENSIONS_OK(width, height))
       return NULL;
    data = malloc(width * height * sizeof(DATA32));
    if (data)
@@ -2104,7 +2104,7 @@ imlib_create_image_using_data(int width, int height, DATA32 * data)
    CHECK_CONTEXT(ctx);
    CHECK_PARAM_POINTER_RETURN("imlib_create_image_using_data", "data", data,
                               NULL);
-   if ((width <= 0) || (height <= 0))
+   if (!IMAGE_DIMENSIONS_OK(width, height))
       return NULL;
    im = __imlib_CreateImage(width, height, data);
    if (im)
@@ -2133,7 +2133,7 @@ imlib_create_image_using_copied_data(int width, int height, DATA32 * data)
    CHECK_CONTEXT(ctx);
    CHECK_PARAM_POINTER_RETURN("imlib_create_image_using_copied_data", "data",
                               data, NULL);
-   if ((width <= 0) || (height <= 0))
+   if (!IMAGE_DIMENSIONS_OK(width, height))
       return NULL;
    im = __imlib_CreateImage(width, height, NULL);
    if (!im)
@@ -2179,6 +2179,8 @@ imlib_create_image_from_drawable(Pixmap mask, int x, int y, int width,
    char                domask = 0;
 
    CHECK_CONTEXT(ctx);
+   if (!IMAGE_DIMENSIONS_OK(width, height))
+      return NULL;
    if (mask)
      {
         domask = 1;
@@ -2225,6 +2227,8 @@ imlib_create_image_from_ximage(XImage * image, XImage * mask, int x, int y,
    ImlibImage         *im;
 
    CHECK_CONTEXT(ctx);
+   if (!IMAGE_DIMENSIONS_OK(width, height))
+      return NULL;
    im = __imlib_CreateImage(width, height, NULL);
    im->data = malloc(width * height * sizeof(DATA32));
    __imlib_GrabXImageToRGBA(im->data, 0, 0, width, height,
@@ -2275,6 +2279,10 @@ imlib_create_scaled_image_from_drawable(Pixmap mask, int source_x,
    Pixmap              p, m;
 
    CHECK_CONTEXT(ctx);
+   if (!IMAGE_DIMENSIONS_OK(source_width, source_height))
+      return NULL;
+   if (!IMAGE_DIMENSIONS_OK(destination_width, destination_height))
+      return NULL;
    if ((mask) || (get_mask_from_shape))
       domask = 1;
    p = XCreatePixmap(ctx->display, ctx->drawable, destination_width,
@@ -2469,6 +2477,10 @@ imlib_clone_image(void)
       im_old->loader->load(im_old, NULL, 0, 1);
    if (!(im_old->data))
       return NULL;
+   /* Note: below check should've ensured by original image allocation,
+    * but better safe than sorry. */
+   if (!IMAGE_DIMENSIONS_OK(im_old->w, im_old->h))
+      return NULL;
    im = __imlib_CreateImage(im_old->w, im_old->h, NULL);
    if (!(im))
       return NULL;
@@ -2517,6 +2529,8 @@ imlib_create_cropped_image(int x, int y, int width, int height)
    CHECK_CONTEXT(ctx);
    CHECK_PARAM_POINTER_RETURN("imlib_create_cropped_image", "image",
                               ctx->image, NULL);
+   if (!IMAGE_DIMENSIONS_OK(abs(width), abs(height)))
+      return NULL;
    CAST_IMAGE(im_old, ctx->image);
    if ((!(im_old->data)) && (im_old->loader) && (im_old->loader->load))
       im_old->loader->load(im_old, NULL, 0, 1);
@@ -2573,6 +2587,8 @@ imlib_create_cropped_scaled_image(int source_x, int source_y,
    CHECK_CONTEXT(ctx);
    CHECK_PARAM_POINTER_RETURN("imlib_create_cropped_scaled_image", "image",
                               ctx->image, NULL);
+   if (!IMAGE_DIMENSIONS_OK(abs(destination_width), abs(destination_height)))
+      return NULL;
    CAST_IMAGE(im_old, ctx->image);
    if ((!(im_old->data)) && (im_old->loader) && (im_old->loader->load))
       im_old->loader->load(im_old, NULL, 0, 1);
@@ -4774,6 +4790,9 @@ imlib_create_rotated_image(double angle)
    y = (int)(y1 * _ROTATE_PREC_MAX);
    dx = (int)(cos(angle) * _ROTATE_PREC_MAX);
    dy = -(int)(sin(angle) * _ROTATE_PREC_MAX);
+
+   if (!IMAGE_DIMENSIONS_OK(sz, sz))
+      return NULL;
 
    im = __imlib_CreateImage(sz, sz, NULL);
    im->data = calloc(sz * sz, sizeof(DATA32));

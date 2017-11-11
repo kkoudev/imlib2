@@ -81,10 +81,11 @@ __imlib_render_str(ImlibImage * im, ImlibFont * fn, int drx, int dry,
    __imlib_font_query_advance(fn, text, &w, NULL);
    h = __imlib_font_max_ascent_get(fn) - __imlib_font_max_descent_get(fn);
 
-   data = malloc(w * h * sizeof(DATA32));
+   if (!IMAGE_DIMENSIONS_OK(w, h))
+      return;
+   data = calloc(w * h, sizeof(DATA32));
    if (!data)
       return;
-   memset(data, 0, w * h * sizeof(DATA32));
    /* TODO check if this is the right way of rendering. Esp for huge sizes */
    im2 = __imlib_CreateImage(w, h, data);
    if (!im2)

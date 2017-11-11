@@ -44,8 +44,8 @@ load(ImlibImage * im, ImlibProgressFunction progress,
 {
    ImlibLoader        *loader;
    int                 src, dest, res;
-   char               *file, *p, tmp[] = "/tmp/imlib2_loader_zlib-XXXXXX";
-   char                real_ext[16];
+   char               *file, *p, *q, tmp[] = "/tmp/imlib2_loader_zlib-XXXXXX";
+   char               *real_ext;
    struct stat         st;
 
    assert(im);
@@ -54,19 +54,8 @@ load(ImlibImage * im, ImlibProgressFunction progress,
     * (e.g. "foo.png.gz"
     */
    p = strrchr(im->real_file, '.');
-   if (p && p != im->real_file)
-     {
-        if (strcasecmp(p + 1, "gz"))
-           return 0;
-     }
-   else
-      return 0;
-
-   strncpy(real_ext, p - sizeof(real_ext) + 1, sizeof(real_ext));
-   real_ext[sizeof(real_ext) - 1] = '\0';
-
-   /* abort if there's no dot in the "real" filename */
-   if (!strrchr(real_ext, '.'))
+   q = strchr(im->real_file, '.');
+   if (!p || p == im->real_file || strcasecmp(p + 1, "gz") || p == q)
       return 0;
 
    if (stat(im->real_file, &st) < 0)
@@ -93,8 +82,12 @@ load(ImlibImage * im, ImlibProgressFunction progress,
         return 0;
      }
 
+   if (!(real_ext = strndup(im->real_file, p - im->real_file)))
+      return 0;
+
    if (!(loader = __imlib_FindBestLoaderForFile(real_ext, 0)))
      {
+        free(real_ext);
         unlink(tmp);
         return 0;
      }
@@ -108,6 +101,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
 
    free(im->real_file);
    im->real_file = file;
+   free(real_ext);
    unlink(tmp);
 
    return 1;

@@ -1,7 +1,6 @@
 #ifndef _DYNAMIC_FILTERS_H_
 #define _DYNAMIC_FILTERS_H_
 
-#include "common.h"
 #include "script.h"
 
 struct imlib_filter_info {
@@ -13,7 +12,6 @@ struct imlib_filter_info {
 };
 
 typedef struct _imlib_external_filter ImlibExternalFilter;
-typedef struct _imlib_external_filter *pImlibExternalFilter;
 
 struct _imlib_external_filter {
    char               *name;
@@ -27,13 +25,11 @@ struct _imlib_external_filter {
    void                (*deinit_filter) (void);
    void               *(*exec_filter) (char *filter, void *im,
                                        pIFunctionParam params);
-   pImlibExternalFilter next;
+   ImlibExternalFilter *next;
 };
 
 void                __imlib_dynamic_filters_init(void);
 void                __imlib_dynamic_filters_deinit(void);
-pImlibExternalFilter __imlib_get_dynamic_filter(char *name);
-char              **__imlib_ListFilters(int *num_ret);
-pImlibExternalFilter __imlib_LoadFilter(char *file);
+ImlibExternalFilter *__imlib_get_dynamic_filter(char *name);
 
 #endif

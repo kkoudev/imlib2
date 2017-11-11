@@ -141,56 +141,51 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
 
    if (im->loader || immediate_load || progress)
      {
+        DATA32              colormap[256];
+
         bg = gif->SBackGroundColor;
         cmap = (gif->Image.ColorMap ? gif->Image.ColorMap : gif->SColorMap);
+        memset(colormap, 0, sizeof(colormap));
+        if (cmap != NULL)
+          {
+             for (i = cmap->ColorCount > 256 ? 256 : cmap->ColorCount; i-- > 0;)
+               {
+                  r = cmap->Colors[i].Red;
+                  g = cmap->Colors[i].Green;
+                  b = cmap->Colors[i].Blue;
+                  colormap[i] = (0xff << 24) | (r << 16) | (g << 8) | b;
+               }
+             /* if bg > cmap->ColorCount, it is transparent black already */
+             if (transp >= 0 && transp < 256)
+                colormap[transp] = bg >= 0 && bg < 256 ?
+                   colormap[bg] & 0x00ffffff : 0x00000000;
+          }
         im->data = (DATA32 *) malloc(sizeof(DATA32) * w * h);
         if (!im->data)
            goto quit;
 
-        if (!cmap)
-          {
-             /* No colormap? Now what?? Let's clear the image (and not segv) */
-             memset(im->data, 0, sizeof(DATA32) * w * h);
-             rc = 1;
-             goto finish;
-          }
-
         ptr = im->data;
-        per_inc = 100.0 / (((float)w) * h);
+        per_inc = 100.0 / (float)h;
         for (i = 0; i < h; i++)
           {
              for (j = 0; j < w; j++)
                {
-                  if (rows[i][j] == transp)
+                  *ptr++ = colormap[rows[i][j]];
+               }
+             per += per_inc;
+             if (progress && (((int)per) != last_per)
+                 && (((int)per) % progress_granularity == 0))
+               {
+                  last_per = (int)per;
+                  if (!(progress(im, (int)per, 0, last_y, w, i)))
                     {
-                       r = cmap->Colors[bg].Red;
-                       g = cmap->Colors[bg].Green;
-                       b = cmap->Colors[bg].Blue;
-                       *ptr++ = 0x00ffffff & ((r << 16) | (g << 8) | b);
+                       rc = 2;
+                       goto quit;
                     }
-                  else
-                    {
-                       r = cmap->Colors[rows[i][j]].Red;
-                       g = cmap->Colors[rows[i][j]].Green;
-                       b = cmap->Colors[rows[i][j]].Blue;
-                       *ptr++ = (0xff << 24) | (r << 16) | (g << 8) | b;
-                    }
-                  per += per_inc;
-                  if (progress && (((int)per) != last_per)
-                      && (((int)per) % progress_granularity == 0))
-                    {
-                       last_per = (int)per;
-                       if (!(progress(im, (int)per, 0, last_y, w, i)))
-                         {
-                            rc = 2;
-                            goto quit;
-                         }
-                       last_y = i;
-                    }
+                  last_y = i;
                }
           }
 
-      finish:
         if (progress)
            progress(im, 100, 0, last_y, w, h);
      }
@@ -209,6 +204,12 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
    DGifCloseFile(gif);
 #endif
 
+   if (rc == 0)
+     {
+        free(im->data);
+        im->data = NULL;
+        im->w = 0;
+     }
    return rc;
 }
 

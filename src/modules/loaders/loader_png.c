@@ -18,7 +18,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
 {
    png_uint_32         w32, h32;
    int                 w, h;
-   char                hasa = 0;
+   char                hasa;
    FILE               *f;
    png_structp         png_ptr = NULL;
    png_infop           info_ptr = NULL;
@@ -31,7 +31,9 @@ load(ImlibImage * im, ImlibProgressFunction progress,
    f = fopen(im->real_file, "rb");
    if (!f)
       return 0;
+
    /* read header */
+   hasa = 0;
    if (!im->data)
      {
         unsigned char       buf[PNG_BYTES_TO_CHECK];
@@ -80,6 +82,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
              png_read_end(png_ptr, info_ptr);
              png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp) NULL);
              fclose(f);
+             im->w = 0;
              return 0;
           }
         if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
@@ -149,6 +152,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
         im->data = malloc(w * h * sizeof(DATA32));
         if (!im->data)
           {
+             im->w = 0;
              png_read_end(png_ptr, info_ptr);
              png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp) NULL);
              fclose(f);
@@ -160,6 +164,7 @@ load(ImlibImage * im, ImlibProgressFunction progress,
           {
              free(im->data);
              im->data = NULL;
+             im->w = 0;
              png_read_end(png_ptr, info_ptr);
              png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp) NULL);
              fclose(f);
@@ -243,10 +248,8 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
    png_infop           info_ptr;
    DATA32             *ptr;
    int                 x, y, j, interlace;
-   png_bytep           row_ptr, data = NULL;
+   png_bytep           row_ptr, data;
    png_color_8         sig_bit;
-   int                 pl = 0;
-   char                pper = 0;
    ImlibImageTag      *tag;
    int                 quality = 75, compression = 3, num_passes = 1, pass;
 
@@ -286,6 +289,7 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
 #endif
      }
 
+   data = NULL;
    png_init_io(png_ptr, f);
    if (im->flags & F_HAS_ALPHA)
      {
@@ -374,7 +378,7 @@ save(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity)
              if (progress)
                {
                   char                per;
-                  int                 l;
+                  int                 l, pl = 0, pper = 0;
 
                   per = 100 * (pass + y / (float)im->h) / num_passes;
                   if ((per - pper) >= progress_granularity)

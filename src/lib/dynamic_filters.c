@@ -15,10 +15,9 @@
 #include "dynamic_filters.h"
 #include "file.h"
 #include "image.h"
-#include "loaderpath.h"
 #include "script.h"
 
-static pImlibExternalFilter filters = NULL;
+static ImlibExternalFilter *filters = NULL;
 static int          dyn_initialised = 0;
 
 #define MALLOCSHOW
@@ -27,7 +26,7 @@ static int          dyn_initialised = 0;
 #define FDEBUG
 */
 
-pImlibExternalFilter
+static ImlibExternalFilter *
 __imlib_LoadFilter(char *file)
 {
    ImlibExternalFilter *ptr;
@@ -99,7 +98,7 @@ __imlib_dynamic_filters_init()
 #ifdef FDEBUG
         printf("DEBUG: Loading Filters\n");
 #endif
-        list = __imlib_ListFilters(&num_filters);
+        list = __imlib_ListModules("filters", &num_filters);
         for (i = num_filters - 1; i >= 0; i--)
           {
              tptr = NULL;
@@ -125,10 +124,10 @@ __imlib_dynamic_filters_deinit()
 {
 }
 
-pImlibExternalFilter
+ImlibExternalFilter *
 __imlib_get_dynamic_filter(char *name)
 {
-   pImlibExternalFilter f_ptr;
+   ImlibExternalFilter *f_ptr;
    int                 i = 0;
 
    /* scan the filters */
@@ -147,41 +146,4 @@ __imlib_get_dynamic_filter(char *name)
           }
      }
    return NULL;
-}
-
-/* loader dir */
-char              **
-__imlib_ListFilters(int *num_ret)
-{
-   char              **list = NULL, **l, *s;
-   int                 num, i, pi = 0;
-
-   *num_ret = 0;
-   /* same for system loader path */
-   s = (char *)malloc(sizeof(SYS_LOADERS_PATH) + 8 + 1);
-   sprintf(s, SYS_LOADERS_PATH "/filters");
-   l = __imlib_FileDir(s, &num);
-   if (num > 0)
-     {
-        *num_ret += num;
-        list = realloc(list, sizeof(char *) * *num_ret);
-        for (i = 0; i < num; i++)
-          {
-             s = (char *)realloc(s,
-                                 sizeof(SYS_LOADERS_PATH) + 9 + strlen(l[i]) +
-                                 1);
-             sprintf(s, SYS_LOADERS_PATH "/filters/%s", l[i]);
-             list[pi + i] = strdup(s);
-          }
-        __imlib_FileFreeDirList(l, num);
-     }
-   free(s);
-
-   /* List currently contains *everything in there* we need to weed out
-    * the .so, .la, .a versions of the same loader or whatever else.
-    * dlopen can take an extension-less name and do the Right Thing
-    * with it, so that's what we'll give it. */
-   list = __imlib_TrimLoaderList(list, num_ret);
-
-   return list;
 }

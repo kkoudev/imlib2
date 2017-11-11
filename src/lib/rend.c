@@ -580,6 +580,9 @@ __imlib_RenderImageSkewed(Display * d, ImlibImage * im, Drawable w, Drawable m,
         dy1 = 0;
      }
 
+   if (!IMAGE_DIMENSIONS_OK(dw, dh))
+      return;
+
    __imlib_GetContext(d, v, cm, depth);
 
    back = __imlib_CreateImage(dw, dh, NULL);
