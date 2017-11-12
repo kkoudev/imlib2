@@ -360,8 +360,10 @@ __imlib_ProduceXImage(Display * d, Visual * v, int depth, int w, int h,
    /* (rather than the Xserver) */
 #ifdef WORDS_BIGENDIAN
    xim->byte_order = MSBFirst;
+   xim->bitmap_bit_order = MSBFirst;
 #else
    xim->byte_order = LSBFirst;
+   xim->bitmap_bit_order = LSBFirst;
 #endif
 
    /* return out image */

@@ -32,7 +32,7 @@ int
 main(int argc, char **argv)
 {
    int                 w, h, x, y;
-   Imlib_Image         im = NULL, im_bg = NULL;
+   Imlib_Image         im_bg;
    XEvent              ev;
    const char         *display_name = getenv("DISPLAY");
 
@@ -74,8 +74,6 @@ main(int argc, char **argv)
    imlib_context_set_color_modifier(NULL);
 
    im_bg = imlib_load_image(PACKAGE_DATA_DIR "/data/images/imlib2.png");
-   im = imlib_load_image(PACKAGE_DATA_DIR "/data/images/imlib2.png");
-
    imlib_context_set_image(im_bg);
    w = imlib_image_get_width();
    h = imlib_image_get_height();

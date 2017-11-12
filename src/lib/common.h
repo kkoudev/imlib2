@@ -6,9 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <config.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 #ifdef WITH_DMALLOC
 #include <dmalloc.h>
 #endif

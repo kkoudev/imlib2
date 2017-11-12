@@ -1,7 +1,1425 @@
-Version 1.4.6
-- TGA loader: Fix for corrupt RLE format.
-- Fix drawing of closed polygons in certain situations (ticket 2309).
-- Set warning options when using gcc.
-- Silence compiler warnings.
-- Don't set -std=gnu99.
-- XPM loader: Simplify and fix certain case of cpp > 2.
+
+***
+*** Version 1.4.10 ***
+***
+
+Kim Woelders (2):
+      PNM loader: Fix reading PNM bitmaps.
+      Fix missing break.
+
+Tobias Stoeckmann (3):
+      Avoid out of boundary operations while parsing xpm
+      Properly release resources on error path
+      Prevent OOB read with large file support on 32 bit
+
+
+***
+*** Version 1.4.9 ***
+***
+
+Alexander Smirnov (1):
+      Fix cross-endianness for masks (1-bit depth images)
+
+Bernhard Übelacker (1):
+      gif: fix oob reads w/bad colormaps
+
+Kim Woelders (16):
+      Fix "assuming signed overflow does not occur" warning.
+      Fix some "variable set but not used" warnings.
+      Fix some "variable might be clobbered" warnings.
+      Fix off-by-one OOB read in __imlib_MergeUpdate().
+      Revert "gif: fix oob reads w/bad colormaps"
+      GIF loader: Fix out-of-bound reads from colormap.
+      GIF loader: Remove check made redundant by previous commit.
+      GIF loader: Reduce progress checks from per-pixel to per-row.
+      GIF loader: Indent.
+      Fix potential divide-by-zero in imlib_image_draw_ellipse().
+      Make a number of functions static.
+      Eliminate pImlibExternalFilter type.
+      Trivial file function cleanups.
+      Move __imlib_ItemInList() to file.c.
+      Fix various potential OOM crashes.
+      1.4.9.
+
+Yuriy M. Kaminskiy (3):
+      Fix integer overflow resulting in insufficient heap allocation
+      loader_xpm: remove nonsense/impossible/broken condition
+      Harden API and internals against overly large images
+
+
+***
+*** Version 1.4.8 ***
+***
+
+Chloe Kudryavtsev (1):
+      add time.h include to common.h for time_t
+
+FRIGN (1):
+      Add a Farbfeld loader
+
+Kim Woelders (4):
+      Remove redundant config.h.
+      Add compile to MAINTAINERCLEANFILES.
+      Indent.
+      1.4.8.
+
+Quentin Rameau (2):
+      Fix bz2 loader filename check
+      Fix zlib loader filename check
+
+
+***
+*** Version 1.4.7 ***
+***
+
+Fabian Keil (14):
+      Prevent division-by-zero crashes
+      imlib_conv: Use proper buffer size to prevent invalid write of size one
+      loader_gif: Don't read uninitilized memory in case of invalid input
+      loader_gif(): Abort gif parsing if DGifGetLine() fails
+      Fix segfault when opening input/queue/id:000007,src:000000,op:flip1,pos:51 with feh
+      Make IMAGE_DIMENSIONS_OK() more restrictive
+      load_pnm: Deal with fread() errors consistently
+      __imlib_LoadImage(): Additionally check loader_ret to detect loader failures
+      loader_tga: Abort file loading if the file obviously isn't large enough
+      imlib_save_image(): Check loader return code for errors
+      loader_tga.c: Properly signal if decoding uncompressed BGRA data failed
+      loader_tga.c: Properly signal if decoding RLE compressed data failed
+      imlib_save_image_with_error_return(): Check loader return code to prevent use of unitialized memor
+      load_gif: Make sure rows isn't used partly unitialized
+
+Heiko Becker (1):
+      GIF loader: Fix for libgif version 5.1
+
+Kim Woelders (20):
+      GIF loader: Fix for libgif version 5.
+      Remove OS/2 support.
+      Remove empty format.c/h.
+      Header file cleanups.
+      GIF loader: Simplify error handling.
+      GIF loader: Fix segv on images without colormap.
+      Revert "__imlib_LoadImage(): Additionally check loader_ret to detect loader failures"
+      Revert "loader_gif(): Abort gif parsing if DGifGetLine() fails"
+      JPEG loader: Fix load() return code when only reading header.
+      BMP loader: Simplify pixel fetch.
+      Autofoo update (AC_PROG_LIBTOOL -> LT_INIT).
+      Autofoo macro cleanups (ac_->ec_).
+      Change a number of internal function names.
+      Indent.
+      Don't include Imlib2.h indirectly via image.h.
+      Remove __hidden.
+      Enable visibility hiding by default.
+      Indent the remaining unindented files.
+      Generate a ChangeLog using git shortlog between existing tags.
+      1.4.7.
+
+Michał Górny (1):
+      fix -I flags to support building out-of-source
+
+Mike Frysinger (5):
+      simplify --enable-visibility-hiding handling
+      imlib2-config: delete old reference to @my_libs@
+      check return value of fread/write funcs
+      fix X_DISPLAY_MISSING redefined warnings when X is disabled
+      do not link with X libs when X is disabled
+
+
+***
+*** Version 1.4.6 ***
+***
+
+Cedric BAIL (2):
+      autotools: move to AC_CONFIG_HEADERS.
+      trunk: remove use of AM_PROG_CC_STDC as AC_PROG_CC does it.
+
+Kim Woelders (20):
+      TGA loader: Fix for corrupt RLE format.
+      Change INCLUDES to AM_CPPFLAGS.
+      Fix drawing of closed polygons in certain situations (ticket 2309).
+      Cosmetics for readability.
+      Minor optimisation (avoid bogus valgrind complaint).
+      Update configure.ac (mostly suggestions by autoupdate).
+      Update .gitignore.
+      Set warning options when using gcc.
+      Silence compiler warnings (lib).
+      Silence compiler warnings (loaders).
+      Silence compiler warnings (filters).
+      More warning fixes (64 bit).
+      Don't set -std=gnu99.
+      Autofoo updates.
+      Indent.
+      Deuglification.
+      Cosmetics (reduce deep indentation level).
+      Simplify some more and fix certain case of cpp > 2.
+      Remove ChangeLog and obsolete rule to generate it.
+      1.4.6.
+
+
+***
+*** Version 1.4.5 ***
+***
+
+Carsten Haitzler (1):
+      no more debian dir in our svn - debian now handles this tehmselves.
+
+Kim Woelders (13):
+      imlib2_view stuff.
+      Avoid some duplicated code.
+      Fix reading tiff images with orientation other than ORIENTATION_TOPLEFT (ticket 563).
+      Fix imlib_render_image_part_on_drawable_at_size() ...
+      Fix pnm image loading in certain situations (ticket 721).
+      Better image cache time stamp test.
+      Indent (most) .c files.
+      Fix loading of .pbm's (P4) when width is not a multiple of 8.
+      PNM loader: Refactor around progress and exits.
+      Fix program linking (ticket 725).
+      Avoid referencing /usr/X11R6 when x_dir is not set.
+      1.4.5.
+      Update ChangeLog.
+
+Lucas De Marchi (7):
+      Remove unneeded code with notnull.cocci script
+      FORMATTING
+      Apply memset-calloc.cocci
+      Convert (hopefully) all comparisons to NULL
+      Revert and re-apply badnull patch
+      Fix common misspellings
+      Fix typos
+
+Mike Frysinger (2):
+      png loader: use png_jmpbuf() macro rather than hitting jmpbuf directly
+      png loader: do not hit "interlaced" member of the png ptr struct
+
+
+***
+*** Version 1.4.4 ***
+***
+
+Carsten Haitzler (1):
+      minor buglet - w * w - duh!
+
+Kim Woelders (6):
+      No need for libtoolize twice?
+      Remove unused __imlib_FileField functions.
+      Add rule to generate ChangeLog.
+      New ChangeLog.
+      1.4.4.
+      Update ChangeLog.
+
+
+***
+*** Version 1.4.3 ***
+***
+
+Carsten Haitzler (4):
+      crash fix.
+      fix the copying license to
+      fix bufferoverflow in id3 loader.
+      handle modified dir date of 0
+
+Christopher Michael (3):
+      Fix blank line after trailing space warning.
+      Add m4 macro dir as suggested by autoconf.
+      Enable silent rules in building imlib2
+
+Daniel Kolesa (11):
+      Removed debian things like rasterman did in some others from Makefile.am and configure.ac/in(and modifed AUTHORS, autogen.sh and README in E-MODULES-EXTRA) in
+      Removed debian subfolders - prepared for a new set of debian subdirs.
+      Added new set of debian subdirs.
+      prepare debian rules files for new chmod permissions.
+      Added debian/rules files with a new permissions set(755).
+      Updated debian stuff everywhere.
+      forgot to add --prefix=/usr
+      i found it is useless and cdbs is setting up prefix automatically.
+      Updated debian stuff(grew Standards-Version, updated python-ecore rules file)
+      Updated Standards-Version
+      Fixed debian stuff everywhere.
+
+Gustavo Sverzut Barbieri (1):
+      there is no m4 dir anymore.
+
+Kim Woelders (29):
+      Remove obsolete libltdl dir.
+      No need for empty NEWS.
+      No need for empty NEWS ... and remove it!.
+      Remove imlib2-config (use pkgconfig).
+      Revert imlib2-config removal. There still may be systems without pkgconfig out there.
+      Remove redundant BUILD_X11 tests, indent.
+      Don't build static libs for modules.
+      Refactor shm stuff.
+      Fix alignment error on amd64 (patch from Erik Boettcher).
+      Fix big endian bug in bmp loader (jogness, ticket 195).
+      Fix imlib_font_query_size width calculation when there are undefined  codepoints (ticket 230).
+      Relax 8192 pixel dimension limit (ticket 361).
+      Relax 8192 pixel dimension limit (ticket 361).
+      Remove unimplemented imlib_clip_line prototype and documentation (ticket 379).
+      Fix build for x86 on x86_64.
+      Correct image dimension check (pixels are four bytes).
+      Use PNG_CFLAGS when compiling png loader (ticket 449).
+      Fix compiling .S files when using older automake (ticket 449).
+      Remove incorrect test for X11/X.h.
+      Fix for libpng-1.4 (png_check_sig->png_sig_cmp).
+      Add .gitignore.
+      Fix excessive checking for shm extension in __imlib_GrabDrawableToRGBA().
+      Only check XShmAttach once in __imlib_ShmGetXImage().
+      Avoid cast.
+      Oops - forgot extern.
+      No need to touch README.
+      Remove ancient ChangeLog.
+      Remove .cvsignores.
+      1.4.3.
+
+Michael Jennings (1):
+      Fix build.
+
+Mike Frysinger (1):
+      imlib2: bumpmap: link against -lm since we use sin()/cos() functions
+
+Vincent Torri (1):
+      aclocal flag could be needed. I prefer being polite and saying nothing about libtool...
+
+
+***
+*** Version 1.4.2 ***
+***
+
+Carsten Haitzler (1):
+      ok. i think most binary files are now fixed.
+
+Kim Woelders (12):
+      Various loader fixes (Marcus Meissner, bug 494).
+      Oops - correction.
+      Loader fixes based on patch from Hans de Goede/Fedora. Fix off by one error in check (tga loader).
+      Introduce imlib_context_disconnect_display().
+      Return value is not a pointer.
+      Ignore+-.
+      pnm loader fix (Marcus Meissner, ticket 25).
+      xpm loader fix (Marcus Meissner, ticket 28).
+      Fix incorrect event loop causing 100% load until an X event is received.
+      Indent.
+      Lets make it at least 1.4.2 next time.
+      Fix loading of jpeg files with 4 color components (kntriant, ticket 84).
+
+Michael Jennings (1):
+      Tue Oct 21 21:28:27 2008                        Michael Jennings (mej)
+
+Mike Frysinger (1):
+      fix from Hans de Goede to look for /usr/share/X11/rgb.txt as most modern systems are using now
+
+Peter Wehrfritz (1):
+      configure.in -> configure.ac
+
+
+***
+*** Version 1.4.1 ***
+***
+
+Carsten Haitzler (12):
+      fontset patch from winfred
+      patches for imlib2 and e.
+      ASPARAGUS!
+      1. fix a lot of things so they pass make distcheck - so many things have broken. guys - need to be more careful! 2. asparagus 3. some extra docs/comments for evas
+      various patches from the devel mailing list in - and fixed where needed.
+      font chaining patch
+      round as a #define - and xpm loader has extra rgb.txt sourc
+      different png loading to fix png greyscale loads
+      asparagus!
+      push initial ctxt too
+      asparagus! also pass distcheck and have common autofoo init that is consistent for package, version etc.
+      2 possible security vulns fixed. should probably release new version with these.
+
+Davide Andreoli (1):
+      Update doxy style
+
+Falko Schmidt (3):
+      remove duplicate line. clean install files for test package.
+      fix test package and clean up some install files.
+      generalize imlib2 library install files
+
+Kim Woelders (19):
+      Back out fontset patch.
+      Make code indentable.
+      Add indent profile.
+      Indent C files.
+      Indent, rewrap long comment lines.
+      Mark some (new) functions deprecated as they are likely to be removed (see bug 118). Change some names to match coding style a bit more.
+      Push initial ctxt - continued, wasn't done everywhere.
+      Handle some out-of-memory situations without crashing.
+      Oops - missed one (malloc check).
+      Indent.
+      Remove restriction to 8 bits per sample (suggested by David A. Gatwood, bug 374). Set stopOnError (seems like the proper thing to do?).
+      Fix destination image loading in imlib_image_copy_alpha_to_image() (Victor Paesa - bug 474).
+      Remove incorrect test in __imlib_copy_alpha_data() (Victor Paesa - bug 475).
+      Fix destination image loading in __imlib_BlendImageToImageSkewed() (Victor Paesa - bug 479).
+      Fix destination image loading in __imlib_BlendImageToImage() (Victor Paesa - bug 480).
+      Fix HSV color conversion so it matches the API documentation (Dariusz Knocinski).
+      Map after resize to avoid initial placement silliness.
+      MAINTAINERCLEANFILES: aclocalm4->aclocal.m4
+      Add support for TrueType Collections (suggested by Arne Goetje, bug 487).
+
+Michael Jennings (2):
+      Mon Mar 10 22:38:16 2008                        Michael Jennings (mej)
+      Mon Jun  9 22:46:01 2008                        Michael Jennings (mej)
+
+Mike Frysinger (3):
+      fix running with libtool-2.2+
+      if png is disabled, set png_ok so the summary display is nice
+      add X status to the summary display
+
+Sebastian Dransfeld (2):
+      Fix signed warning.
+      Use pkg-config to check for png
+
+Vincent Torri (1):
+      * improve autotools stuff  * move libtool versioning from src/bin/Makefile.am to configure.in  * formatting
+
+
+***
+*** Version 1.4.0 ***
+***
+
+Carsten Haitzler (6):
+      fix possible overflow in tga loader
+      fix width and height checks in case of buffer overflow.
+      fix clip?
+      line patch for imlib2 from john williams.
+      asparagus - pass distcheck.
+      up to 1.4.0 ...
+
+Kim Woelders (3):
+      Fix major memory leak in xpm loader.
+      In imlib_render_pixmaps_for_whole_image() and imlib_render_pixmaps_for_whole_image_at_size() don't complain about NULL mask_return. A NULL mask_return is handled appropriately down the line and simply suppresses rendering of a mask.
+      Add option to build with visibility=hidden + associated fixups.
+
+Michael Jennings (1):
+      Sat Dec  2 22:59:35 2006                        Michael Jennings (mej)
+
+Mike Frysinger (4):
+      need AM_PROG_AS as pointed out by automake-1.10/Marc-Andre Landry
+      use -std=gnu99 in CPPFLAGS if compiler supports it
+      need to call AC_PATH_X to make sure have_x is set early enough and then we need to not clobber it when checking for X11/X.h
+      cleanup and simplify ... this should also fix the preprocessor paste error seen on x86
+
+Nathan Ingersoll (1):
+      Protect against segfaults if XImage allocation fails. Return usable status to the API caller so it can handle the error condition.
+
+Sebastian Dransfeld (2):
+      No longer needed.
+      Remove unused files.
+
+Tilman Kuepper (1):
+      don't _require_ freetype2
+
+
+***
+*** Version 1.3.0 ***
+***
+
+Ben Rockwood (1):
+      Solaris workarounds.
+
+Carsten Haitzler (9):
+      fix bmp loader advances
+      bmp fixes
+      cvs is back up.. time for some asparagus!
+      if u run out of memory - actually free stuff
+      1. autofoot patches. 2. fix maximize to work again. :)
+      fix blah-config includes
+      remove openembedde pkg info - old and dead
+      fix x detect
+      asparagus - forgot to commit
+
+David Walter Seikel (1):
+      .cvsignore++
+
+Falko Schmidt (1):
+      Fix some dependency issues regarding xlibs-dev.
+
+Horms (3):
+      Save and restore autogenerated changelog when debian/rule's clean target runs. Otherwise the following breaks because make distclean removes autogenerated files, but debian/rules expects the changelog to always be there:
+      Need not depend on libc6-dev | libc-dev as it is in build-essential
+      The section of a library's -dev package is generally libdevel
+
+Kim Woelders (10):
+      libImlib2.so minor number should have been bumped. Bad raster :)
+      Patch from Dmitry Antipov: - Visibility hiding - Move common asm macros to asm.h - Fix some typos.
+      Trivial warning fixes.
+      imlib_copy_drawable_to_image() and imlib_create_image_from_drawable(): - When mask is set to (Pixmap)1 (and the context drawable is a window)   the window shape is used for image alpha.
+      Add some options:  -id <drawable> to grab other than root window.  -w/width       set output image width.  -h/height      set output image height.  -noshape       do not use window shape.  -help          show usage.  -v             show info about the grabbed drawable.
+      Remove effectively unused actual_depth variable.
+      Enable grabbing of ARGB drawables.
+      Fix pixmap and gc caching when rendering to drawables with different depths.
+      Enable setting alpha threshold used when rendering masks (was fixed 128).
+      Set Release like most other places in the e17 tree. Remove XFree86-devel requirement causing trouble when using xorg.
+
+Sebastian Dransfeld (2):
+      Remove unused variables.
+      EAPI
+
+
+***
+*** Version 1.2.2 ***
+***
+
+Azundris (1):
+      * update specs
+
+Ben Rockwood (1):
+      ID3 support is reported as MP3 support, which is confusing and perhaps misleading, updated reporting to be more accurate.
+
+Carsten Haitzler (31):
+      it's been a while, so it was time for some ASPARAGUS on our plates
+      1. id3 album cover loader patches 2. i reduced list note memory usage by 20% - shoudl work better with malloc as ti is now a power of 2 as well 3. optimised evas internals to make use of event freezes to make e17'sw menu popups a LOT snappier 4. fixed using last member of list nodes - bad - shoudl use api as this is private stuff really 5. added config profile stuff to e17  u can literally maintain multiple config profiles and choose which one at any time etc.
+      fix digikam crash
+      dont modify alpha if img has no alpha
+      this SHOULD fix cross-endianness issues (serve and client not same endianess) ...
+      expand tmp image
+      apps/e/enlightenment.spec CVS: apps/entice/configure.in apps/entrance/configure.in CVS: libs/ecore/configure.in libs/edb/configure.in libs/embryo/configure.in CVS: libs/emotion/configure.in libs/epeg/configure.in CVS: libs/epsilon/configure.in libs/esmart/configure.in CVS: libs/etox/configure.in libs/evas/configure.in libs/imlib2_loaders/configure.in CVS: ---------------------------------------------------------------------- ��������� :)
+      2nd asapargus for the weekend :)
+      ramkumar's id3 updates
+      amd64 alignment fix
+      id3 .spec additions
+      include math! and stuff.
+      a bit of asparagus action for shits & giggles
+      asparagus!
+      after some quiet on the western front - asparagus.
+      asparagus. and make distcheck passes again.
+      asparagus - again. lots fo leak fixes and other fixes have been happening, so i think an asparagus is a good idea - sorry package config people. :)
+      imlib2 cross-endianess fix from Geoffrey Giesemann
+      another amd64 name
+      movdqa -> movdqu where appropriate
+      bmp loader in cvs
+      bmp loader in cvs
+      tiff loader fix
+      oops - typo. fix. works now.
+      already in AUTHORS :)
+      tiff patch - simon
+      big fat asparagus!
+      fix tiff off-by-1 pixel
+      asparagus!!!
+      asparagus!!!
+      1.2.2 of imlib2 - for kwo :)
+
+Horms (1):
+      fix typos
+
+Kim Woelders (7):
+      Be quiet if the file is rejected because it doesn't have a .mp3 extension.
+      Quiet.
+      Bad fix - Revert.
+      1) Quit silently if file doesn't exist. 2) Don't close if open failed (fixes segv).
+      Avoid useless graphics exposure events from imlib_create_scaled_image_from_drawable().
+      Another attempt to fix rendering of certain(?) fonts.
+      Fix colormap when grabbing 8 bit depth pixmaps.
+
+Michael Jennings (2):
+      Thu Sep  1 16:53:13 2005                        Michael Jennings (mej)
+      Thu Sep  8 17:12:14 2005                        Michael Jennings (mej)
+
+Mike Frysinger (23):
+      add error checking to all autogen scripts
+      fix whitespace
+      fixes from the PaX guys to make sure we dont have executable stacks
+      make sure the masks are in the .data section like they should be
+      merge PIC-happy code by PaX/Kevin Quinn/me
+      ignore amd64 objects
+      fix typo in IMMQ cleanup count as pointed out by Peter Beutner in Gentoo Bug 102519
+      fix for cygwin building (and anyone else who doesnt define RTLD_LOCAL)
+      cleanup x86/amd64 autofoo output
+      allow users to control whether jpeg/png support
+      sneak in a hack to remove CXX/F77 checks to improved configure speed
+      allow user to control tiff/zlib/bzip2/id3 support
+      touchup amd64/x86 asm handling, unify all the autodetection warnings, make gif support configurable, and default to giflib instead of old libungif
+      fix by Tres Melton to address 64bit errors: dont cast pointers as ints, cast them as longs
+      add a new helper macro by Tres Melton: IS_ALIGNED_128
+      asm_loadimmq.S is included by other files, it isnt supposed to be compiled by itself
+      only use GNU stack markings when generating ELF objects
+      as pointed out by Quan, we need asm_loadimmq.S in EXTRA_DIST
+      make sure people know the mmx support is 32bit only so it isnt for amd64
+      touchup help output
+      fix whitespace
+      only declare do_mmx when it is needed
+      move imlib_hash_size up in the code so we dont have to declare a prototype for internal usage
+
+R.Ramkumar (2):
+      Added documentation for tag id3-link-url Made the section on performance issues a bit clearer
+      Removed some compiler warnings issued by gcc-4.0.1 on issues of signedness in comparison.
+
+Ryan Little (1):
+      make dist pkgs build again
+
+Sebastian Dransfeld (13):
+      Add asm_loadimmq.S to dist.
+      sssh
+      Silence
+      Silence.
+      If the version from config has something after x.y.z, drop it.
+      * Add X headers if needed * Formatting
+      Check for .dll extension on cygwin
+      MIN and MAX is defined in common.h
+      Add paranthesis to clean up.
+      Remove unused variables.
+      Remove unused variables. Remove signedness warning. Print pointers with %p
+      Remove excessive strlen usage.
+      Build fix.
+
+
+***
+*** Version 1.2.1 (from dawn of time) ***
+***
+
+Azundris (7):
+      various fu for changed evas-API
+      nominal fix for memory leak in font.c (freetype1 font handling), just so we're in a defined state before switching to freetype2.  by azundris and atmos.
+      * assorted fixes for RPM-building
+      * spec-file (for RPM)
+      * add token entry for LBM loader
+      Grrr! : )
+      * wonky versioning.
+
+Carsten Haitzler (486):
+      adding imlib2 code in.. NOT a lib yet... :) but playable code and loader system
+      fixed minor bug in png loader.... added copying file :)
+      updated loader api to include progress callback stuff.... :)
+      adding the start of an actual aip layer... if you have any comments about this api - speak up now - because once it's final - that's it - thats the final api for imlib - anythig api.c calls etdc. can be changed - unless its the loader/saver api. that can't be changed either once its all final. :)
+      new api bits :)
+      ok - fix that to compile :)
+      added Gary V. Vaughan's patches for libtool loader stuff and now its all automaked... :)
+      add libtool libltdl form Gary...
+      buugger me blummy :)
+      all i have to say is.... OH YEAH! animated alpha blends on my root window... got a 640x480 image blending WIHT its alpha channel on my root window... drawing at... 20 frames per second... now if that dont make me happy.. i dont know what will :)
+      flim! :)
+      add some more stuff :)
+      adding color modifier api backend stuff.... :)
+      remember to not free images made form external data if it wasnt copied.. and free colors from color cubes once the context is invalid.. :)
+      lots more work on mr imlib2 :)
+      and more updates :) wheeeeeeeee
+      more work on imlib2.. :)
+      ooh is imlib2 ever workign fast now baybeee.. blending one image onto another .. with clipping, scaling, anti-aliasing and more.. need to add a bit to the api, and move the stuff nowin api.c off into imlib backend sinc ethat stuff doesnt belong in api.c
+      jpeg loader added that does everything RIGHT - needto mapk the png loader do the same. :)
+      and now the png loader does full progress callbacks and multi-phase loading correctly... WHEEEEEEEEEEe :)
+      ooh now imlib2 has a sexy demo for you people :) mmmmm watch the alpha blending... mmmmmmmmm
+      more playing with imlib2... :)
+      add some more images just to show off :)
+      get rid of printfs i dont need no more :)
+      add operation type to blend ops.. :)
+      oooh more blending and operation code :)
+      better autogen.sh comments to help you build imlib2
+      some mroe echos...
+      added updates work.. well starting on it.. :)
+      more wokr on updates
+      lots of new image manipulation functions and minor fix in loader module code.
+      add some files
+      rewmove files i didnt mean tot add
+      cleaned up code a bit... :) minor speedup for sparse (lost of transparent bits in images) for alpha blending :)
+      get rid of extra space
+      ok- fix depth retireval code :)
+      try make png laoder work on big endian... :)
+      and one mroe fix for big endian boxes for imlib png loader
+      and add soem comments
+      fix 15/16bpp depth problems
+      let autoconf figure out our endianess
+      make install isnot system loader dirs
+      update autogen.sh
+      fix main.c
+      make imlib2 demo event based - test rect combining code in handling exposures and stuff - works it seesm - need to expand api though... expose handlign works fine as does rect mergeing and stuff.. must more efficient updating method now for demo.. template for stuff to be used by apps later :)
+      add some files...
+      more font stuff
+      more code for font stugff being added.. more to come...
+      why did i have a Makefile in cvs ?
+      add some test truetype fonts - just for testing... and truetype font rendering code... :)
+      bad bad font.......
+      actualyl chekc if the font laod works and remove another bad font
+      get rid of soem useless fonts...
+      get rid of silyl fonts with silyl names... i hate those names... :)
+      this font segfaults freetype.. ooh nice freetype :)
+      nuke some more unusable fonts :)
+      another useless font
+      remove some more useless fonts
+      some fixes to font code... :)
+      fix raster map over-allocation problem for fonts.. :)
+      add prototypes and cleanup unused vars
+      you mightnt guess it - but rotated text all works now.. :)
+      fix ups some toehr stuff...
+      some fixes to get the output nextx and nexty right... :)
+      add some of the font api to the api :)
+      add speculative fotn cache ability - just like we have for images and pixmaps and ximages.
+      add actual api.h calls to the font caching stuff...
+      we have... anti-aliased line drawing code now... :) (and funnily enough - UNLIKE gimp it actually CAN draw a straight line for shit with anti-aliasing)
+      color modifiers in imlib2 now done.. cleaned up soem code...
+      again........ :)
+      work work work...
+      more flim
+      more flim code..... >8)
+      memcpy :)
+      nice FAST gradient drawing code.... :) eat my dast... MUHAHAHAHAHHA! :)
+      pixel query call.... need this one
+      and the flim goes on..........
+      dont chose visuals > 24bit :)
+      LOTS of checkign in the api now to make sure the calling program can't stuff things up too badly...
+      get rid of images i'm nto using...
+      better api.h
+      oooooooooops - thanks hans! :)
+      dont need that fixme..
+      speed testing code back.. just testing...
+      try this..
+      optmiseeeeeeeeeeeeeeeeeee. :)
+      eeek math error at 255 (becomes 254) not surprising i didnt notice.. i looked at the results rsather than numerically evaluating...
+      and handle ABGR ordering in 24/32bpp
+      added ability to attach integert vlue and data poitner tags to images by string keys (with destructors optional) - wil be used for saving of images (savers will look for these keys to gleen parameters for saaving)
+      fix some minro roundoff problems as before...
+      udless &'s
+      add TODO...
+      structure for savign all done - now just need to fill in the save() functions in the loaders (yes laoder are also savers - loader and saver are interchangeable).
+      we have a jpeg saver and the saver code works
+      whee more robus tagging...
+      and now it all works...
+      flim
+      and now thats all better.
+      fix that........
+      fix that bitchift..
+      re-structure......
+      restructure the direcotry a bit.......
+      fix the version
+      update README
+      add ignores......
+      more in ignore
+      handle progress callback for saving in png loader..
+      stop testing saving.. it works..
+      no printf
+      starting on pnm loader (ppm, pgm pbm, pam) - will finish later...
+      oops makefile......
+      hmm that didnt compile.. ooh fun :)
+      pnm loader handles binary formats allright... :)
+      binary png loaders done..plus speculating on the P8 format... dont like it much... i think ineed a FAST trivial to load ARGB format.
+      pnm loader can save now...
+      argb format loader & saver. my own format just so i can load and save raw ARGB data blindingly fast for imlib2 :)
+      get rid of saver func
+      oops - fix that filled rect drawing code
+      add ignores.......
+      fix a little of the rend code - never testyed that bit... andf the imlib2_view works nicely iwth zooming too :)
+      primitive timeout.. its not even that good.. :)
+      now that works better
+      Makefile NOT Makefil ! :)
+      more correct makefile.am in base........
+      add soem stuff and new blend.c from ryan :)
+      again..........
+      mising 2 important calls inthe font code... :)
+      ooooooooops :)
+      added AUTHORS file.. fixed copyting....
+      oopsie in blend.c
+      oop s- clipping problme wiht lines.. fixed :)
+      oh oops - image blending whilst scaling want quite right in the api.. :)
+      ok - gradients now dont overflow the precision buffer as badly.. :)
+      oops saver does rescan loader - so unless you laoded an image no laoders will be around... and it wont get rescanned on save.. :)
+      lets break the Imlib2 api and chnage it... now its context based.. :)
+      just up the versions to show i did something... :)
+      spec file too...
+      test program back to normal.. nwo works with api changes...
+      fixe view to compile & work
+      imlib2_view works again...
+      oops :) fixed :)
+      blum
+      more blum - bloody freetype - why does debian have to go move the headre to a different location to where it always was?
+      compile damnit...
+      include config.h
+      fix fix fix fix......................... :)
+      jpeg loader stays quiet - png loader handles grayscale + alpha images correctly
+      fix dat.........
+      create .a's :)
+      fix loaders......
+      for acceleration to work i nee to add a parameter to put_back_data
+      oops typo :)
+      fix missing case in scaling for blending objects...
+      get clipping right...
+      add loader flush call and fix gif loader to be able to load when theres no progress set :)
+      oops - expand indexed images...
+      allow full paths for font names too..
+      search path for font mroe sanely
+      off by one in string alloc! bugger! :)
+      no more dmalloc now :)
+      dont be so anal abotu ewncodings... if no apple or windows encoding is there just use encoding charmap 0 :)
+      i cant beleieve i missed wrappign the pixmap free function....
+      add to header.....
+      add dither mask pixmap rendering contexts...
+      up version... add c++ usability..
+      updates and fixes.. versioning etc...
+      oops - forgort to remove param from imlib_free_color_rangex
+      put that back...
+      2 more checks in save calls for image data...
+      that was silly! fix fix fix - thanks alan :)
+      ooops - fix :)
+      endinaness for masks broken onf sparc.. fix...
+      oops typo
+      get enmdianess roight for sparc (and ppc) for masks...
+      oopsie - problem with non extension format images :)
+      oooops - image and pixmap cache baddies.. :(
+      const char *
+      ooops - big eng9ian bug! :)
+      rotattion code added... :)
+      authors.. BTW - anyone watching commtis list please check AUTHORS... if your'e nto listed plese tell me to add you... I never do well maintaining it.
+      add files...
+      dont add that1
+      flum..........
+      flum
+      better
+      poatch main.c - but rottest doesnt work.. must fix later
+      get context patch from tom......
+      I'm back....... :)
+      fix cmod.......
+      optmize.. fix endianess stuff... :)
+      oops - missed modfifying colros there.. :)
+      rotate speedups - rend bugfix... wheeeeeee
+      fix endianes problems..... works now on sparc solaris nicely.. :)
+      ummmm fix dat.....
+      BGR56r & BGR555 support.......... please test if u have a display like this :)
+      nicer including of config.h
+      oopsa typo
+      damn willem! you love playing with imlib2 don;t you? :-) good show :)
+      speedup scaling down....... but i cant seem to get any speedup for up scaling
+      optimize scalign down routine for RGBA as well as RGB...
+      um ooops - how did that happen?
+      no more of that thanks
+      need new updates call.....
+      updates..... actually clip if only 1!
+      faster scaling up.......... :)
+      fix dither mask generation.. works again now.. use for icons to dnd
+      dont need that code no more
+      now that was bad! fix update appending :)
+      add asm for blending.... this will break imlib2 right now for all platforms that arent xz86 intel 9unless you rmove the asm form the makefile and blend.c
+      check for i686 artch and only then compile the mmx asm (i586 isnt guaranteed to have mmx - NB libs built for mmx will NOt work on non mmx boxes right now need to do a runtime chekc for that)
+      dont compile mmx data struct in if no mmx asm is used
+      fix spec file - dont buidl demos package
+      optimize mmx blending more.. uswed to do 15 million pixels/sec... now does 25 million per sec.. compared to the C (9million per sec) thats pretty good now
+      include updated comments
+      fix some blending cases
+      fix corner case for clippign where integer math rounds source widht to 0 where it shoudl be 1.
+      blum blum blum
+      full fix of logic in blending rgb->rgb functions in C NB: the mmx asm needs to be chnaged to reflect this
+      changelog..... NOOOOOOOOO cant be! :)
+      oops =- add
+      foudn evil mmx code overwriting memeory! thanks mej. back to the C code for you!
+      no - DONT put dmalloc in!
+      get rid of printf
+      FIX FIX! evil mmx code! missing decls! thanks dragan - mej ::)
+      man.. more mmx asm for scaling.. thanks willem... you love this dont you? :)
+      wow willem.. scalign down mmx code too.. :)
+      unpatch scaling down code - there seems to be a segfault in it somewhere :)
+      rgba code for plain 16bpp using mmx... :) and blend rounding asm error fixed thanks willem :)
+      add the bugger :)
+      mmx scaling back in - but forcibly disabled. new C scalign for scalign down.. works now.. :)
+      disable damnit!
+      scalign code back to old scaling... new scalign code has bugs... even the C code has segv's.. somewhere... :(
+      sorry - needed to unpatch code for old scaling to work.........
+      slight api changes..... problem was we have a useless paramin the pixmap gen calls - it shoudl have used the context... :)
+      ok.. mmx asm for routines again.. and this time... they seem to not segv :)
+      add
+      better asm detection - there's an --enable-mmx now too if you want to force or disable the feature by force... it will try autodetect under linux but only on the build machine...
+      nicer help message
+      better configure check for freetype- hopefulyl people wont keep askign dumb questions anymroe about freetype.h
+      cleaner......
+      beter freetype_h stuff back
+      handle infinite loop for tile if scalign down to 1x1)
+      add -help patch and also fill in some options
+      write text at any angle............... :) patches form willem again :)
+      allow for flipping whilst scaling and rendering... :)
+      aha! trying to free null pointers? NO NO NO - bad boy!
+      asm for colormod ops......... :)
+      build dither table for masks alwasy... even in depths > 16
+      fixzed C code for ALPHA destination.. ok NOW its got it right... havent done asm code though... MAY need to optimize C code math for alpha dest.
+      get rid of unused flsuh func, cleanup rects properly for case of 1 rect
+      the RIGHT math for RGBA->RGBA ops... :) not optmized at all tho :)
+      blend.c - RGBA destination works -and its optimized.. just a lookup..
+      up to 0.0.5
+      spec file up...
+      use willems math... :)
+      gawwwwwwwwwd - oops th = h not th = w; :)
+      add tga loader - thanks dan :)
+      OS2 pacthes make imlib2 build on os/2 apparently :)
+      oops - forgot to commit that :)
+      got rid of X calls in loader - no XParseColor
+      oosp parse better :)
+      add headre checking.....
+      fix tga loader....... :)
+      bowis's filter stuff... :)
+      turn off bump mappign for now..
+      disable others.......
+      loader that loads and saves images from a dbm database.... :)
+      shoudl in theory handle locks better....
+      IT WORKS! :)
+      oooooooh look at that.. it now supports compressed image data in the db
+      fix endianess problem with loader
+      patch to fix loader to handle non line-feed header pnm's :) and ascii too.
+      apparently clone doesnt lone EVERYTHING.. now it clones all of it except attached data tags...
+      fix mem leak in lisitng fonts
+      add 1 more font routine for getting geometry - useful. you'll need to update imlib2 too to get evas to compile & work - it uses this routine
+      fix static gc for multipel servers
+      imlib2-config added
+      get rid of that replacement..
+      try that
+      api call was silly - changed it :)
+      noticed there was a set filter but no get.. addded
+      possible crash fixed
+      foudn bug in mmx asm blending.. 1 line hihg blends get skipped.. fix! :) (ugly fix tho)
+      get rid of comment
+      db loader/saver needs edb now - much better! :)
+      no debugging printf
+      add docs to cvs
+      dont need -ldb anymore
+      wooo! found bug in filename:key splitting.... fix fix fix... :)
+      fix big endian code :)
+      simple commented demo
+      doc looking much better
+      added generic slow-path rendering code
+      and enable the fast path again
+      add willems docs to the docs ........... :)
+      only build loaders if headres/libs are found - chheck for libs and note them minimum requirements are jpeg, png and db loaders.
+      up version number.. tentative for a 1.0 release... revamp rpm packages completely. split loaders into their own packages (more logical units). main imlib2 requires the jpeg, png and db laoders at a  minimum
+      fix requires to be more accurate
+      oops - fix that
+      docs get built......... :)
+      add makefile for docs
+      and make them build.......... PROPERLY!
+      we can add them back in... conditions put elzewhere
+      ewwwwwwwwwwwwps! scaling blending buggy! fix fix fix fix :) GOTCHA!
+      dont NEED those dependancies
+      missing some load data checks for some routines... fix fix fix
+      ok- lyly can have his changelog back.. ugly - eats space with nothing useful :) - thats what cvs is for... :)
+      add api call to get text string advances........
+      add docs..... and prefix is /usr for rpms damnit! :)
+      add call to get text inset for string
+      fix visual picker :)
+      666 colorcube rendering works....... :)
+      handle lower depths :)
+      no prointf!
+      unrolled span rendering a little more (switch stamement is now just once per span 0 thats good enough.... :) )
+      fix that! that aint static! (__imlib_dynamic_filters_init that is)
+      fix pixmap caching...... :)
+      free image? dirty the pixmaps that belong to it and set image pointer to null
+      fix masks over network
+      work under bigendian again
+      paparnoid lseeks & fseeks in tiff loader due to bsd bugginess :)
+      add dat
+      oops fix that
+      extar -> extra
+      cflags -> cppflags
+      polygons now........ don't anti-alias anymore.. will be fixed.. BUT
+      clip rect fix
+      no more ellipse segv's :)
+      fix a small segv problem with pollies! :)
+      --without-x patch from steve
+      filter docs :)
+      off by one may have been causing segv's ? :)
+      pnm loader more paranoid about pnm format checks
+      patch for grabbing form ximage's - plug dont segv when u set the format to NULL.
+      more paranoid abotu allocating memory with realloc
+      bigendianess patch from nathan
+      os/2 fixes :)
+      masa's internationalization + x font support for imlib2 :)
+      oops - fix soem ascent & descent problems
+      err commit?
+      errr - clean clean.. fix color pixle caclfor 8bpp and 8bpp non dithered had a.. er... bug :)
+      attempt to fix xfd font transparency....... ??? :)
+      x fonts blend again now.... and colro correctly too :)
+      * up version to 1.0.1 - will do minor release real soon. * fix build so loaders build if u have no imlib2 installed * fix requires and buildrequires in spec file for freetype & edb to be correct
+      fix minor segv in gradient rendering if your color range has err... no colors
+      patch from matt
+      minor fixup if last char in string has 0 boundingbox width :)
+      use 128x128 dither mask for rgb666 (in 8bpp) rendering
+      how the HELL did that 8 get there and things still compile?
+      possible infinite loop in cache code.. fix.
+      on a stick!
+      errrr?
+      ewwwww - fix infinte loop bug... :)
+      fix blend mode for alpha dest when drawing text
+      oops - hard coded op - fixed that :)
+      and then he found some minor bugs in file examination... and then they were fixed. :)
+      found it!!!! :)
+      adam's patches... :)
+      add adam to AUTHORS
+      sorry - debain dir breaks build. removed form configure and makefile... also up to 1.0.2
+      errr oops - aleak.. fix fix fix :)
+      oops and a leak in the png loader.. and fix a potential leak in the jpeg saver for when things go awry.
+      carsten's context stack patch... with a default context entry too.. :)
+      oops - widht & height 1 grad get div by 0 .. fix fix fix :)
+      oooooooooooooooops fix fix fix bug bug :)
+      up to 1.0.3
+      imconvert.c added to tarball
+      franz's patches to support other color spaces :)
+      add then :)
+      add :)
+      in cvs :) clear function :)
+      add a color clearer too
+      bmtext dithers.... filters work.. :)
+      add mark's patch
+      and add author...
+      beat me silly. i forgot to allocate the memory... :) yay.. fixed :)
+      virtualize real file and key splitting nicely into image data struct. now we escpae literal colons with double colons. it's documented too. (this was easier to do as i also have to do it for ssving files and you cant stat to see if a file exisit fi you havent saved it yet)
+      oops - chekc for keys and real files first
+      alright - comprimise. theres a imlib_context_set_filename_raw_mode() call now - if you want to deal with filenames and not have them interpreted use this and set it to 1.
+      double up modified date checks... incase of colon
+      oops developer debug info wrong.. fix
+      oops.. free pointers that might be null.. checdk for that first!
+      ooooh that would leak if we added the same path all the time... which shoudl be ignored... :)
+      db loader out of imlib2...
+      aha! oops :)
+      hmm - fix segv with x font support
+      hmmm now why did this break? hmmmm.... err.,.. hmmm
+      oooops... fix fix :)
+      working offline... :)
+      blum! :)
+      break out if no footer
+      can handle "comment" tag :)
+      ok ok - pass make disctcheck
+      todo list.. and even how to do it! :)
+      tiff compression patch :)
+      better loader... ignore trailing garbage xv puts on the end of an xpm...
+      vrsion -> 1.1.0
+      make packages
+      update
+      dont need x11 includes
+      -lm
+      build without x.........
+      handle error stuff right
+      tillman's png interlacing support patch! yum!
+      bugsie! fixed!
+      no savies! :) <-tilman
+      tga loader fixed. now it works! :)
+      Michel Briand <michelbriand@free.fr> mmap tga loader
+      kwo imlib2 patch
+      actually use cache in 32bpp/24bpp
+      kwo's patch
+      1.1.1
+      just .in now - the whole transition is over.
+      fix distcheck
+      distipoos
+      oops filters wrong spot
+      imlib2_loaders...
+      roatate from buffer patch
+      kim patchies.. and in authors!@ :)
+      patches... :)
+      ltdl be gone fromt he src tree! :)
+      dont return values if void return defined!
+      nuke libltdl subdir
+      pc fix
+      --without-x works again
+      handle files too small to be a valid tga!
+      try using advance metrics
+      jose's AA rendering patches are in! :)
+      mr gonzales's latest "final" code.
+      autofool cleanups... argh! i hate autofools!
+      build things THIS way... :)
+      sorry - mej - you seem to have broken the build on other systems and imlib2-config wasnt being installed - also it was deciding it had to cross-compile and build i686-gnu-linux-imlib2-config etc. files... had to move autogen.sh to this... :(
+      revert... :( breakies
+      more bmp fixes
+      pallet + transp fix
+      up to 1.1.2 - security fixes, some other fixed, ilbm loader
+      fix brian
+      bits per smaple! :)
+      buildie cleanies
+      remooov!
+      and new much cleaner tree.
+      get the file list right.
+      ldflags by bye
+      fix install
+      no asflags recurse
+      oosp accidentally put this in. damn!
+      openembedded build files... this makes life so easy to build efl for embedded... :)
+      cleaner configure.in
+      oopsies. fixies
+      bart patch for debian package stuff
+      we dont need no steenking x headers in the loaders
+      no x headers.
+      ditch x headers from those loaders
+      progname... :)
+      no more segv/buffer overflow
+      bmp patch
+      make hsv reversible
+      FILL IN @REQUIREMENTS@ IN PC.IN
+      url...
+      dont double guess unicode.. just let it be raw
+      link modules back to imlib2 in case they are used in a python extension that dlopens imlib2.so....
+      change versions. some went DOWN - because they arent releases and i'm trying to remove the _pre ascii from the version. i added a .001 (a release number) so we can automatically or easiyl generate releases... sorry guys. but it's kind of "for the good of the code". :)
+      lround -> round
+      DISPLAY_MISSING define from spanky
+      imlib2 configure.in patch
+      1. e17's init icons get put into an e_box for arrangement nad the init splash determines the location...
+      if there is NO x dir.... still link anyway
+      remove files so dirs go away
+      auto-package imlib2...
+      fix more
+      touchies!
+      add data filea and test progs to -devel
+      asparagus time for some of the core efl bits...
+      bz2 loader fix. thanks julia!
+      no dot!
+      bettter detect for mmx (same as evas now)
+      asparagus!
+      amd64 asm patches
+      John Slaten's amd64 mmx patch
+      pass make distcheck
+      make e17 pass make distcheck.... and... ASPARAGUS time...   http://enlightenment.freedesktop.org for tarballs
+      asparagus!
+      full asparagus
+      xpm segv fix
+      asparagus... make e17 distcheck.
+      aspara!
+
+Chris Ross (20):
+      * Changed some of the methods to stop furutre name conflicts * Added Willems patch for bump mapping -very vey cool, check out   test/imllib2 * Died due to excess excitement over bump mapping
+      * Stuff from term, fixes some rpm build issues with imlib_view
+      One fricken character. Freetype 1.2, not 1.1
+      * modifed the script engine, instead of three passes i've nobbled it down to   one, this means the bump_mapped pr0n will now render a coupla degree's faster  (gilbertt this is for you, and those pictures of pabs' mom) * Update Imlib2.h and api.c to reflect changes
+      Gah, turn off debug mode, and comment out necessary blurb...
+      Added Willem patch for the bump map filter, now does proper bump mapping from an infinet light source. Needs to be optimsed further - lookup tables or some such..... thats for another day.
+      * rewrite of the script parser, basically you can now parser a filter as a   variable to another filter as willem requested the other day.   eg.     filter( var=anotherfilter( var=13,var=30 ), var=blum );
+      * forgot to mention that i've added an option to test/imlib2    -bmp2pt add this too it's command line and it'll bump map to where the            cursor is.
+      Clean up of code, all macros for filter_param -> real varaible are put in script.h. Changed filters to reflect this change, and actually plan on writing some more macors and filters soon.
+      Ok, some more clean ups to the filter stuff, should have some new filters to play with soon - want to get the stuff correct before I commit some more stuff. dox is the start of dox2 the document viewer based on imlib2. Designed so that the style of the docs is seperate from the contents. Will evolve rapdily over the next week.
+      More changes. Still doesn't do anything.
+      blu7m.
+      blum. fixed "error" on first install type bug in the dox tree.
+      blum.
+      Start of a filter test app, and applied Willem's patch for imlib2. thanks Willem.
+      New pic. Got bored with the last one =).
+      Moving over to the new home in the efm module.
+      Be quiet.
+      Argh.
+      You know what I do to fools? I pity them :)
+
+Christian Kreibich (11):
+      Raster,
+      4:31 am. Oh my.
+      An XCF loader. Currently it can handle layers, layer offsets, layer opacity, layer masks, and merging layers in the default mode (simply "looking" through all the layers). The other layer modes are missing right now (I hardly ever use anything other than "Normal" anyway, but that's just me of course).
+      I don't know if the loader has endianness issues (I guess it does), but this should definitely work better.
+      Ahem. Of course the load fails when you can't open the file :o)
+      Bye bye XCF loader. Apparently I stepped on some Gimp people's feet with it, because of licensing issues. I guess I'll be talking to Raster next week what we'll do with the loader. Hope this makes us friends with the Gimp developers again.
+      And another autoconf update ...
+      Lots of sssshhh here ...
+      Well then let's delete the full thing?
+      Same changes for HEAD ...
+      Okay, don't use AM_PROG_AS but the workaround, to fix automake issues.
+
+Christopher Rosendahl (2):
+      bad bad!
+      bad bad =)
+
+Corey Donohoe (1):
+      segfault fix from Dave Weston <dtweston@student.math.uwaterloo.ca>
+
+Dan Sinclair (1):
+      - documentation fix: the angle is in radians not degrees
+
+Franz Marini (6):
+      added nick. nothing important. :)
+      ok, just wrote this little function to do pixel drawing with blending. In fact, I wrote it just for the Bezier drawing function, but I thought it could be useful in other cases too. Have fun, Lightman :)
+      Alright, changed index.html to document imlib_image_draw_pixel.
+      Ok, just tried to compile Imlib2 under Roswell (RH 7.2 beta) and I discovered that it installs freetype 2.0.3 , and so freetype.h (for ftype1) is under /usr/include/freetype1/freetype/freetype.h . As to not have plp complaining imlib2 can't find freetype under rh 7.2 , I patched configure to work with roswell. Lightman
+      Ok, reverting changes for the draw_pixel function. Now Imlib_image_draw_pixel uses Tom's macro (__imlib_draw_set_point and *_clipped) so it's faster and it handles clipping, too. Btw Tom, I choosed not to change the name of the wrap function so that : 1) I don't have to change it in doc/index.html ;) 2) I think it's a little more in line with Imlib_image_draw_line ...
+      Ok, SirDibos modified the html so as to be more readable, namely, fixed <pre> tags, removed &nbsp; ... just some cleanup ...
+
+Horms (4):
+      rpm -ta now works on a tarball produced by "make distcheck" and friends
+      Debian packages may now be built from output of make dist and friends
+      Debian packages may now be built from output of make dist and friends
+      flum
+
+Ibukun Olumuyiwa (2):
+      Patch for pkg-config support from Tilman Sauerbeck <tilman@code-monkey.de>.
+      Warnings suck
+
+John Bickers (2):
+      Fixed start-of-line HAM problem. Added SHAM and CTBL load. Added greyscale load. Added IMLIB2_LBM_NOMASK check to disable masking. Added colour gun scaling, e.g. 4-bit 0x0f scales to 8-bit 0xff, not 0xf0. Changed RLE decompression by scanline instead of by byte. Removed empty save() function altogether as per some other loaders.
+      Added entries for loader_lbm.c.
+
+Kevin Brosius (2):
+      Minor README update - edb is used by imlib2_loaders.
+      .spec version update
+
+Kim Woelders (3):
+      Fix grabbing when source x or y is < 0.
+      Fix imlib_create_scaled_image_from_drawable().
+      Fix imlib_create_scaled_image_from_drawable for source_y != 0.
+
+Laurence J. Lane (15):
+      more preliminary assimilation
+      clean target
+      stuff
+      removed dh_testversion
+      stuff
+      added patch by David N. Welton to cleanup configure handling Thanks, David.
+      synch with current woody packages
+      update rules for cvs builds (autogen.sh)
+      minor update
+      cleanup source names
+      clean up for build
+      various stuff
+      Disable MMX routines. They were already (well, allegedly most of the time) disabled in the official packages for obvious reasons. I'd rather leave them enabled for CVS, but binutils headaches abound.
+      another missing dependecy imlib2 suggests imlib2-loaders e17 depends on imlib2-loaders
+      debhelper 3.0 changeover
+
+Maher Awamy (1):
+      Made png.so and jpeg.so link against Imlib2 when building, this makes the perl bindings problem with undefined symbols for __imlib_GetTag disappear since those two loaders call that function to determine some image flags when saving. Kick me in the butt if I am not supposed to do that but KainX said I should. The differance in .so size is minimal, 30 bytes for png.so and 20 bytes for jpeg.so.
+
+Mandrake (11):
+      Fri Oct 22 10:53:26 PDT 1999 (Mandrake)
+      trying to "fix" imlib2's cvs tree
+      more "hush yo mouf cvs" changes
+      Sun Oct 31 20:21:13 PST 1999 (Mandrake)
+      removed a warning
+      fixing freetype detection stuff, maybe?
+      hmm
+      heh.  not actually using configure option for mmx disabling correctly
+      this doesn't work at all. libtool: link: `-L../src' cannot specify a relative directory
+      Er, this was just blatantly and obviously wrong. fixed.
+      hush cvs
+
+Mark Bainter (1):
+      Changed --with-freetype to --with-ttf to make it consistant with the other modules.
+
+Michael Jennings (67):
+      *sigh*
+      Hush.
+      A GIF loader.  There is no save function yet, and you'll need libgif to use it.
+      Whoops.  Forgot to call the progress callback one last time.
+      Don't ask me how this got out of sync....
+      *grumble*
+      Ummm...
+      Put those back.  I hate warnings.
+      TIFF loader from Eric Dorland <dorland@lords.com>.
+      BMP loader from Isaac Richards <ijr@po.cwru.edu>.  It currently has issues with progressive loading, so don't use it with feh. :-)
+      Keep raster happy.
+      BMP loader fix for progressive loading from Chutt.
+      Murple.
+      Added a function to retrieve the image filename, if it has one.  It returns a pointer to an internal string, so if you want to alter the filename, you MUST strdup() it.
+      Several miscellaneous bugfixes I did while converting Eterm to use Imlib2.
+      "Hi.  My name is raster, and I smoke crack.  I think I'll dereference this pointer I just freed.  Sound like a good idea?  Yes, I thought so too." :-P
+      Fixed a possible divide by 0.
+      Never mind.  I fixed the bugger.
+      Wed Apr 26 19:58:05 PDT 2000 (KainX)
+      Don't cache partially-loaded images.
+      Hush up on the warning.
+      Nuked some autogenerated files and added acconfig.h.
+      Hush CVS.
+      It's always a good idea to "make distcheck" before you commit when you add or remove files. :-)
+      Some silly goose decided that these files should #include Imlib2.h.  NONE of them should include Imlib2.h.  In fact, nothing in the Imlib2 code should, but if it's absolutely necessary, make sure the local one is found before the system-wide one.
+      Wed Jul 12 22:20:53 PDT 2000 (KainX)
+      Miscellaneous fixes I ran across while doing the colormod stuff.  One of which fixes a seg fault bug.
+      Son of a raster!  I think I just found the memory leak.  I shall now hide in shame.  Perhaps giblet should take over Eterm development.
+      Imlib2 now benefits from the same MMX goop that Eterm has. :)
+      Fix make distcheck.
+      So fix it, don't just get rid of it. =P
+      Fix error building with dmalloc support.
+      Fri Aug 10 13:33:13 PDT 2001 (KainX)
+      Mon Oct  8 10:00:19 2001                        Michael Jennings (mej)
+      Spec file fixes here too.
+      Minor portability nit to appease the Texan.
+      Oops, forgot to fix configure.ac.
+      Tue Jan 15 15:22:06 EST 2002 (KainX)
+      Thu Mar 14 19:18:07 2002                        Michael Jennings (mej)
+      Mon Apr  8 17:47:55 2002                        Michael Jennings (mej)
+      Wed May 29 09:22:42 2002                        Michael Jennings (mej)
+      Wed May 29 11:58:32 2002                        Michael Jennings (mej)
+      Tue Jun  4 23:00:30 2002                        Michael Jennings (mej)
+      Tue Jun  4 23:29:36 2002                        Michael Jennings (mej)
+      Mon Mar 31 15:20:43 EST 2003 (KainX)
+      Thu Apr  3 14:06:53 EST 2003 (KainX)
+      Thu Apr  3 20:48:27 EST 2003 (KainX)
+      Sat Jul 12 21:06:14 EDT 2003 (KainX)
+      Gah!  New files. :P
+      Ignore imlib2.pc since it's auto-generated.
+      Sat Jul 12 21:33:20 EDT 2003 (KainX)
+      Package names can vary.  Besides, if one doesn't know what's needed to build it, one shouldn't be building it. :-)
+      Oops.  Forgot to nuke that.
+      Fri Jul  2 14:41:17 2004                        Michael Jennings (mej)
+      Tue Jul 20 17:23:57 2004                        Michael Jennings (mej)
+      Sun Jul 25 17:45:53 2004                        Michael Jennings (mej)
+      Wed Aug 25 15:53:59 2004                        Michael Jennings (mej)
+      Thu Aug 26 13:25:22 2004                        Michael Jennings (mej)
+      Ditto.
+      Copyright -> License
+      Ssssh!
+      Thu Jan  6 10:27:24 2005                        Michael Jennings (mej)
+      Sun Jan 16 14:27:18 2005                        Michael Jennings (mej)
+      Wed Jan 19 17:10:29 2005                        Michael Jennings (mej)
+      Fri Jan 21 00:57:08 2005                        Michael Jennings (mej)
+      Sun Jan 23 22:30:28 2005                        Michael Jennings (mej)
+      Fri Jan 28 20:26:06 2005                        Michael Jennings (mej)
+
+Michael Thalmann (1):
+      corrected order in autogen.sh, updated to automake 1.5
+
+Mike Frysinger (3):
+      allow for setting of env var to prevent running ./configure like the older autogen scripts allowed
+      remove AC_CANONICAL_TARGET and use $host* variables instead of $target* variables since thats how it works
+      we want to search for libX11 not libX ( http://bugs.gentoo.org/93300 )
+
+Nathan Ingersoll (4):
+      Explicitly link the modules to Imlib2 for portability to other platforms. (OS X in this case)
+      Got a little over-zealous on the linking of Imlib2, removed the cases that aren't necessary.
+      Remove the attempt to link freetype1, use the linking information generated by the configure.in.
+      glibtoolize
+
+Nigel Kostiuck (2):
+      Added the change for BitBake the Standardized Openembedded Build System
+      Python is too incompetent to parse hyphens
+
+Peter Kjellerstedt (2):
+      Removed this generated file from CVS (again).
+      Corrected a typo.
+
+Platon Fomichev (4):
+      OS/2 fixes
+      OS/2 binary open fix, I think in UNIX we can safely use "O_BINARY" too
+      General cleanup of EMX things
+      First preview of gzip & bzip2 loaders
+
+Richard Lowe (1):
+      Please Miss, I need -lm too.
+
+Sytse Wielinga (14):
+      Updated imlib2 debian packaging. It still doesn't configure correctly for me without some changes to autogen.sh and configure.ac; I'll have a look how to fix this correctly.
+      - Fixed building with automake 1.6.3, by adding the 'CCASFLAGS' and 'CCAS'    substitutions to configure.ac  - Fixed building with autoconf 2.5, by making autogen.sh run aclocal and    autoconf also in libltdl. I'm not sure if it is all-right in all cases;    please have a look at it.  - Added some things to .cvsignore.
+      1. autoheader and automake should also be run in libltdl 2. forgot autom4te.cache in .cvsignore
+      Removed libltdl directory from imlib2; it's created by libtoolize.
+      Readded libltdl/acconfig.h. That should be there.
+      Raster isn't an 'author(s)'
+      Big overhaul of a lot of the debian packages
+      Updated most of the debian packaging. Everything I have missed is out of date, not important or not working.
+      Fixed a couple of debs in e17/libs, added and updated a couple of .cvsignores.
+      Updated the imlib2 debian packaging.
+      Slight update for the debian packaging of imlib2, imlib2_loaders, ecore, edje; more to come later.
+      Things may change sometimes. Let debian cope with it.
+      A lot of moving around in imlib2{,loaders} caused lots of unignored files
+      Made imlib2's tests and demos open the display correctly.
+
+Term (10):
+      First commit. Woohoo!
+      More typos (but in raster's defense, he's spelling checking every so often. ;)
+      Cleaned up/partially rewrote README. Basically updated for the 1.0 release.
+      Bored. Reading. Typo. Commit. Sleep.
+      Add --with-edb=DIR argument (by request).
+      Cleanup the spec file a bunch with a patch from Joakim Bodin <bodin@dreamhosted.com>. Changed a few things in to make it happy to build in rpm < 3.0.5, and a few other minor tweaks.
+      Based on a suggestion from Richard Lowe <richlowe@btinternet.com>, and partially from a patch from him, updated README to include the dependancies. Also added a few more to imlib2.spec.in (libjpeg, libpng, edb).
+      Blah. Isn't it great how things like "check the other packages in the spec file" occur to you RIGHT after you do a commit? I love being up late. :)
+      Added imconvert, which stems from a conversation with raster about importing/exporting binary data (specifically imlib images from edb files, like the ebits files). This allows the user to export and import image data in and out of edb files, as well as arbitrary conversions to and from any format Imlib2 can handle.
+      I should've done this a while back. Sorry about the big number of emails coming. ;)
+
+Till Adam (3):
+      small fix for the pnm loader. It didnt display the last two lines of a file. Ive only corrected the 24bit RGB one. Ill do the others if raster doesnt have a more elegant fix for this :).
+      fix for the other binary versions in the pnm_loader. Could someone please check if the ascii ones work right? I didnt test them. and test the binary formats too while youre at it. Thanks :)
+      ok, fix for the ascii ppm formats. They seemed to have the same problem. This should be it now, provided the save in ppm format works as expected which it seems to do from geist at least.
+
+Tilman Sauerbeck (17):
+      Fixed CFLAGS in pkg-config file
+      im->real_file() is set on load, but it will be overwritten when the file is saved. so free the old contents before overwriting it.
+      Imlib2 loaders don't need to ship with both load() _and_ save() anymore
+      replaced loader_gzbz2 with loader_zlib and loader_bz2. removed empty save() in some loaders
+      fixed some warnings
+      Don't call DirtyPixmapsForImage() twice - it's already called by DirtyImage()
+      DirtyPixmapsForImage() is only available when we build with X
+      fixed a bunch of warnings. reverted last commit.
+      don't attempt to save an image without image data
+      updated Doxyfiles
+      always print an error message if an image cannot be opened
+      another bug in the bz2 loader: we need to duplicate the original filename so we don't access free'd memory
+      fixed a fd leak and a bad memory access bug
+      zlib/bz2 loaders, round 2: look for the real loader using a fake filename (original filename with the bz2/gz suffix cut)
+      fix uncompression in bzip2 loader2
+      fix uncompression for the zlib loader
+      handle bzip2 errors
+
+Tom Gilbert (85):
+      Shaddup ;)
+      shaddup ;)
+      AARGH. Godamn file decriptor leak which has been driving me CRAZY for a WEEK! Got the BASTARD. DIE!
+      Removed a crufty bit.
+      nothing major
+      Leak plugged. Thanks Eric :)
+      Okay. The loader list is now trimmed. Where it would previously contain: argb.a   bmp.a   gif.a   jpeg.a   png.a   pnm.a   tiff.a argb.la  bmp.la  gif.la  jpeg.la  png.la  pnm.la  tiff.la argb.so  bmp.so  gif.so  jpeg.so  png.so  pnm.so  tiff.so
+      Bite me =P
+      Partial loader_tiff rewrite from Eric Dorland. Much nicer :)
+      Thought you could use a ChangeLog. I filtered it from muy cvs-commits-list mbox, so bin it if you don't like =)
+      Thu Apr 27 02:59:57 GMT 2000 (gilbertt)
+      Consolidate one ChangeLog in the root dir.
+      Thu Apr 27 03:16:59 GMT 2000 (gilbertt)
+      Thu Apr 27 04:00:28 GMT 2000 (gilbertt)
+      Thu Apr 27 04:22:06 GMT 2000 (gilbertt)
+      Thu Apr 27 13:41:11 GMT 2000 (gilbertt)
+      Thu Apr 27 13:43:49 GMT 2000 (gilbertt)
+      This is weird. I'm sure I added the prototypes for these context_get_* functions to Imlib2.h before... Yet they aren't there.... Hrm...
+      SHUT YOUR HOLE CVS BITCH!
+      Default x,y to 0 and w, h to image dimensions, so if you don't specify, the filter applies to the whole image.
+      Willem's rotation patch.
+      fix core on imlib_list_fonts()
+      Fixed imlib_list_fonts()
+      Don't show duplicates in imlib_list_fonts().
+      Okay. imlib_free_image_and_decache() was leaking images. I hope I made the right fix here. Basically, the imlib_free_image_and_decache() call in api.c sets the flag F_INVALID then calls the internal __ImlibFreeImage(), this checks if the flag F_UNCACHEABLE is set, and only frees it if so.
+      Urm. oops. hehe :)
+      Added line drawing with clipping.
+      Added rectangle clipping, in the form:
+      The line clipping function is quite useful, so I made it public. Sometimes it's handy to work out where your line was/would be drawn.
+      Scratch that. Start again.
+      Polygons. Not filled ones yet =P Empty ones are easier ;-)
+      Added function to calculate bounds of a polygon.
+      imlib_image_draw_ellipse()
+      Polygon filling. Right now only works for convex polygons. Works with a clipping rect, but highly suboptimally (I'm not doing proper polygon clipping here yet, just clipping slowly on each point drawn - really nasty).
+      Better API, simpler polygon struct. imlib_polygon_new() now, no type member. Then _draw_polygon(polygon, unsigned int closed), and _fill_polygon(poly).
+      imlib_image_fill_ellipse()
+      killed a rounding error in line clipping
+      slight speedup
+      tidy up
+      Much faster polygon clipping, made span() more sensible.
+      Much faster clipped ellipse filling.
+      final fix for _list_fonts()
+      more docs
+      update my email addy
+      Lots of changes. Macro-ised the point_on_segment code.
+      shuddup
+      Use spans and the span list clipper to do filled ellipses too. Much better.
+      more inlining
+      Commiting what I have so far. More to do tomorrow, but it's 3am.
+      nm I fixed it anyway
+      quick warning hunt
+      not quite there yet
+      Fix for _polygon_get_bounds.
+      Better fix.
+      EEeeeeek. Segv.
+      SHUT UP!
+      png loader now pays head to images "quality" tag, just like the jpeg loader. Now, the png lib takes values 1-9 for compression. I decided to standardise loaders on a 1-100 quality value, and do some sums in the loader to convert to 1-9 compression. That was you can set quality and not care what file format is used. Sound reasonable?
+      jpeg and png should do the right thing with quality _or_ compression now
+      let's not have a coredumping example app ;-)
+      dunno why there were two of those
+      Adam's font fixer-upper patch :)
+      fix memory leak
+      warnings suck
+      This is what I meant.
+      safer
+      er no
+      sorry, debugging stuff
+      ewps!
+      that doesn't actually do anything different
+      another one
+      Expunged all the raw_file stuff and fixed a warning.
+      fixed filled ellipses - note, this isn't the cleanest fix in the world.
+      bad logic there tom
+      Once more into the breech.
+      You are required to set `AS' and `ASFLAGS' via `configure.in'.  The autoconf macro `AM_PROG_AS' will do this for you.  Unless they are already set, it simply sets `AS' to the C compiler and `ASFLAGS' to the C compiler flags.
+      No, I didn't mean to get rid of that bit.
+      *snicker
+      Patch from Brian Lindholm <lindholm@aol.com>
+      foo
+      Fix broken ordering.
+      Fix from Lindholm@aol.com for segvs when tiling images seamlessly (if they are an odd number of pixels in height).
+      A bugfix!
+      Fix bug in ellipse drawing introduced who knows when by who knows who.
+      memory leak busted - valgrind is great.
+      ->data was getting leaked, as _tidyup() only free()s data for nodes of type CHAR.
+
+Vincent Torri (5):
+      Doxygen documentation
+      Doxygen scripts, description of imlib2
+      Doxygen doc: css and html files
+      Doxygen doc: images
+      Configuration summary
+

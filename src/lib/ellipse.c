@@ -71,6 +71,9 @@ __imlib_Ellipse_DrawToData(int xc, int yc, int a, int b, DATA32 color,
         if (IN_RANGE(rx, by, clw, clh))
            pfunc(color, bp + len);
 
+        if (dx < 1)
+           dx = 1;
+
         dy += b2;
         yy -= ((dy << 16) / dx);
         lx--;
@@ -122,6 +125,9 @@ __imlib_Ellipse_DrawToData(int xc, int yc, int a, int b, DATA32 color,
            pfunc(color, bp);
         if (IN_RANGE(rx, by, clw, clh))
            pfunc(color, bp + len);
+
+        if (dy < 1)
+           dy = 1;
 
         dx -= a2;
         xx += ((dx << 16) / dy);
@@ -222,6 +228,9 @@ __imlib_Ellipse_DrawToData_AA(int xc, int yc, int a, int b, DATA32 color,
         if (IN_RANGE(rx, by, clw, clh))
            pfunc(col1, bp + len);
 
+        if (dx < 1)
+           dx = 1;
+
         dy += b2;
         yy -= ((dy << 16) / dx);
         lx--;
@@ -294,6 +303,9 @@ __imlib_Ellipse_DrawToData_AA(int xc, int yc, int a, int b, DATA32 color,
            pfunc(col0, bp + len - 1);
         if (IN_RANGE(rx, by, clw, clh))
            pfunc(col1, bp + len);
+
+        if (dy < 1)
+           dy = 1;
 
         dx -= a2;
         xx += ((dx << 16) / dy);
@@ -395,6 +407,9 @@ __imlib_Ellipse_FillToData(int xc, int yc, int a, int b, DATA32 color,
         if (IN_RANGE(rx, by, clw, clh))
            pfunc(color, bp + len);
 
+        if (dx < 1)
+           dx = 1;
+
         dy += b2;
         yy -= ((dy << 16) / dx);
         lx--;
@@ -452,6 +467,9 @@ __imlib_Ellipse_FillToData(int xc, int yc, int a, int b, DATA32 color,
            sfunc(color, tpp, len);
         if (((unsigned)by < (unsigned)clh) && (len > 0))
            sfunc(color, bpp, len);
+
+        if (dy < 1)
+           dy = 1;
 
         dx -= a2;
         xx += ((dx << 16) / dy);
@@ -556,6 +574,9 @@ __imlib_Ellipse_FillToData_AA(int xc, int yc, int a, int b, DATA32 color,
         if (IN_RANGE(rx, by, clw, clh))
            pfunc(col1, bp + len);
 
+        if (dx < 1)
+           dx = 1;
+
         dy += b2;
         yy -= ((dy << 16) / dx);
         lx--;
@@ -628,6 +649,9 @@ __imlib_Ellipse_FillToData_AA(int xc, int yc, int a, int b, DATA32 color,
            pfunc(col1, bp);
         if (IN_RANGE(rx, by, clw, clh))
            pfunc(col1, bp + len);
+
+        if (dy < 1)
+           dy = 1;
 
         dx -= a2;
         xx += ((dx << 16) / dy);
